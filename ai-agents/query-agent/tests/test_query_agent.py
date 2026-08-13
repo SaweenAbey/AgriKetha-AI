@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.nlp import analyze_query, extract_crop, extract_symptoms, detect_intent, nlp
+from app.multilingual import detect_language, translate_to_english, translate_singlish, translate_sinhala_script
 
 
 class TestNLPProcessing(unittest.TestCase):
@@ -79,6 +80,61 @@ class TestAgentAPI(unittest.TestCase):
         self.assertTrue(data["success"])
         self.assertEqual(data["agent_1_result"]["crop"], "tomato")
         self.assertIn("brown spots", data["agent_1_result"]["symptoms"])
+
+    def test_analyze_endpoint_sinhala(self):
+        response = self.client.post("/analyze", json={"question": "මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා"})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["detected_language"], "si")
+        self.assertEqual(data["agent_1_result"]["crop"], "tomato")
+        self.assertIn("brown spots", data["agent_1_result"]["symptoms"])
+
+    def test_analyze_endpoint_singlish(self):
+        response = self.client.post("/analyze", json={"question": "mage thakkali kola kaha pata wela"})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["detected_language"], "singlish")
+        self.assertEqual(data["agent_1_result"]["crop"], "tomato")
+        self.assertIn("yellow leaves", data["agent_1_result"]["symptoms"])
+
+
+class TestMultilingualProcessing(unittest.TestCase):
+    def test_language_detection(self):
+        self.assertEqual(detect_language("My tomato leaves have brown spots"), "en")
+        self.assertEqual(detect_language("මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා"), "si")
+        self.assertEqual(detect_language("mage thakkali kola wala damburu lapa thiyenawa"), "singlish")
+        self.assertEqual(detect_language("wee wagawe thiyena leda monawada"), "singlish")
+        self.assertEqual(detect_language("තක්කාලි මිල කීයද"), "si")
+        self.assertEqual(detect_language("thakkali mila kohomada"), "singlish")
+
+    def test_singlish_translation(self):
+        self.assertIn("tomato", translate_singlish("thakkali"))
+        self.assertIn("leaves", translate_singlish("kola"))
+        self.assertIn("yellow", translate_singlish("kaha"))
+        self.assertIn("disease", translate_singlish("leda"))
+        self.assertIn("price", translate_singlish("mila"))
+        
+        translated = translate_singlish("mage thakkali kola wala damburu lapa thiyenawa")
+        self.assertIn("tomato", translated)
+        self.assertIn("leaves", translated)
+        self.assertIn("brown spots", translated)
+
+    def test_pure_sinhala_translation(self):
+        self.assertIn("tomato", translate_sinhala_script("තක්කාලි"))
+        self.assertIn("leaves", translate_sinhala_script("කොළ"))
+        self.assertIn("yellow", translate_sinhala_script("කහ"))
+        
+        translated = translate_sinhala_script("මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා")
+        self.assertIn("tomato", translated)
+        self.assertIn("leaves", translated)
+        self.assertIn("brown spots", translated)
+
+    def test_sinhala_translation(self):
+        translated = translate_to_english("මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා", "si")
+        self.assertIn("tomato", translated.lower())
+        self.assertIn("brown", translated.lower())
 
 
 if __name__ == "__main__":

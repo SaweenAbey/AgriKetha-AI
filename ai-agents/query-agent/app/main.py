@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException
 from app.agent_communication import send_to_agent_2
 from app.nlp import analyze_query
 from app.schemas import QueryRequest, QueryResponse
+from app.multilingual import detect_language, translate_to_english
 
 app = FastAPI(
     title="AgriKetha Query Analysis Agent",
@@ -35,10 +36,18 @@ def analyze(request: QueryRequest):
             detail="Question is too long"
         )
 
-    
-    result = analyze_query(question)
 
+    lang = detect_language(question)
+    translated_question = None
     
+    if lang != "en":
+        translated_question = translate_to_english(question, lang)
+        query_to_analyze = translated_question
+    else:
+        query_to_analyze = question
+
+    result = analyze_query(query_to_analyze)
+
     try:
         agent_2_result = send_to_agent_2(result)
         agent_2_connected = True
@@ -54,6 +63,8 @@ def analyze(request: QueryRequest):
         "success": True,
         "agent": "query-analysis-agent",
         "question": question,
+        "detected_language": lang,
+        "translated_question": translated_question,
         "agent_1_result": result,
         "agent_2_connected": agent_2_connected,
         "agent_2_result": agent_2_result

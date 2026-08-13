@@ -89,9 +89,7 @@ INTENT_KEYWORDS = {
 }
 
 def extract_crop(doc) -> str:
-    """
-    Extracts crop name from Doc. Returns normalized crop name.
-    """
+   
 
     for ent in doc.ents:
         if ent.label_ == "CROP":
@@ -138,9 +136,7 @@ def extract_crop(doc) -> str:
     return None
 
 def extract_grammatical_symptoms(doc) -> list:
-    """
-    Inspects dependency relation tree and word pairs to extract symptoms accurately.
-    """
+    
     found_symptoms = []
     text_lower = doc.text.lower()
     
@@ -191,15 +187,11 @@ def extract_grammatical_symptoms(doc) -> list:
     return list(sorted(set(found_symptoms)))
 
 def extract_symptoms(doc) -> list:
-    """
-    Extracts symptoms from Doc. Returns a list of canonical symptoms.
-    """
+   
     return extract_grammatical_symptoms(doc)
 
 def detect_intent(doc) -> str:
-    """
-    Classifies intent of the query using token lemma matching against defined intent keywords.
-    """
+    
     scores = {intent: 0 for intent in INTENT_KEYWORDS}
     
  
@@ -224,9 +216,7 @@ def detect_intent(doc) -> str:
     return best_intent
 
 def analyze_query(text: str) -> dict:
-    """
-    Runs NLP pipeline on text to extract crop, symptoms, and intent.
-    """
+    
     doc = nlp(text)
     return {
         "crop": extract_crop(doc),
