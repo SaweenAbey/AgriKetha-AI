@@ -343,11 +343,152 @@ SINHALA_WORD_MAP = {
 }
 
 
+TAMIL_PHRASE_MAP = {
+    "சோளம்": "maize",
+    "மஞ்சள் நிறம்": "yellow color",
+    "மஞ்சள் நிறமாக": "yellow color has become",
+    "பழுப்பு புள்ளிகள்": "brown spots",
+    "பழுப்பு புள்ளி": "brown spots",
+    "வெள்ளை பூச்சிகள்": "white insects",
+    "வெள்ளை பூச்சி": "white insects",
+    "வெள்ளை நிறம்": "white color",
+    "இலை சுருளுதல்": "leaf curling",
+    "இலை சுருண்டது": "leaf curling",
+    "இலை சுருக்கம்": "leaf curling",
+    "நெல் பயிர்ச்செய்கை": "rice cultivation",
+    "நெல் விவசாயம்": "rice cultivation",
+    "தக்காளி பயிர்ச்செய்கை": "tomato cultivation",
+    "தக்காளி விவசாயம்": "tomato cultivation",
+}
+
+
+TAMIL_WORD_MAP = {
+    # Crops
+    "தக்காளி": "tomato",
+    "நெல்": "rice",
+    "அரிசி": "rice",
+    "சோளம்": "maize",
+    "மிளகாய்": "chili",
+    "உருளைக்கிழங்கு": "potato",
+    "வெங்காயம்": "onion",
+    "கத்தரிக்காய்": "brinjal",
+    "கத்தரி": "brinjal",
+    "வெள்ளரிக்காய்": "cucumber",
+    "மிளகு": "pepper",
+    "கேரட்": "carrot",
+    "முட்டைக்கோஸ்": "cabbage",
+    "தேயிலை": "tea",
+    "தேங்காய்": "coconut",
+    "ரப்பர்": "rubber",
+    "இலவங்கப்பட்டை": "cinnamon",
+    "கருவா": "cinnamon",
+    "பீட்ரூட்": "beetroot",
+    "பூசணிக்காய்": "pumpkin",
+    "பூசணி": "pumpkin",
+    "வெண்டைக்காய்": "okra",
+    "பீன்ஸ்": "bean",
+    "லீக்ஸ்": "leek",
+    
+    # Parts of plant
+    "இலை": "leaves",
+    "இலைகள்": "leaves",
+    "கிளை": "branch",
+    "கிளைகள்": "branches",
+    "வேர்": "root",
+    "வேர்கள்": "roots",
+    "பூ": "flower",
+    "பூக்கள்": "flowers",
+    "காய்கள்": "pods",
+    "இல்": "in",
+    "மேல்": "on",
+    "மீது": "on",
+    "பற்றி": "about",
+    
+    # Symptoms / Colors / Diseases
+    "மஞ்சள்": "yellow",
+    "பழுப்பு": "brown",
+    "புள்ளிகள்": "spots",
+    "புள்ளி": "spots",
+    "கருப்பு": "black",
+    "வெள்ளை": "white",
+    "பூச்சிகள்": "insects",
+    "பூச்சி": "insect",
+    "புழுக்கள்": "worms",
+    "புழு": "worm",
+    "நோய்": "disease",
+    "நோய்கள்": "disease",
+    "இறந்துவிட்டது": "died",
+    "பட்டுப்போனது": "died",
+    "வாடிவிட்டது": "wilted",
+    "வாடிய": "wilted",
+    "அழுகல்": "rot",
+    "அழுகிய": "rot",
+    "சுருளுதல்": "curling",
+    "சுருக்கம்": "curling",
+    "நிறம்": "color",
+    "வண்ணம்": "color",
+    "விழுந்தது": "fallen",
+    "விழுகிறது": "falling",
+    
+    # Inputs / Market / Conversational
+    "தண்ணீர்": "water",
+    "நீர்": "water",
+    "உரம்": "fertilizer",
+    "விலை": "price",
+    "பணம்": "money",
+    "சிகிச்சை": "treatment",
+    "தீர்வு": "treatment",
+    "கட்டுப்பாடு": "control",
+    "எனது": "my",
+    "என்": "my",
+    "விவசாயம்": "cultivation",
+    "பயிர்ச்செய்கை": "cultivation",
+    "இருக்கிறது": "is",
+    "உள்ளது": "is",
+    "ஆகிவிட்டது": "become",
+    "என்ன": "what",
+    "எப்படி": "how",
+    "செய்ய": "do",
+    "இலைகளில்": "leaves",
+    "இலையில்": "leaf",
+    "இலைகளின்": "leaves",
+    "இல்லை": "not",
+    "காற்ற": "wind",
+    "பிரச்சினை": "problem",
+    "புகை": "smoke",
+    "எவ்வளவு": "how much",
+}
+
+
+def translate_tamil_script(text: str) -> str:
+    text_lower = text
+    
+    for phrase in sorted(TAMIL_PHRASE_MAP.keys(), key=len, reverse=True):
+        eng = TAMIL_PHRASE_MAP[phrase]
+        text_lower = text_lower.replace(phrase, eng)
+        
+    tokens = re.findall(r"[\u0b80-\u0bff\w]+|[^\u0b80-\u0bff\w\s]", text_lower, re.UNICODE)
+    translated_tokens = []
+    
+    for token in tokens:
+        if token in TAMIL_WORD_MAP:
+            translated_tokens.append(TAMIL_WORD_MAP[token])
+        else:
+            translated_tokens.append(token)
+            
+    translated_text = " ".join(translated_tokens)
+    translated_text = re.sub(r"\s+([^\w\s])", r"\1", translated_text)
+    return translated_text
+
+
 def detect_language(text: str) -> str:
   
     
     if re.search(r"[\u0d80-\u0dff]", text):
         return "si"
+        
+    if re.search(r"[\u0b80-\u0bff]", text):
+        return "ta"
         
     
     text_lower = text.lower()
@@ -451,5 +592,17 @@ def translate_to_english(text: str, lang: str) -> str:
         
     elif lang == "singlish":
         return translate_singlish(text)
+        
+    elif lang == "ta":
+        local_translated = translate_tamil_script(text)
+        
+        if not re.search(r"[\u0b80-\u0bff]", local_translated):
+            return local_translated
+            
+        google_translated = translate_google(text, "ta")
+        if google_translated != text:
+            return google_translated
+            
+        return local_translated
         
     return text
