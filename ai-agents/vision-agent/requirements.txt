@@ -1,0 +1,15 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+torch
+torchvision
+opencv-python
+pillow
+
+numpy
+pandas
+matplotlib
+scikit-learn
+pytorch-grad-cam
+python-multipart
+python-dotenv
+requests
