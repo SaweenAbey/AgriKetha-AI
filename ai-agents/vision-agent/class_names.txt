@@ -1,0 +1,13 @@
+Disease_Bacterialblight
+Disease_Blast
+Disease_Brownspot
+Disease_Tungro
+Nutrition_Nitrogen(N)
+Nutrition_Phosphorus(P)
+Nutrition_Potassium(K)
+Pest_Brown_Planthopper
+Pest_Green_Leafhoppers
+Pest_LEAF_FOLDERS
+Pest_Rice_Bug
+Pest_Stemz_Borer
+Pest_Whorl_Maggot
