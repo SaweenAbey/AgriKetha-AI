@@ -11,8 +11,8 @@ from tqdm import tqdm
 BASE_DATA = r"C:\Users\ASUS\OneDrive\Documents\GitHub\AgriKetha-AI\backend\data"
 DATA_PATH = os.path.join(BASE_DATA, "rice_pests")
 
-BATCH_SIZE = 16
-TOTAL_EPOCHS = 20
+BATCH_SIZE = 4
+TOTAL_EPOCHS = 5
 IMAGE_SIZE = 224
 
 # --------------------------------------------------

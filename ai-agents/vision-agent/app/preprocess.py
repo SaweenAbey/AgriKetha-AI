@@ -17,7 +17,6 @@ def validate_image(image_np: np.ndarray):
     Validate image quality to prevent hallucinations.
     Returns: (is_valid, message)
     """
-    # Convert to grayscale for analysis
     gray = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
     
     # 1. Check Blurriness (Laplacian variance)
@@ -44,14 +43,10 @@ def preprocess_image(image_pil: Image.Image) -> torch.Tensor:
     """
     Convert PIL image to normalized tensor for the model.
     """
-    # Convert to RGB if not already
     if image_pil.mode != 'RGB':
         image_pil = image_pil.convert('RGB')
     
-    # Apply transforms
     image_tensor = transform(image_pil)
-    
-    # Add batch dimension (1, 3, 224, 224)
     image_tensor = image_tensor.unsqueeze(0)
     
     return image_tensor

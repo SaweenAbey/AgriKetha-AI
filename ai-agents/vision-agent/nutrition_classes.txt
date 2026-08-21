@@ -1,0 +1,3 @@
+Nutrition_Nitrogen(N)
+Nutrition_Phosphorus(P)
+Nutrition_Potassium(K)

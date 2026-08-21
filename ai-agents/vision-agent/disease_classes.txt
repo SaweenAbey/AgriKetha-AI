@@ -1,0 +1,4 @@
+Disease_Bacterialblight
+Disease_Blast
+Disease_Brownspot
+Disease_Tungro

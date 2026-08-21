@@ -11,7 +11,7 @@ class VisionResponse(BaseModel):
     prediction: Optional[str] = None
     confidence: Optional[float] = None
     severity_percentage: Optional[float] = None
-    severity_level: Optional[str] = None  # "Mild", "Moderate", "Severe"
+    severity_level: Optional[str] = None
     gradcam_base64: Optional[str] = None
     alternatives: List[DiseasePrediction] = []
     message: Optional[str] = None

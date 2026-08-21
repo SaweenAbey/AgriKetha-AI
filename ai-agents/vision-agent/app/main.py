@@ -1,3 +1,5 @@
+print("🔥 main.py is executing!")
+
 import base64
 import io
 import cv2
@@ -10,7 +12,9 @@ import uvicorn
 # Import your modules
 from app.schemas import VisionResponse, DiseasePrediction
 from app.preprocess import validate_image, preprocess_image
-from app.model import VisionModel
+from app.model_ensemble import EnsembledVisionModel
+
+print("✅ All imports loaded!")
 
 # Initialize FastAPI
 app = FastAPI(
@@ -26,12 +30,8 @@ vision_model = None
 async def load_model():
     """Load the vision model on server startup"""
     global vision_model
-    print("🖼️ Loading Vision Model...")
-    # 🔥 FIXED: Load your trained balanced model!
-    vision_model = VisionModel(
-        weights_path="best_rice_balanced_model.pth",
-        class_names_path="class_names.txt"
-    )
+    print("🖼️ Loading Ensembled Vision Model (3 Specialists)...")
+    vision_model = EnsembledVisionModel()
     print("✅ Vision Agent ready!")
 
 @app.get("/agent/health")
@@ -69,7 +69,7 @@ async def analyze_image(file: UploadFile = File(...)):
         # 4. Preprocess for model
         image_tensor = preprocess_image(image_pil)
         
-        # 5. Run Prediction
+        # 5. Run Prediction (Ensemble picks the best specialist!)
         prediction, confidence, alternatives = vision_model.predict(image_tensor)
         
         # 6. Generate Grad-CAM (Explainability)
@@ -121,6 +121,7 @@ async def analyze_image(file: UploadFile = File(...)):
 async def root():
     return {
         "message": "AgriKetha Vision Agent",
+        "version": "1.0.0",
         "endpoints": {
             "health": "/agent/health",
             "analyze": "/agent/image/analyze (POST)"
@@ -128,4 +129,5 @@ async def root():
     }
 
 if __name__ == "__main__":
+    print("🚀 Starting Vision Agent Server...")
     uvicorn.run(app, host="0.0.0.0", port=8002)
