@@ -4,3 +4,5 @@ spacy
 pydantic
 requests
 langdetect
+SpeechRecognition
+python-multipart

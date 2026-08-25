@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -134,6 +135,25 @@ class TestAgentAPI(unittest.TestCase):
         data = response.json()
         self.assertTrue(data["success"])
         self.assertEqual(data["detected_language"], "ta")
+        self.assertEqual(data["agent_1_result"]["crop"], "tomato")
+        self.assertIn("brown spots", data["agent_1_result"]["symptoms"])
+
+    @patch("speech_recognition.Recognizer.recognize_google")
+    @patch("speech_recognition.Recognizer.record")
+    def test_analyze_audio_endpoint(self, mock_record, mock_recognize):
+        mock_recognize.return_value = "මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා"
+        dummy_wav = b"RIFF\x24\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00\x22\x56\x00\x00\x44\xac\x00\x00\x02\x00\x10\x00data\x00\x00\x00\x00"
+        
+        response = self.client.post(
+            "/analyze-audio",
+            files={"file": ("test.wav", dummy_wav, "audio/wav")},
+            data={"language_code": "si-LK"}
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["question"], "මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා")
+        self.assertEqual(data["detected_language"], "si")
         self.assertEqual(data["agent_1_result"]["crop"], "tomato")
         self.assertIn("brown spots", data["agent_1_result"]["symptoms"])
 
