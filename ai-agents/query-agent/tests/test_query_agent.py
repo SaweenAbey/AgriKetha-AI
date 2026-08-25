@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -60,8 +61,27 @@ class TestNLPProcessing(unittest.TestCase):
         doc_market = nlp("What is the wholesale price of red onion at Dambulla market?")
         self.assertEqual(detect_intent(doc_market), "market information")
 
+        doc_machinery = nlp("How to maintain a tractor seeder or water pump?")
+        self.assertEqual(detect_intent(doc_machinery), "machinery operations")
+
         doc_general = nlp("Good morning, how does crop rotation work?")
         self.assertEqual(detect_intent(doc_general), "general agriculture")
+
+    def test_fertilizer_extraction(self):
+        from app.nlp import extract_fertilizer_details
+        doc = nlp("I need to apply urea and compost fertilizer to my paddy field")
+        fertilizers = extract_fertilizer_details(doc)
+        self.assertIn("urea", fertilizers)
+        self.assertIn("compost", fertilizers)
+        self.assertIn("fertilizer", fertilizers)
+
+    def test_machinery_extraction(self):
+        from app.nlp import extract_machinery_details
+        doc = nlp("Is it possible to plow the field using a hand tractor tiller?")
+        machinery = extract_machinery_details(doc)
+        self.assertIn("plow", machinery)
+        self.assertIn("tractor", machinery)
+        self.assertIn("tiller", machinery)
 
 
 class TestAgentAPI(unittest.TestCase):
@@ -80,6 +100,16 @@ class TestAgentAPI(unittest.TestCase):
         self.assertTrue(data["success"])
         self.assertEqual(data["agent_1_result"]["crop"], "tomato")
         self.assertIn("brown spots", data["agent_1_result"]["symptoms"])
+
+    def test_analyze_endpoint_fertilizer_and_machinery(self):
+        response = self.client.post("/analyze", json={"question": "Should I add urea to rice or use a tractor for plowing?"})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["agent_1_result"]["crop"], "rice")
+        self.assertIn("urea", data["agent_1_result"]["fertilizer_details"])
+        self.assertIn("tractor", data["agent_1_result"]["machinery_details"])
+        self.assertIn("plow", data["agent_1_result"]["machinery_details"])
 
     def test_analyze_endpoint_sinhala(self):
         response = self.client.post("/analyze", json={"question": "මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා"})
@@ -108,6 +138,35 @@ class TestAgentAPI(unittest.TestCase):
         self.assertEqual(data["agent_1_result"]["crop"], "tomato")
         self.assertIn("brown spots", data["agent_1_result"]["symptoms"])
 
+    @patch("speech_recognition.Recognizer.recognize_google")
+    @patch("speech_recognition.Recognizer.record")
+    def test_analyze_audio_endpoint(self, mock_record, mock_recognize):
+        mock_recognize.return_value = "මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා"
+        dummy_wav = b"RIFF\x24\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00\x22\x56\x00\x00\x44\xac\x00\x00\x02\x00\x10\x00data\x00\x00\x00\x00"
+        
+        response = self.client.post(
+            "/analyze-audio",
+            files={"file": ("test.wav", dummy_wav, "audio/wav")},
+            data={"language_code": "si-LK"}
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["question"], "මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා")
+        self.assertEqual(data["detected_language"], "si")
+        self.assertEqual(data["agent_1_result"]["crop"], "tomato")
+        self.assertIn("brown spots", data["agent_1_result"]["symptoms"])
+
+    def test_analyze_audio_endpoint_invalid_format(self):
+        response = self.client.post(
+            "/analyze-audio",
+            files={"file": ("test.m4a", b"dummy audio content", "audio/x-m4a")},
+            data={"language_code": "si-LK"}
+        )
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertIn("Unsupported audio format", data["detail"])
+
 
 class TestMultilingualProcessing(unittest.TestCase):
     def test_language_detection(self):
@@ -132,6 +191,13 @@ class TestMultilingualProcessing(unittest.TestCase):
         self.assertIn("leaves", translated)
         self.assertIn("brown spots", translated)
 
+        translated_fert = translate_singlish("yuriya pohora danna oni")
+        self.assertIn("urea", translated_fert)
+        self.assertIn("fertilizer", translated_fert)
+
+        translated_mach = translate_singlish("traktharaya wikunanne kohomada")
+        self.assertIn("tractor", translated_mach)
+
     def test_pure_sinhala_translation(self):
         self.assertIn("tomato", translate_sinhala_script("තක්කාලි"))
         self.assertIn("leaves", translate_sinhala_script("කොළ"))
@@ -141,6 +207,14 @@ class TestMultilingualProcessing(unittest.TestCase):
         self.assertIn("tomato", translated)
         self.assertIn("leaves", translated)
         self.assertIn("brown spots", translated)
+
+        translated_fert = translate_sinhala_script("යූරියා පොහොර දාන්න ඕනෙ")
+        self.assertIn("urea", translated_fert)
+        self.assertIn("fertilizer", translated_fert)
+
+        translated_mach = translate_sinhala_script("ට්‍රැක්ටරයෙන් හාන්න")
+        self.assertIn("tractor", translated_mach)
+        self.assertIn("plow", translated_mach)
 
     def test_sinhala_translation(self):
         translated = translate_to_english("මගේ තක්කාලි කොළ වල දුඹුරු ලප තියෙනවා", "si")
@@ -156,6 +230,14 @@ class TestMultilingualProcessing(unittest.TestCase):
         self.assertIn("tomato", translated)
         self.assertIn("leaf", translated)
         self.assertIn("brown spots", translated)
+
+        translated_fert = translate_tamil_script("யூரியா உரம் போட வேண்டும்")
+        self.assertIn("urea", translated_fert)
+        self.assertIn("fertilizer", translated_fert)
+
+        translated_mach = translate_tamil_script("டிராக்டர் உழுதல் எப்படி")
+        self.assertIn("tractor", translated_mach)
+        self.assertIn("plowing", translated_mach)
 
     def test_tamil_translation(self):
         translated = translate_to_english("எனது தக்காளி இலையில் பழுப்பு புள்ளிகள் உள்ளன", "ta")
