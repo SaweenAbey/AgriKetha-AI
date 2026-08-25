@@ -22,6 +22,32 @@ CROP_MAP = {
 }
 
 
+FERTILIZERS = {
+    "fertilizer", "fertiliser", "urea", "compost", "manure", "dung", "npk", 
+    "nitrogen", "phosphorus", "potassium", "phosphate", "potash", "organic", "nutrient"
+}
+
+
+FERTILIZER_MAP = {
+    "fertiliser": "fertilizer",
+    "organic fertilizer": "organic",
+}
+
+
+MACHINERY = {
+    "tractor", "harvester", "tiller", "seeder", "sprayer", "plow", "plough", 
+    "pump", "motor", "combine", "machine", "machinery", "cultivator", "spraying",
+    "plowing", "ploughing", "harvesting", "sowing", "planting"
+}
+
+
+MACHINERY_MAP = {
+    "plough": "plow",
+    "ploughing": "plowing",
+    "motor": "pump",
+}
+
+
 patterns = [
     
     {"label": "CROP", "pattern": [{"LEMMA": "tomato"}]},
@@ -52,6 +78,43 @@ patterns = [
     {"label": "CROP", "pattern": [{"LOWER": "ladies"}, {"LOWER": "fingers"}]},
     {"label": "CROP", "pattern": [{"LOWER": "ladies'"}, {"LOWER": "finger"}]},
     {"label": "CROP", "pattern": [{"LOWER": "ladies'"}, {"LOWER": "fingers"}]},
+    
+    # Fertilizer patterns
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "fertilizer"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "fertiliser"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "urea"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "compost"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "manure"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "dung"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "npk"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "nitrogen"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "phosphorus"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "potassium"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "phosphate"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "potash"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "organic"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "nutrient"}]},
+
+    # Machinery patterns
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "tractor"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "harvester"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "tiller"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "seeder"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "sprayer"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "plow"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "plough"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "pump"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "motor"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "combine"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "machine"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "machinery"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "cultivator"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "spraying"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "plowing"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "ploughing"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "harvesting"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "sowing"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "planting"}]},
 ]
 
 
@@ -85,6 +148,12 @@ INTENT_KEYWORDS = {
         "price", "market", "cost", "sell", "selling", "buy", "buying", "rate",
         "value", "rupee", "rupees", "rs", "wholesale", "retail", "shop", "dealer",
         "store", "purchase", "sale"
+    },
+    "machinery operations": {
+        "tractor", "harvester", "tiller", "seeder", "sprayer", "plow", "plough", 
+        "pump", "motor", "combine", "machine", "machinery", "operation", "harvesting", 
+        "plowing", "ploughing", "spraying", "sowing", "planting", "cultivator", "equipment", 
+        "mechanization", "mechanised", "mechanized", "tool", "implements", "gear"
     }
 }
 
@@ -190,6 +259,52 @@ def extract_symptoms(doc) -> list:
    
     return extract_grammatical_symptoms(doc)
 
+def extract_fertilizer_details(doc) -> list:
+    found_fertilizers = set()
+    for ent in doc.ents:
+        if ent.label_ == "FERTILIZER":
+            val = ent.text.lower()
+            lemma = ent[0].lemma_.lower() if len(ent) > 0 else val
+            mapped = FERTILIZER_MAP.get(lemma, FERTILIZER_MAP.get(val, lemma))
+            if mapped in FERTILIZERS:
+                found_fertilizers.add(mapped)
+            else:
+                found_fertilizers.add(val)
+    for token in doc:
+        lemma = token.lemma_.lower()
+        if lemma in FERTILIZERS:
+            found_fertilizers.add(FERTILIZER_MAP.get(lemma, lemma))
+        elif token.text.lower() in FERTILIZERS:
+            found_fertilizers.add(FERTILIZER_MAP.get(token.text.lower(), token.text.lower()))
+    text_lower = doc.text.lower()
+    for f in FERTILIZERS:
+        if f in text_lower:
+            found_fertilizers.add(FERTILIZER_MAP.get(f, f))
+    return list(sorted(found_fertilizers))
+
+def extract_machinery_details(doc) -> list:
+    found_machinery = set()
+    for ent in doc.ents:
+        if ent.label_ == "MACHINERY":
+            val = ent.text.lower()
+            lemma = ent[0].lemma_.lower() if len(ent) > 0 else val
+            mapped = MACHINERY_MAP.get(lemma, MACHINERY_MAP.get(val, lemma))
+            if mapped in MACHINERY:
+                found_machinery.add(mapped)
+            else:
+                found_machinery.add(val)
+    for token in doc:
+        lemma = token.lemma_.lower()
+        if lemma in MACHINERY:
+            found_machinery.add(MACHINERY_MAP.get(lemma, lemma))
+        elif token.text.lower() in MACHINERY:
+            found_machinery.add(MACHINERY_MAP.get(token.text.lower(), token.text.lower()))
+    text_lower = doc.text.lower()
+    for m in MACHINERY:
+        if m in text_lower:
+            found_machinery.add(MACHINERY_MAP.get(m, m))
+    return list(sorted(found_machinery))
+
 def detect_intent(doc) -> str:
     
     scores = {intent: 0 for intent in INTENT_KEYWORDS}
@@ -221,5 +336,7 @@ def analyze_query(text: str) -> dict:
     return {
         "crop": extract_crop(doc),
         "symptoms": extract_symptoms(doc),
+        "fertilizer_details": extract_fertilizer_details(doc),
+        "machinery_details": extract_machinery_details(doc),
         "intent": detect_intent(doc)
     }

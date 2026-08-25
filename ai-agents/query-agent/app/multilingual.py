@@ -13,8 +13,10 @@ SINGLISH_DETECTION_KEYWORDS = {
     "saththu", "satha", "sattu", "sata", "panuwo", "panuwa", "leda", "roge", "rogaya", "lele", 
     "merila", "karawela", "wawila", "kunu", "kunuwela", "surulana", "kurulana", "suruli", "paata",
     # Inputs / Market
-    "wathura", "watura", "diya", "pohora", "poora", "pora", "mila", "ganan", "gana", "salli", 
+    "wathura", "watura", "diya", "pohora", "poora", "pora", "yuriya", "compost", "mila", "ganan", "gana", "salli", 
     "dambulla", "pola", "beheth", "behet", "mardanaya", "palana", "prathikara",
+    # Machinery
+    "traktharaya", "trakthara", "trakter", "yanthraya", "yanthra", "mashine", "spray", "motoraya", "pump", "haanna", "hayanna",
     # Conversational / Helpers
     "mage", "wagawe", "wagawa", "thiyenawa", "tiyenawa", "thiyenne", "tiyenne", "thiyena", "tiyena", 
     "wela", "wenawa", "monawada", "monada", "monawd", "mokada", "mokakda", "kohomada", 
@@ -59,6 +61,19 @@ SINGLISH_PHRASE_MAP = {
     "thakkali wagawe": "tomato cultivation",
     "thakkaali wagawa": "tomato cultivation",
     "thakkaali wagawe": "tomato cultivation",
+    "aswanu nelana yanthraya": "harvesting machine",
+    "kola madina yanthraya": "threshing machine",
+    "wathura motoraya": "water motor",
+    "wathura pump": "water pump",
+    "watura motoraya": "water motor",
+    "watura pump": "water pump",
+    "spray yanthraya": "sprayer machine",
+    "yuriya pohora": "urea fertilizer",
+    "yuriya pora": "urea fertilizer",
+    "compost pohora": "compost fertilizer",
+    "compost pora": "compost fertilizer",
+    "kabanika pohora": "organic fertilizer",
+    "kabanika pora": "organic fertilizer",
 }
 
 
@@ -167,6 +182,29 @@ SINGLISH_WORD_MAP = {
     "palana": "control",
     "prathikara": "treatment",
     
+    # Machinery & Operations
+    "traktharaya": "tractor",
+    "trakthara": "tractor",
+    "trakter": "tractor",
+    "yanthraya": "machine",
+    "yanthra": "machine",
+    "mashine": "machine",
+    "spray": "sprayer",
+    "motoraya": "motor",
+    "pump": "pump",
+    "pump-eka": "pump",
+    "haanna": "plow",
+    "hayanna": "plow",
+    "nelana": "harvesting",
+    "madina": "threshing",
+    
+    # Fertilizers
+    "yuriya": "urea",
+    "compost": "compost",
+    "nitrogen": "nitrogen",
+    "phosphorus": "phosphorus",
+    "potassium": "potassium",
+    
     # Conversational / Pronouns / Helpers
     "mage": "my",
     "wagawe": "cultivation",
@@ -219,6 +257,14 @@ SINHALA_PHRASE_MAP = {
     "වී වගාව": "rice cultivation",
     "තක්කාලි වගාවේ": "tomato cultivation",
     "තක්කාලි වගාව": "tomato cultivation",
+    "අස්වනු නෙලන යන්ත්‍රය": "harvesting machine",
+    "කොළ මඩින යන්ත්‍රය": "threshing machine",
+    "වතුර මෝටරය": "water motor",
+    "වතුර පොම්පය": "water pump",
+    "ස්ප්‍රේ යන්ත්‍රය": "sprayer machine",
+    "යූරියා පොහොර": "urea fertilizer",
+    "කාබනික පොහොර": "organic fertilizer",
+    "කොම්පෝස්ට් පොහොර": "compost fertilizer",
 }
 
 
@@ -315,6 +361,39 @@ SINHALA_WORD_MAP = {
     "මර්දනය": "control",
     "පාලනය": "control",
     "ප්‍රතිකාර": "treatment",
+    
+    # Machinery & Operations
+    "ට්‍රැක්ටරය": "tractor",
+    "ට්‍රැක්ටරයෙන්": "tractor",
+    "ට්‍රැක්ටරයට": "tractor",
+    "ට්‍රැක්ටරයක": "tractor",
+    "ට්‍රැක්ටර්": "tractor",
+    "යන්ත්‍රය": "machine",
+    "යන්ත්‍රයෙන්": "machine",
+    "යන්ත්‍රයට": "machine",
+    "යන්ත්‍ර": "machines",
+    "මැෂිම": "machine",
+    "මැෂිමෙන්": "machine",
+    "මැෂින්": "machine",
+    "ස්ප්‍රේ": "sprayer",
+    "මෝටරය": "motor",
+    "මෝටරයෙන්": "motor",
+    "පොම්පය": "pump",
+    "පොම්පයෙන්": "pump",
+    "හාන්න": "plow",
+    "හෑම": "plowing",
+    "වපුරන": "sowing",
+    "නෙලන": "harvesting",
+    
+    # Fertilizers
+    "යූරියා": "urea",
+    "කොම්පෝස්ට්": "compost",
+    "කාබනික": "organic",
+    "නයිට්‍රජන්": "nitrogen",
+    "පොස්පරස්": "phosphorus",
+    "පොටෑසියම්": "potassium",
+    "පෝෂක": "nutrient",
+    
     "මගේ": "my",
     "වගාවේ": "cultivation",
     "wagawa": "cultivation",
@@ -359,6 +438,12 @@ TAMIL_PHRASE_MAP = {
     "நெல் விவசாயம்": "rice cultivation",
     "தக்காளி பயிர்ச்செய்கை": "tomato cultivation",
     "தக்காளி விவசாயம்": "tomato cultivation",
+    "அறுவடை இயந்திரம்": "harvesting machine",
+    "நீர் பம்ப்": "water pump",
+    "விதைக்கும் இயந்திரம்": "seeding machine",
+    "யூரியா உரம்": "urea fertilizer",
+    "இயற்கை உரம்": "organic fertilizer",
+    "கம்போஸ்ட் உரம்": "compost fertilizer",
 }
 
 
@@ -439,6 +524,35 @@ TAMIL_WORD_MAP = {
     "சிகிச்சை": "treatment",
     "தீர்வு": "treatment",
     "கட்டுப்பாடு": "control",
+    
+    # Machinery & Operations
+    "டிராக்டர்": "tractor",
+    "டிராக்டரால்": "tractor",
+    "டிராக்டரை": "tractor",
+    "டிராக்டரின்": "tractor",
+    "டிராக்டருக்கு": "tractor",
+    "இயந்திரம்": "machine",
+    "இயந்திரத்தால்": "machine",
+    "இயந்திரத்தை": "machine",
+    "இயந்திரங்கள்": "machines",
+    "அறுவடை": "harvesting",
+    "தெளிப்பான்": "sprayer",
+    "ஸ்ப்ரேயர்": "sprayer",
+    "மோட்டார்": "motor",
+    "பம்பு": "pump",
+    "உழுதல்": "plowing",
+    "விதைக்கும்": "seeding",
+    
+    # Fertilizers
+    "யூரியா": "urea",
+    "கம்போஸ்ட்": "compost",
+    "இயற்கை": "organic",
+    "நைதரசன்": "nitrogen",
+    "நைட்ரஜன்": "nitrogen",
+    "பாஸ்பரஸ்": "phosphorus",
+    "பொட்டாசியம்": "potassium",
+    "சத்துக்கள்": "nutrient",
+    
     "எனது": "my",
     "என்": "my",
     "விவசாயம்": "cultivation",
@@ -467,7 +581,7 @@ def translate_tamil_script(text: str) -> str:
         eng = TAMIL_PHRASE_MAP[phrase]
         text_lower = text_lower.replace(phrase, eng)
         
-    tokens = re.findall(r"[\u0b80-\u0bff\w]+|[^\u0b80-\u0bff\w\s]", text_lower, re.UNICODE)
+    tokens = re.findall(r"[\u0b80-\u0bff\u200c\u200d\w]+|[^\u0b80-\u0bff\u200c\u200d\w\s]", text_lower, re.UNICODE)
     translated_tokens = []
     
     for token in tokens:
@@ -536,7 +650,7 @@ def translate_sinhala_script(text: str) -> str:
         text_lower = text_lower.replace(phrase, eng)
         
 
-    tokens = re.findall(r"[\u0d80-\u0dff\w]+|[^\u0d80-\u0dff\w\s]", text_lower, re.UNICODE)
+    tokens = re.findall(r"[\u0d80-\u0dff\u200c\u200d\w]+|[^\u0d80-\u0dff\u200c\u200d\w\s]", text_lower, re.UNICODE)
     translated_tokens = []
     
     for token in tokens:

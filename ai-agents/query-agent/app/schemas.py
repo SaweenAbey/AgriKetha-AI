@@ -19,6 +19,14 @@ class NLPAnalysisResult(BaseModel):
         default=[], 
         description="A list of canonical symptoms extracted from the query."
     )
+    fertilizer_details: List[str] = Field(
+        default=[],
+        description="A list of canonical fertilizer or nutrient terms extracted from the query."
+    )
+    machinery_details: List[str] = Field(
+        default=[],
+        description="A list of machinery or machine operation terms extracted from the query."
+    )
     intent: str = Field(
         ..., 
         description="The classified user intent (e.g. disease diagnosis, market information)."
