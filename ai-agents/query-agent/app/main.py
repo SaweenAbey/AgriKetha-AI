@@ -79,10 +79,10 @@ def analyze_audio(
     file: UploadFile = File(...),
     language_code: str = Form("si-LK")
 ):
-    if not file.content_type.startswith("audio/") and not file.filename.lower().endswith((".wav", ".mp3", ".m4a", ".ogg", ".webm")):
+    if not file.filename.lower().endswith((".wav", ".flac", ".aiff", ".aif")):
         raise HTTPException(
             status_code=400,
-            detail="File must be an audio file"
+            detail="Unsupported audio format. Only WAV, FLAC, and AIFF files are supported natively when FFmpeg is not installed on the server."
         )
 
     temp_dir = tempfile.gettempdir()
@@ -93,8 +93,14 @@ def analyze_audio(
             buffer.write(file.file.read())
             
         r = sr.Recognizer()
-        with sr.AudioFile(temp_file_path) as source:
-            audio_data = r.record(source)
+        try:
+            with sr.AudioFile(temp_file_path) as source:
+                audio_data = r.record(source)
+        except ValueError as e:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Audio decoding error: {str(e)}. Please ensure the file is a valid WAV, FLAC, or AIFF audio file."
+            )
             
         try:
             transcribed_text = r.recognize_google(audio_data, language=language_code)

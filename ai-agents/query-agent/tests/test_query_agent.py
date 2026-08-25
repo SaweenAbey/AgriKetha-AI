@@ -157,6 +157,16 @@ class TestAgentAPI(unittest.TestCase):
         self.assertEqual(data["agent_1_result"]["crop"], "tomato")
         self.assertIn("brown spots", data["agent_1_result"]["symptoms"])
 
+    def test_analyze_audio_endpoint_invalid_format(self):
+        response = self.client.post(
+            "/analyze-audio",
+            files={"file": ("test.m4a", b"dummy audio content", "audio/x-m4a")},
+            data={"language_code": "si-LK"}
+        )
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertIn("Unsupported audio format", data["detail"])
+
 
 class TestMultilingualProcessing(unittest.TestCase):
     def test_language_detection(self):
