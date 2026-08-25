@@ -7,6 +7,7 @@ from app.agent_communication import send_to_agent_2
 from app.nlp import analyze_query
 from app.schemas import QueryRequest, QueryResponse
 from app.multilingual import detect_language, translate_to_english
+from app.security import check_query_safety
 
 app = FastAPI(
     title="AgriKetha Query Analysis Agent",
@@ -48,6 +49,14 @@ def analyze(request: QueryRequest):
         query_to_analyze = translated_question
     else:
         query_to_analyze = question
+
+    # Security check on raw and translated queries
+    is_secure, sec_err = check_query_safety(question, translated_question)
+    if not is_secure:
+        raise HTTPException(
+            status_code=400,
+            detail=sec_err
+        )
 
     result = analyze_query(query_to_analyze)
 
@@ -127,6 +136,14 @@ def analyze_audio(
         query_to_analyze = translated_question
     else:
         query_to_analyze = transcribed_text
+
+    # Security check on transcribed and translated queries
+    is_secure, sec_err = check_query_safety(transcribed_text, translated_question)
+    if not is_secure:
+        raise HTTPException(
+            status_code=400,
+            detail=sec_err
+        )
 
     result = analyze_query(query_to_analyze)
 
