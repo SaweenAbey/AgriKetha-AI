@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 145 20% 98%;
+    --foreground: 160 30% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 30% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 30% 12%;
+
+    --primary: 158 75% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 150 25% 94%;
+    --secondary-foreground: 160 40% 20%;
+
+    --muted: 150 15% 93%;
+    --muted-foreground: 155 15% 45%;
+
+    --accent: 43 96% 56%;
+    --accent-foreground: 35 90% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 150 20% 88%;
+    --input: 150 20% 88%;
+    --ring: 158 75% 36%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 165 40% 6%;
+    --foreground: 140 20% 96%;
+
+    --card: 165 35% 9%;
+    --card-foreground: 140 20% 96%;
+
+    --popover: 165 35% 9%;
+    --popover-foreground: 140 20% 96%;
+
+    --primary: 158 75% 45%;
+    --primary-foreground: 165 50% 5%;
+
+    --secondary: 165 25% 15%;
+    --secondary-foreground: 140 20% 90%;
+
+    --muted: 165 20% 16%;
+    --muted-foreground: 150 15% 65%;
+
+    --accent: 43 96% 56%;
+    --accent-foreground: 35 90% 10%;
+
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 165 25% 18%;
+    --input: 165 25% 18%;
+    --ring: 158 75% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', 'Noto Sans Sinhala', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+}
+
+/* Glassmorphism effects */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.dark .glass-panel {
+  background: rgba(13, 29, 23, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.dark .glass-card {
+  background: rgba(11, 26, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.45);
+}
