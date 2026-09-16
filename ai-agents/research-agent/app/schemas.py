@@ -1,0 +1,29 @@
+"""Request and response models for Agent 3."""
+
+from typing import Literal
+
+from pydantic import BaseModel, Field
+
+from .config import DEFAULT_TOP_K, MAX_TOP_K
+
+
+class RetrievalRequest(BaseModel):
+    query: str = Field(min_length=1)
+    crop: str | None = None
+    topic: str | None = None
+    top_k: int = Field(default=DEFAULT_TOP_K, ge=1, le=MAX_TOP_K)
+
+
+class EvidenceResult(BaseModel):
+    content: str
+    source: str
+    page: int
+    crop: str
+    topic: str
+    similarity_score: float
+
+
+class RetrievalResponse(BaseModel):
+    status: Literal["success", "no_relevant_evidence"]
+    query: str
+    results: list[EvidenceResult]
