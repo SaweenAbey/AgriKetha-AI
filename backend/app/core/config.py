@@ -43,6 +43,8 @@ class Settings(BaseSettings):
 
     # AI Microservice integrations
     QUERY_AGENT_URL: str = "http://127.0.0.1:8001"
+    VISION_AGENT_URL: str = "http://127.0.0.1:8002"
+
 
     model_config = SettingsConfigDict(
         env_file=".env",

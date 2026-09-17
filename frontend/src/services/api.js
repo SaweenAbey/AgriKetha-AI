@@ -86,5 +86,26 @@ export const agentService = {
   },
 };
 
+export const visionService = {
+  analyzeImage: async (formData) => {
+    const response = await api.post("/farmer/vision/analyze", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 30000,
+    });
+    return response.data;
+  },
+  getDiagnosticHistory: async (limit = 20) => {
+    const response = await api.get(`/farmer/vision/history?limit=${limit}`);
+    return response.data;
+  },
+  checkVisionStatus: async () => {
+    const response = await api.get("/farmer/vision/status");
+    return response.data;
+  },
+};
+
 export default api;
+
 
