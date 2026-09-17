@@ -1,0 +1,722 @@
+import re
+import requests
+from typing import Tuple
+
+
+SINGLISH_DETECTION_KEYWORDS = {
+    # Crops
+    "thakkali", "thakkaali", "takali", "takkali", "wee", "vi", "badairingu", "badairingoo", "iringu", 
+    "miris", "ala", "lunu", "luunu", "wambatu", "pipinna", "gammiris", "karot", "gowa", "pol", 
+    "rabar", "kurundu", "wattakka", "bandakka", "bonchi", "elawalu", "pala",
+    # Symptoms / Disease
+    "kola", "kole", "kolawala", "kaha", "damburu", "dhumru", "lapa", "pulli", "kalu", "sudu", 
+    "saththu", "satha", "sattu", "sata", "panuwo", "panuwa", "leda", "roge", "rogaya", "lele", 
+    "merila", "karawela", "wawila", "kunu", "kunuwela", "surulana", "kurulana", "suruli", "paata",
+    # Inputs / Market
+    "wathura", "watura", "diya", "pohora", "poora", "pora", "yuriya", "compost", "mila", "ganan", "gana", "salli", 
+    "dambulla", "pola", "beheth", "behet", "mardanaya", "palana", "prathikara",
+    # Machinery
+    "traktharaya", "trakthara", "trakter", "yanthraya", "yanthra", "mashine", "spray", "motoraya", "pump", "haanna", "hayanna",
+    # Conversational / Helpers
+    "mage", "wagawe", "wagawa", "thiyenawa", "tiyenawa", "thiyenne", "tiyenne", "thiyena", "tiyena", 
+    "wela", "wenawa", "monawada", "monada", "monawd", "mokada", "mokakda", "kohomada", 
+    "karanne", "karanna", "innawa", "innewa", "naha", "nehe"
+}
+
+SINGLISH_PHRASE_MAP = {
+    "bada iringu": "maize",
+    "bada iringoo": "maize",
+    "bada-iringu": "maize",
+    "badairingu": "maize",
+    "badairingoo": "maize",
+    "kaha pata": "yellow color",
+    "kaha paata": "yellow color",
+    "kaha paata wela": "yellow color has become",
+    "kaha pata wela": "yellow color has become",
+    "damburu lapa": "brown spots",
+    "damburu pulli": "brown spots",
+    "dhumru lapa": "brown spots",
+    "dhumru pulli": "brown spots",
+    "sudu pata": "white color",
+    "sudu paata": "white color",
+    "sudu saththu": "white insects",
+    "sudu pata saththu": "white insects",
+    "sudu paata saththu": "white insects",
+    "kola kurulana": "leaf curling",
+    "kola surulana": "leaf curling",
+    "kola suruli": "leaf curling",
+    "kola curli": "leaf curling",
+    "leaf curling": "leaf curling",
+    "kole curling": "leaf curling",
+    "kole kurulana": "leaf curling",
+    "kole surulana": "leaf curling",
+    "kole suruli": "leaf curling",
+    "wee wagawa": "rice cultivation",
+    "vi wagawa": "rice cultivation",
+    "paddy wagawa": "rice cultivation",
+    "wee wagawe": "rice cultivation",
+    "vi wagawe": "rice cultivation",
+    "paddy wagawe": "rice cultivation",
+    "thakkali wagawa": "tomato cultivation",
+    "thakkali wagawe": "tomato cultivation",
+    "thakkaali wagawa": "tomato cultivation",
+    "thakkaali wagawe": "tomato cultivation",
+    "aswanu nelana yanthraya": "harvesting machine",
+    "kola madina yanthraya": "threshing machine",
+    "wathura motoraya": "water motor",
+    "wathura pump": "water pump",
+    "watura motoraya": "water motor",
+    "watura pump": "water pump",
+    "spray yanthraya": "sprayer machine",
+    "yuriya pohora": "urea fertilizer",
+    "yuriya pora": "urea fertilizer",
+    "compost pohora": "compost fertilizer",
+    "compost pora": "compost fertilizer",
+    "kabanika pohora": "organic fertilizer",
+    "kabanika pora": "organic fertilizer",
+}
+
+
+SINGLISH_WORD_MAP = {
+    # Crops
+    "thakkali": "tomato",
+    "thakkaali": "tomato",
+    "takkali": "tomato",
+    "takali": "tomato",
+    "wee": "rice",
+    "vi": "rice",
+    "iringu": "maize",
+    "miris": "chili",
+    "ala": "potato",
+    "lunu": "onion",
+    "luunu": "onion",
+    "wambatu": "brinjal",
+    "pipinna": "cucumber",
+    "gammiris": "pepper",
+    "karot": "carrot",
+    "gowa": "cabbage",
+    "they": "tea",
+    "pol": "coconut",
+    "rabar": "rubber",
+    "kurundu": "cinnamon",
+    "beet": "beetroot",
+    "wattakka": "pumpkin",
+    "bandakka": "okra",
+    "leeks": "leek",
+    "bonchi": "bean",
+    "bona": "bean",
+    
+    # Parts of plant
+    "kola": "leaves",
+    "kole": "leaf",
+    "kolawala": "leaves",
+    "patra": "leaves",
+    "kola-wala": "leaves",
+    "kole-wala": "leaves",
+    "atta": "branch",
+    "athu": "branches",
+    "mula": "root",
+    "mul": "roots",
+    "mal": "flowers",
+    "mala": "flower",
+    "karal": "pods",
+    "wala": "in",
+    "eke": "on",
+    "eka": "the",
+    "eth": "on",
+    
+    # Symptoms / Colors / Diseases
+    "kaha": "yellow",
+    "damburu": "brown",
+    "dhumru": "brown",
+    "lapa": "spots",
+    "pulli": "spots",
+    "kalu": "black",
+    "sudu": "white",
+    "saththu": "insects",
+    "satha": "insect",
+    "sattu": "insects",
+    "sata": "insect",
+    "kuda": "insects",
+    "koodo": "insects",
+    "kudi": "insects",
+    "panuwo": "worms",
+    "panuwa": "worm",
+    "leda": "disease",
+    "lele": "disease",
+    "roge": "disease",
+    "rogaya": "disease",
+    "rogi": "disease",
+    "merila": "died",
+    "karawela": "wilted",
+    "wawila": "wilted",
+    "kunu": "rot",
+    "kunuwela": "rotted",
+    "surulana": "curling",
+    "kurulana": "curling",
+    "suruli": "curling",
+    "pata": "color",
+    "paata": "color",
+    "dada": "spots",
+    "wilt": "wilt",
+    "halila": "fallen",
+    "halena": "falling",
+    "nil":"Blue",
+    
+    # Irrigation / Fertilization / Market
+    "wathura": "water",
+    "watura": "water",
+    "diya": "water",
+    "pohora": "fertilizer",
+    "poora": "fertilizer",
+    "pora": "fertilizer",
+    "mila": "price",
+    "ganan": "price",
+    "gana": "price",
+    "salli": "money",
+    "dambulla": "dambulla",
+    "pola": "market",
+    "beheth": "treatment",
+    "behet": "treatment",
+    "mardanaya": "control",
+    "palana": "control",
+    "prathikara": "treatment",
+    
+    # Machinery & Operations
+    "traktharaya": "tractor",
+    "trakthara": "tractor",
+    "trakter": "tractor",
+    "yanthraya": "machine",
+    "yanthra": "machine",
+    "mashine": "machine",
+    "spray": "sprayer",
+    "motoraya": "motor",
+    "pump": "pump",
+    "pump-eka": "pump",
+    "haanna": "plow",
+    "hayanna": "plow",
+    "nelana": "harvesting",
+    "madina": "threshing",
+    
+    # Fertilizers
+    "yuriya": "urea",
+    "compost": "compost",
+    "nitrogen": "nitrogen",
+    "phosphorus": "phosphorus",
+    "potassium": "potassium",
+    
+    # Conversational / Pronouns / Helpers
+    "mage": "my",
+    "wagawe": "cultivation",
+    "wagawa": "cultivation",
+    "thiyenawa": "is",
+    "tiyenawa": "is",
+    "thiyenne": "is",
+    "tiyenne": "is",
+    "thiyena": "is",
+    "tiyena": "is",
+    "wela": "become",
+    "wenawa": "become",
+    "monawada": "what",
+    "monada": "what",
+    "monawd": "what",
+    "mokada": "what",
+    "mokakda": "what",
+    "kohomada": "how",
+    "karanne": "do",
+    "karanna": "do",
+    "innawa": "is",
+    "innewa": "is",
+    "naha": "not",
+    "nehe": "not",
+    "hulan": "wind",
+    "awula": "problem",
+    "prasnaya": "problem",
+    "prasne": "problem",
+    "dumi": "smoke",
+    "dum": "smoke"
+}
+
+
+
+SINHALA_PHRASE_MAP = {
+    "බඩ ඉරිඟු": "maize",
+    "බඩ ඉරිගු": "maize",
+    "කහ පාට වෙලා": "yellow color has become",
+    "කහ පාට": "yellow color",
+    "දුඹුරු ලප": "brown spots",
+    "දුඹුරු පුල්ලි": "brown spots",
+    "සුදු පාට සත්තු": "white insects",
+    "සුදු සත්තු": "white insects",
+    "සුදු පාට": "white color",
+    "කොළ හැකිලීම": "leaf curling",
+    "කොළ හැකිලෙන": "leaf curling",
+    "කොළ සුරුලන": "leaf curling",
+    "කොළ කුරුලන": "leaf curling",
+    "වී වගාවේ": "rice cultivation",
+    "වී වගාව": "rice cultivation",
+    "තක්කාලි වගාවේ": "tomato cultivation",
+    "තක්කාලි වගාව": "tomato cultivation",
+    "අස්වනු නෙලන යන්ත්‍රය": "harvesting machine",
+    "කොළ මඩින යන්ත්‍රය": "threshing machine",
+    "වතුර මෝටරය": "water motor",
+    "වතුර පොම්පය": "water pump",
+    "ස්ප්‍රේ යන්ත්‍රය": "sprayer machine",
+    "යූරියා පොහොර": "urea fertilizer",
+    "කාබනික පොහොර": "organic fertilizer",
+    "කොම්පෝස්ට් පොහොර": "compost fertilizer",
+}
+
+
+SINHALA_WORD_MAP = {
+    # Crops
+    "තක්කාලි": "tomato",
+    "වී": "rice",
+    "බඩඉරිඟු": "maize",
+    "බඩඉරිගු": "maize",
+    "මිරිස්": "chili",
+    "අල": "potato",
+    "ලූණු": "onion",
+    "ලූනු": "onion",
+    "වම්බටු": "brinjal",
+    "පිපිඤ්ඤා": "cucumber",
+    "ගම්මිරිස්": "pepper",
+    "කැරට්": "carrot",
+    "ගෝවා": "cabbage",
+    "තේ": "tea",
+    "පොල්": "coconut",
+    "රබර්": "rubber",
+    "කුරුඳු": "cinnamon",
+    "බීට්": "beetroot",
+    "වට්ටක්කා": "pumpkin",
+    "බණ්ඩක්කා": "okra",
+    "ලීක්ස්": "leek",
+    "බෝංචි": "bean",
+    
+    # Parts of plant
+    "කොළ": "leaves",
+    "කොළය": "leaf",
+    "කොලේ": "leaf",
+    "පත්‍රය": "leaf",
+    "පත්‍ර": "leaves",
+    "පත්තර": "leaves",
+    "අත්ත": "branch",
+    "අතු": "branches",
+    "මුල": "root",
+    "මුල්": "roots",
+    "මල්": "flowers",
+    "මල": "flower",
+    "කරල්": "pods",
+    "වල": "in",
+    "තුළ": "in",
+    "තුල": "in",
+    "උඩ": "on",
+    "මත": "on",
+    "ගැන": "about",
+    
+    # Symptoms / Colors / Diseases
+    "කහ": "yellow",
+    "දුඹුරු": "brown",
+    "ලප": "spots",
+    "පුල්ලි": "spots",
+    "කළු": "black",
+    "කලු": "black",
+    "සුදු": "white",
+    "සත්තු": "insects",
+    "සතා": "insect",
+    "පණුවෝ": "worms",
+    "පනුවෝ" : "worms",
+    "පණුවා": "worm",
+    "පනුවා": "worm",
+    "ලෙඩ": "disease",
+    "ලෙඩක්": "disease",
+    "රෝග": "disease",
+    "රෝගය": "disease",
+    "රෝගී": "disease",
+    "මැරිලා": "died",
+    "කරවෙලා": "wilted",
+    "මැලවිලා": "wilted",
+    "කුණු": "rot",
+    "කුනු": "rot",
+    "කුණුවෙලා": "rotted",
+    "කුනුවෙලා": "rotted",
+    "හැකිලෙන": "curling",
+    "හැකිලීම": "curling",
+    "සුරුලන": "curling",
+    "කුරුලන": "curling",
+    "පාට": "color",
+    "වැටිලා": "fallen",
+    "හැලෙන": "falling",
+    
+    # Inputs / Market / Conversational
+    "වතුර": "water",
+    "දිය": "water",
+    "පොහොර": "fertilizer",
+    "මිල": "price",
+    "ගණන්": "price",
+    "ගනන්": "price",
+    "සල්ලි": "money",
+    "බෙහෙත්": "treatment",
+    "මර්ධනය": "control",
+    "මර්දනය": "control",
+    "පාලනය": "control",
+    "ප්‍රතිකාර": "treatment",
+    
+    # Machinery & Operations
+    "ට්‍රැක්ටරය": "tractor",
+    "ට්‍රැක්ටරයෙන්": "tractor",
+    "ට්‍රැක්ටරයට": "tractor",
+    "ට්‍රැක්ටරයක": "tractor",
+    "ට්‍රැක්ටර්": "tractor",
+    "යන්ත්‍රය": "machine",
+    "යන්ත්‍රයෙන්": "machine",
+    "යන්ත්‍රයට": "machine",
+    "යන්ත්‍ර": "machines",
+    "මැෂිම": "machine",
+    "මැෂිමෙන්": "machine",
+    "මැෂින්": "machine",
+    "ස්ප්‍රේ": "sprayer",
+    "මෝටරය": "motor",
+    "මෝටරයෙන්": "motor",
+    "පොම්පය": "pump",
+    "පොම්පයෙන්": "pump",
+    "හාන්න": "plow",
+    "හෑම": "plowing",
+    "වපුරන": "sowing",
+    "නෙලන": "harvesting",
+    
+    # Fertilizers
+    "යූරියා": "urea",
+    "කොම්පෝස්ට්": "compost",
+    "කාබනික": "organic",
+    "නයිට්‍රජන්": "nitrogen",
+    "පොස්පරස්": "phosphorus",
+    "පොටෑසියම්": "potassium",
+    "පෝෂක": "nutrient",
+    
+    "මගේ": "my",
+    "වගාවේ": "cultivation",
+    "wagawa": "cultivation",
+    "වගාව": "cultivation",
+    "තියෙනවා": "is",
+    "තියෙන්නේ": "is",
+    "වෙලා": "become",
+    "වෙනවා": "become",
+    "මොනවාද": "what",
+    "මොනවද": "what",
+    "මොකද": "what",
+    "මොකක්ද": "what",
+    "කොහොමද": "how",
+    "කරන්නේ": "do",
+    "කරන්න": "do",
+    "ඉන්නවා": "is",
+    "ඉන්නෙ": "is",
+    "නැහැ": "not",
+    "නැහැනේ": "not",
+    "සුළඟ": "wind",
+    "අවුල": "problem",
+    "ප්‍රශ්නය": "problem",
+    "දුම": "smoke",
+    "කීයද": "how much",
+    "කීය": "how much"
+}
+
+
+TAMIL_PHRASE_MAP = {
+    "சோளம்": "maize",
+    "மஞ்சள் நிறம்": "yellow color",
+    "மஞ்சள் நிறமாக": "yellow color has become",
+    "பழுப்பு புள்ளிகள்": "brown spots",
+    "பழுப்பு புள்ளி": "brown spots",
+    "வெள்ளை பூச்சிகள்": "white insects",
+    "வெள்ளை பூச்சி": "white insects",
+    "வெள்ளை நிறம்": "white color",
+    "இலை சுருளுதல்": "leaf curling",
+    "இலை சுருண்டது": "leaf curling",
+    "இலை சுருக்கம்": "leaf curling",
+    "நெல் பயிர்ச்செய்கை": "rice cultivation",
+    "நெல் விவசாயம்": "rice cultivation",
+    "தக்காளி பயிர்ச்செய்கை": "tomato cultivation",
+    "தக்காளி விவசாயம்": "tomato cultivation",
+    "அறுவடை இயந்திரம்": "harvesting machine",
+    "நீர் பம்ப்": "water pump",
+    "விதைக்கும் இயந்திரம்": "seeding machine",
+    "யூரியா உரம்": "urea fertilizer",
+    "இயற்கை உரம்": "organic fertilizer",
+    "கம்போஸ்ட் உரம்": "compost fertilizer",
+}
+
+
+TAMIL_WORD_MAP = {
+    # Crops
+    "தக்காளி": "tomato",
+    "நெல்": "rice",
+    "அரிசி": "rice",
+    "சோளம்": "maize",
+    "மிளகாய்": "chili",
+    "உருளைக்கிழங்கு": "potato",
+    "வெங்காயம்": "onion",
+    "கத்தரிக்காய்": "brinjal",
+    "கத்தரி": "brinjal",
+    "வெள்ளரிக்காய்": "cucumber",
+    "மிளகு": "pepper",
+    "கேரட்": "carrot",
+    "முட்டைக்கோஸ்": "cabbage",
+    "தேயிலை": "tea",
+    "தேங்காய்": "coconut",
+    "ரப்பர்": "rubber",
+    "இலவங்கப்பட்டை": "cinnamon",
+    "கருவா": "cinnamon",
+    "பீட்ரூட்": "beetroot",
+    "பூசணிக்காய்": "pumpkin",
+    "பூசணி": "pumpkin",
+    "வெண்டைக்காய்": "okra",
+    "பீன்ஸ்": "bean",
+    "லீக்ஸ்": "leek",
+    
+    # Parts of plant
+    "இலை": "leaves",
+    "இலைகள்": "leaves",
+    "கிளை": "branch",
+    "கிளைகள்": "branches",
+    "வேர்": "root",
+    "வேர்கள்": "roots",
+    "பூ": "flower",
+    "பூக்கள்": "flowers",
+    "காய்கள்": "pods",
+    "இல்": "in",
+    "மேல்": "on",
+    "மீது": "on",
+    "பற்றி": "about",
+    
+    # Symptoms / Colors / Diseases
+    "மஞ்சள்": "yellow",
+    "பழுப்பு": "brown",
+    "புள்ளிகள்": "spots",
+    "புள்ளி": "spots",
+    "கருப்பு": "black",
+    "வெள்ளை": "white",
+    "பூச்சிகள்": "insects",
+    "பூச்சி": "insect",
+    "புழுக்கள்": "worms",
+    "புழு": "worm",
+    "நோய்": "disease",
+    "நோய்கள்": "disease",
+    "இறந்துவிட்டது": "died",
+    "பட்டுப்போனது": "died",
+    "வாடிவிட்டது": "wilted",
+    "வாடிய": "wilted",
+    "அழுகல்": "rot",
+    "அழுகிய": "rot",
+    "சுருளுதல்": "curling",
+    "சுருக்கம்": "curling",
+    "நிறம்": "color",
+    "வண்ணம்": "color",
+    "விழுந்தது": "fallen",
+    "விழுகிறது": "falling",
+    
+    # Inputs / Market / Conversational
+    "தண்ணீர்": "water",
+    "நீர்": "water",
+    "உரம்": "fertilizer",
+    "விலை": "price",
+    "பணம்": "money",
+    "சிகிச்சை": "treatment",
+    "தீர்வு": "treatment",
+    "கட்டுப்பாடு": "control",
+    
+    # Machinery & Operations
+    "டிராக்டர்": "tractor",
+    "டிராக்டரால்": "tractor",
+    "டிராக்டரை": "tractor",
+    "டிராக்டரின்": "tractor",
+    "டிராக்டருக்கு": "tractor",
+    "இயந்திரம்": "machine",
+    "இயந்திரத்தால்": "machine",
+    "இயந்திரத்தை": "machine",
+    "இயந்திரங்கள்": "machines",
+    "அறுவடை": "harvesting",
+    "தெளிப்பான்": "sprayer",
+    "ஸ்ப்ரேயர்": "sprayer",
+    "மோட்டார்": "motor",
+    "பம்பு": "pump",
+    "உழுதல்": "plowing",
+    "விதைக்கும்": "seeding",
+    
+    # Fertilizers
+    "யூரியா": "urea",
+    "கம்போஸ்ட்": "compost",
+    "இயற்கை": "organic",
+    "நைதரசன்": "nitrogen",
+    "நைட்ரஜன்": "nitrogen",
+    "பாஸ்பரஸ்": "phosphorus",
+    "பொட்டாசியம்": "potassium",
+    "சத்துக்கள்": "nutrient",
+    
+    "எனது": "my",
+    "என்": "my",
+    "விவசாயம்": "cultivation",
+    "பயிர்ச்செய்கை": "cultivation",
+    "இருக்கிறது": "is",
+    "உள்ளது": "is",
+    "ஆகிவிட்டது": "become",
+    "என்ன": "what",
+    "எப்படி": "how",
+    "செய்ய": "do",
+    "இலைகளில்": "leaves",
+    "இலையில்": "leaf",
+    "இலைகளின்": "leaves",
+    "இல்லை": "not",
+    "காற்ற": "wind",
+    "பிரச்சினை": "problem",
+    "புகை": "smoke",
+    "எவ்வளவு": "how much",
+}
+
+
+def translate_tamil_script(text: str) -> str:
+    text_lower = text
+    
+    for phrase in sorted(TAMIL_PHRASE_MAP.keys(), key=len, reverse=True):
+        eng = TAMIL_PHRASE_MAP[phrase]
+        text_lower = text_lower.replace(phrase, eng)
+        
+    tokens = re.findall(r"[\u0b80-\u0bff\u200c\u200d\w]+|[^\u0b80-\u0bff\u200c\u200d\w\s]", text_lower, re.UNICODE)
+    translated_tokens = []
+    
+    for token in tokens:
+        if token in TAMIL_WORD_MAP:
+            translated_tokens.append(TAMIL_WORD_MAP[token])
+        else:
+            translated_tokens.append(token)
+            
+    translated_text = " ".join(translated_tokens)
+    translated_text = re.sub(r"\s+([^\w\s])", r"\1", translated_text)
+    return translated_text
+
+
+def detect_language(text: str) -> str:
+  
+    
+    if re.search(r"[\u0d80-\u0dff]", text):
+        return "si"
+        
+    if re.search(r"[\u0b80-\u0bff]", text):
+        return "ta"
+        
+    
+    text_lower = text.lower()
+    words = re.findall(r"\b\w+\b", text_lower)
+    singlish_matches = sum(1 for w in words if w in SINGLISH_DETECTION_KEYWORDS)
+    
+    if singlish_matches >= 1:
+        return "singlish"
+        
+    return "en"
+
+
+def translate_singlish(text: str) -> str:
+    
+    text_lower = text.lower()
+    
+
+    for phrase in sorted(SINGLISH_PHRASE_MAP.keys(), key=len, reverse=True):
+        text_lower = text_lower.replace(phrase, SINGLISH_PHRASE_MAP[phrase])
+        
+   
+    tokens = re.findall(r"\w+|[^\w\s]", text_lower, re.UNICODE)
+    translated_tokens = []
+    
+    for token in tokens:
+        if token.isalnum():
+         
+            translated_tokens.append(SINGLISH_WORD_MAP.get(token, token))
+        else:
+            translated_tokens.append(token)
+            
+
+    translated_text = " ".join(translated_tokens)
+    translated_text = re.sub(r"\s+([^\w\s])", r"\1", translated_text)
+    return translated_text
+
+
+def translate_sinhala_script(text: str) -> str:
+   
+    text_lower = text
+    
+   
+    for phrase in sorted(SINHALA_PHRASE_MAP.keys(), key=len, reverse=True):
+        eng = SINHALA_PHRASE_MAP[phrase]
+        text_lower = text_lower.replace(phrase, eng)
+        
+
+    tokens = re.findall(r"[\u0d80-\u0dff\u200c\u200d\w]+|[^\u0d80-\u0dff\u200c\u200d\w\s]", text_lower, re.UNICODE)
+    translated_tokens = []
+    
+    for token in tokens:
+        if token in SINHALA_WORD_MAP:
+            translated_tokens.append(SINHALA_WORD_MAP[token])
+        else:
+            translated_tokens.append(token)
+            
+    # Reassemble and clean up spaces before punctuation
+    translated_text = " ".join(translated_tokens)
+    translated_text = re.sub(r"\s+([^\w\s])", r"\1", translated_text)
+    return translated_text
+
+
+def translate_google(text: str, source_lang: str) -> str:
+    
+    url = "https://translate.googleapis.com/translate_a/single"
+    params = {
+        "client": "gtx",
+        "sl": source_lang,
+        "tl": "en",
+        "dt": "t",
+        "q": text
+    }
+    try:
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        result = response.json()
+        translated_segments = [segment[0] for segment in result[0] if segment[0]]
+        return "".join(translated_segments)
+    except Exception as e:
+     
+        return text
+
+
+def translate_to_english(text: str, lang: str) -> str:
+  
+    if lang == "si":
+        
+        local_translated = translate_sinhala_script(text)
+        
+      
+        if not re.search(r"[\u0d80-\u0dff]", local_translated):
+            return local_translated
+            
+   
+        google_translated = translate_google(text, "si")
+        if google_translated != text:
+            return google_translated
+            
+  
+        return local_translated
+        
+    elif lang == "singlish":
+        return translate_singlish(text)
+        
+    elif lang == "ta":
+        local_translated = translate_tamil_script(text)
+        
+        if not re.search(r"[\u0b80-\u0bff]", local_translated):
+            return local_translated
+            
+        google_translated = translate_google(text, "ta")
+        if google_translated != text:
+            return google_translated
+            
+        return local_translated
+        
+    return text

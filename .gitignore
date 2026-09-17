@@ -1,0 +1,19 @@
+# Python cache (makes your repo messy)
+__pycache__/
+*.pyc
+*.pyo
+
+# Training checkpoints (these are huge and not needed for the final server)
+checkpoint_*.pth
+
+# The huge dataset images (we don't need to upload 10,000 images to GitHub)
+backend/data/
+
+# VS Code settings
+.vscode/
+.idea/
+
+# Environment variables (secrets)
+.env###
+#.envvenv/ 
+venv/ 

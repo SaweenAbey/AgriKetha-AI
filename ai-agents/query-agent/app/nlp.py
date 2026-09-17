@@ -22,6 +22,32 @@ CROP_MAP = {
 }
 
 
+FERTILIZERS = {
+    "fertilizer", "fertiliser", "urea", "compost", "manure", "dung", "npk", 
+    "nitrogen", "phosphorus", "potassium", "phosphate", "potash", "organic", "nutrient"
+}
+
+
+FERTILIZER_MAP = {
+    "fertiliser": "fertilizer",
+    "organic fertilizer": "organic",
+}
+
+
+MACHINERY = {
+    "tractor", "harvester", "tiller", "seeder", "sprayer", "plow", "plough", 
+    "pump", "motor", "combine", "machine", "machinery", "cultivator", "spraying",
+    "plowing", "ploughing", "harvesting", "sowing", "planting"
+}
+
+
+MACHINERY_MAP = {
+    "plough": "plow",
+    "ploughing": "plowing",
+    "motor": "pump",
+}
+
+
 patterns = [
     
     {"label": "CROP", "pattern": [{"LEMMA": "tomato"}]},
@@ -52,6 +78,43 @@ patterns = [
     {"label": "CROP", "pattern": [{"LOWER": "ladies"}, {"LOWER": "fingers"}]},
     {"label": "CROP", "pattern": [{"LOWER": "ladies'"}, {"LOWER": "finger"}]},
     {"label": "CROP", "pattern": [{"LOWER": "ladies'"}, {"LOWER": "fingers"}]},
+    
+    # Fertilizer patterns
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "fertilizer"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "fertiliser"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "urea"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "compost"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "manure"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "dung"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "npk"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "nitrogen"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "phosphorus"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "potassium"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "phosphate"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "potash"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "organic"}]},
+    {"label": "FERTILIZER", "pattern": [{"LEMMA": "nutrient"}]},
+
+    # Machinery patterns
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "tractor"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "harvester"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "tiller"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "seeder"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "sprayer"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "plow"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "plough"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "pump"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "motor"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "combine"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "machine"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "machinery"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "cultivator"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "spraying"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "plowing"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "ploughing"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "harvesting"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "sowing"}]},
+    {"label": "MACHINERY", "pattern": [{"LEMMA": "planting"}]},
 ]
 
 
@@ -85,6 +148,12 @@ INTENT_KEYWORDS = {
         "price", "market", "cost", "sell", "selling", "buy", "buying", "rate",
         "value", "rupee", "rupees", "rs", "wholesale", "retail", "shop", "dealer",
         "store", "purchase", "sale"
+    },
+    "machinery operations": {
+        "tractor", "harvester", "tiller", "seeder", "sprayer", "plow", "plough", 
+        "pump", "motor", "combine", "machine", "machinery", "operation", "harvesting", 
+        "plowing", "ploughing", "spraying", "sowing", "planting", "cultivator", "equipment", 
+        "mechanization", "mechanised", "mechanized", "tool", "implements", "gear"
     }
 }
 
@@ -153,10 +222,9 @@ def extract_crop(doc) -> str:
     return None
 
 
+
 def extract_grammatical_symptoms(doc) -> list:
-    """
-    Inspects dependency relation tree and word pairs to extract symptoms accurately.
-    """
+    
     found_symptoms = []
     text_lower = doc.text.lower()
     
@@ -237,55 +305,89 @@ def extract_grammatical_symptoms(doc) -> list:
     return list(sorted(set(found_symptoms)))
 
 def extract_symptoms(doc) -> list:
-    """
-    Extracts symptoms from Doc. Returns a list of canonical symptoms.
-    """
+   
     return extract_grammatical_symptoms(doc)
+
+def extract_fertilizer_details(doc) -> list:
+    found_fertilizers = set()
+    for ent in doc.ents:
+        if ent.label_ == "FERTILIZER":
+            val = ent.text.lower()
+            lemma = ent[0].lemma_.lower() if len(ent) > 0 else val
+            mapped = FERTILIZER_MAP.get(lemma, FERTILIZER_MAP.get(val, lemma))
+            if mapped in FERTILIZERS:
+                found_fertilizers.add(mapped)
+            else:
+                found_fertilizers.add(val)
+    for token in doc:
+        lemma = token.lemma_.lower()
+        if lemma in FERTILIZERS:
+            found_fertilizers.add(FERTILIZER_MAP.get(lemma, lemma))
+        elif token.text.lower() in FERTILIZERS:
+            found_fertilizers.add(FERTILIZER_MAP.get(token.text.lower(), token.text.lower()))
+    text_lower = doc.text.lower()
+    for f in FERTILIZERS:
+        if f in text_lower:
+            found_fertilizers.add(FERTILIZER_MAP.get(f, f))
+    return list(sorted(found_fertilizers))
+
+def extract_machinery_details(doc) -> list:
+    found_machinery = set()
+    for ent in doc.ents:
+        if ent.label_ == "MACHINERY":
+            val = ent.text.lower()
+            lemma = ent[0].lemma_.lower() if len(ent) > 0 else val
+            mapped = MACHINERY_MAP.get(lemma, MACHINERY_MAP.get(val, lemma))
+            if mapped in MACHINERY:
+                found_machinery.add(mapped)
+            else:
+                found_machinery.add(val)
+    for token in doc:
+        lemma = token.lemma_.lower()
+        if lemma in MACHINERY:
+            found_machinery.add(MACHINERY_MAP.get(lemma, lemma))
+        elif token.text.lower() in MACHINERY:
+            found_machinery.add(MACHINERY_MAP.get(token.text.lower(), token.text.lower()))
+    text_lower = doc.text.lower()
+    for m in MACHINERY:
+        if m in text_lower:
+            found_machinery.add(MACHINERY_MAP.get(m, m))
+    return list(sorted(found_machinery))
 
 def detect_intent(doc) -> str:
     """
-    Classifies intent of the query using token lemma matching and multilingual keywords.
+    Classifies intent of the query using token lemma matching against defined intent keywords.
     """
-    text_lower = doc.text.lower()
+    scores = {intent: 0 for intent in INTENT_KEYWORDS}
     
-    # Check multilingual intent keywords
-    disease_kw = [
-        "disease", "sick", "spot", "yellow", "symptom", "rot", "curl", "wilt", "fungus", "pest", "bug", "die", "cure", "treatment",
-        "ලෙඩ", "රෝග", "ලප", "කහ", "හැකිලිලා", "මැලවිලා", "කුණු", "බෙහෙත්", "පළිබෝධ", "දිලීර", "පණුවෝ", "කෘමීන්", "සාත්තු", "ප්‍රතිකාර",
-        "leda", "roga", "beheth", "dileera", "நோய்", "சிகிச்சை", "மருந்து"
-    ]
-    fertilizer_kw = [
-        "fertilizer", "fertiliser", "npk", "urea", "nutrient", "compost", "manure", "soil", "feed", "growth",
-        "පොහොර", "යූරියා", "කොම්පෝස්ට්", "කාබනික", "නයිට්‍රජන්", "පෝෂණ", "pohora", "உரம்"
-    ]
-    irrigation_kw = [
-        "water", "watering", "irrigation", "rain", "drought", "moisture", "flood",
-        "වතුර", "ජලය", "ජල සම්පාදන", "වැස්ස", "වියළි", "නියඟය", "wathura", "பாசனம்", "தண்ணீர்"
-    ]
-    market_kw = [
-        "price", "market", "cost", "sell", "buy", "rate", "rupee", "rupees", "rs", "wholesale", "retail",
-        "මිල", "ගණන්", "වෙළඳපොළ", "ආර්ථික මධ්‍යස්ථානය", "රුපියල්", "mila", "ganan", "விலை", "சந்தை"
-    ]
+ 
+    for token in doc:
+        lemma = token.lemma_.lower()
+        word = token.text.lower()
+        
+        for intent, keywords in INTENT_KEYWORDS.items():
+            if lemma in keywords or word in keywords:
+                scores[intent] += 1
+                
+    best_intent = max(scores, key=scores.get)
+    
 
-    symptoms = extract_symptoms(doc)
-    if any(k in text_lower for k in disease_kw) or symptoms:
-        return "disease diagnosis"
-    elif any(k in text_lower for k in fertilizer_kw):
-        return "fertilizer advice"
-    elif any(k in text_lower for k in irrigation_kw):
-        return "irrigation advice"
-    elif any(k in text_lower for k in market_kw):
-        return "market information"
-
-    return "general agriculture"
+    if scores[best_intent] == 0:
+        
+        symptoms = extract_symptoms(doc)
+        if symptoms:
+            return "disease diagnosis"
+        return "general agriculture"
+        
+    return best_intent
 
 def analyze_query(text: str) -> dict:
-    """
-    Runs NLP pipeline on text to extract crop, symptoms, and intent.
-    """
+    
     doc = nlp(text)
     return {
         "crop": extract_crop(doc),
         "symptoms": extract_symptoms(doc),
+        "fertilizer_details": extract_fertilizer_details(doc),
+        "machinery_details": extract_machinery_details(doc),
         "intent": detect_intent(doc)
-    }
+    }
