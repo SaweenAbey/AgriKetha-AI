@@ -324,3 +324,193 @@ pymongo.errors.AutoReconnect: SSL handshake failed: ac-jucsbd3-shard-00-00.dqyxq
 2026-09-15 09:15:20 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/auth/register | Status: 201 | 1417.38ms
 2026-09-15 09:15:21 | INFO     | agriketha.backend:login:149 - User logged in successfully: chamudith@gmail.com (Role: admin)
 2026-09-15 09:15:21 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 1161.25ms
+2026-09-17 09:49:30 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-17 09:49:30 | INFO     | agriketha.backend:lifespan:19 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-17 09:49:30 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-17 09:49:31 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-17 09:49:33 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-17 09:53:39 | WARNING  | agriketha.backend:decode_token:75 - Token expired
+2026-09-17 09:53:39 | WARNING  | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 401 | 14.52ms
+2026-09-17 09:53:39 | WARNING  | agriketha.backend:decode_token:75 - Token expired
+2026-09-17 09:53:39 | WARNING  | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 401 | 1.34ms
+2026-09-17 09:53:39 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/auth/refresh | Status: 200 | 126.02ms
+2026-09-17 09:53:40 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 308.64ms
+2026-09-17 09:53:40 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/auth/refresh | Status: 200 | 1052.96ms
+2026-09-17 09:53:40 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 267.40ms
+2026-09-17 09:54:00 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 452.65ms
+2026-09-17 09:54:02 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 167.93ms
+2026-09-17 09:54:04 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 260.65ms
+2026-09-17 09:54:11 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 184.08ms
+2026-09-17 09:54:16 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 146.73ms
+2026-09-17 09:54:20 | INFO     | agriketha.backend:ask_query_agent:295 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 09:54:20 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2487.70ms
+2026-09-17 09:54:20 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 118.35ms
+2026-09-17 09:54:24 | INFO     | agriketha.backend:ask_query_agent:295 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 09:54:24 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2448.42ms
+2026-09-17 09:54:24 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 199.41ms
+2026-09-17 09:54:53 | INFO     | agriketha.backend:lifespan:23 - Shutting down AgriKetha-AI Backend...
+2026-09-17 09:54:53 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-17 09:54:53 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-17 09:55:07 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-17 09:55:07 | INFO     | agriketha.backend:lifespan:19 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-17 09:55:07 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-17 09:55:08 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-17 09:55:10 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-17 09:55:16 | INFO     | agriketha.backend:lifespan:23 - Shutting down AgriKetha-AI Backend...
+2026-09-17 09:55:16 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-17 09:55:16 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-17 09:56:02 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-17 09:56:02 | INFO     | agriketha.backend:lifespan:19 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-17 09:56:02 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-17 09:56:03 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-17 09:56:04 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-17 09:56:05 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 195.65ms
+2026-09-17 09:56:05 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 151.54ms
+2026-09-17 09:56:10 | INFO     | agriketha.backend:ask_query_agent:295 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 09:56:10 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2393.05ms
+2026-09-17 09:56:11 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 354.46ms
+2026-09-17 09:57:52 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 174.78ms
+2026-09-17 09:57:52 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 145.71ms
+2026-09-17 10:03:55 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 320.83ms
+2026-09-17 10:03:55 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 267.25ms
+2026-09-17 10:06:02 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 3798.28ms
+2026-09-17 10:06:08 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 5535.64ms
+2026-09-17 10:07:42 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 572.19ms
+2026-09-17 10:07:42 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 604.28ms
+2026-09-17 10:10:18 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 193.16ms
+2026-09-17 10:10:21 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 250.70ms
+2026-09-17 10:12:09 | INFO     | agriketha.backend:login:149 - User logged in successfully: chamudith@gmail.com (Role: admin)
+2026-09-17 10:12:09 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 505.60ms
+2026-09-17 10:12:10 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 176.10ms
+2026-09-17 10:12:10 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 248.56ms
+2026-09-17 10:12:28 | INFO     | agriketha.backend:ask_query_agent:295 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 10:12:28 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2679.07ms
+2026-09-17 10:12:29 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 193.93ms
+2026-09-17 10:12:47 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 226.92ms
+2026-09-17 10:12:54 | INFO     | agriketha.backend:ask_query_agent:295 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 10:12:54 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2495.03ms
+2026-09-17 10:12:54 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 192.00ms
+2026-09-17 10:13:07 | INFO     | agriketha.backend:ask_query_agent:295 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 10:13:07 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2385.79ms
+2026-09-17 10:13:07 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 167.34ms
+2026-09-17 10:13:20 | INFO     | agriketha.backend:ask_query_agent:295 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 10:13:21 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2655.24ms
+2026-09-17 10:13:21 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 162.05ms
+2026-09-17 10:14:32 | INFO     | agriketha.backend:ask_query_agent:295 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 10:14:32 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2519.03ms
+2026-09-17 10:14:32 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 333.81ms
+2026-09-17 10:15:01 | INFO     | agriketha.backend:lifespan:23 - Shutting down AgriKetha-AI Backend...
+2026-09-17 10:15:01 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-17 10:15:02 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-17 10:15:04 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-17 10:15:04 | INFO     | agriketha.backend:lifespan:19 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-17 10:15:04 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-17 10:15:14 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-17 10:15:27 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-17 10:15:47 | INFO     | agriketha.backend:lifespan:23 - Shutting down AgriKetha-AI Backend...
+2026-09-17 10:15:47 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-17 10:15:49 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-17 10:15:50 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-17 10:15:50 | INFO     | agriketha.backend:lifespan:19 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-17 10:15:50 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-17 10:16:04 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-17 10:16:05 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-17 10:16:28 | INFO     | agriketha.backend:lifespan:23 - Shutting down AgriKetha-AI Backend...
+2026-09-17 10:16:28 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-17 10:16:28 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-17 10:16:30 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-17 10:16:30 | INFO     | agriketha.backend:lifespan:19 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-17 10:16:30 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-17 10:16:42 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-17 10:16:43 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-17 10:17:01 | INFO     | agriketha.backend:lifespan:23 - Shutting down AgriKetha-AI Backend...
+2026-09-17 10:17:01 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-17 10:17:04 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-17 10:17:05 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-17 10:17:05 | INFO     | agriketha.backend:lifespan:19 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-17 10:17:05 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-17 10:17:21 | ERROR    | agriketha.backend:connect_to_mongo:49 - Failed to connect to MongoDB: No replica set members found yet, Timeout: 10.0s, Topology Description: <TopologyDescription id: 6aab70c9fe73363c5f223881, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\backend\app\core\database.py", line 43, in connect_to_mongo
+    await db_state.client.admin.command('ping')
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 946, in command
+    return self._client._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        inner, read_preference, session, command_name, None, False, is_run_command=True
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._server_selector,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        operation_id=self._operation_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    server = topology.select_server(
+        server_selector,
+    ...<2 lines>...
+        operation_id=operation_id,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    server = self._select_server(
+        selector,
+    ...<4 lines>...
+        operation_id=operation_id,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    servers = self.select_servers(
+        selector,
+    ...<4 lines>...
+        deprioritized_servers,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    server_descriptions = self._select_servers_loop(
+        selector,
+    ...<4 lines>...
+        deprioritized_servers=deprioritized_servers,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+        f"{self._error_message(selector)}, Timeout: {timeout}s, Topology Description: {self.description!r}"
+    )
+pymongo.errors.ServerSelectionTimeoutError: No replica set members found yet, Timeout: 10.0s, Topology Description: <TopologyDescription id: 6aab70c9fe73363c5f223881, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2026-09-17 10:22:32 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-17 10:22:32 | INFO     | agriketha.backend:lifespan:19 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-17 10:22:32 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-17 10:22:34 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-17 10:22:37 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-17 10:22:42 | INFO     | agriketha.backend:ask_query_agent:360 - Agent 1 microservice on http://127.0.0.1:8001 not active (All connection attempts failed). Using integrated NLP pipeline.
+2026-09-17 10:22:42 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/query-agent | Status: 200 | 2503.88ms
+2026-09-17 10:22:42 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 129.97ms

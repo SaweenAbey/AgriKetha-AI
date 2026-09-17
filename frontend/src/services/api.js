@@ -66,4 +66,25 @@ export const authService = {
   },
 };
 
+export const agentService = {
+  queryAgent1: async ({ question, input_mode = "text", auto_triggered = false, language = "en" }) => {
+    const response = await api.post("/farmer/query-agent", {
+      question,
+      input_mode,
+      auto_triggered,
+      language,
+    });
+    return response.data;
+  },
+  getQueryHistory: async (limit = 20) => {
+    const response = await api.get(`/farmer/queries?limit=${limit}`);
+    return response.data;
+  },
+  checkAgentStatus: async () => {
+    const response = await api.get("/farmer/agent-1-status");
+    return response.data;
+  },
+};
+
 export default api;
+

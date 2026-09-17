@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Sprout, 
@@ -6,26 +6,37 @@ import {
   TrendingUp, 
   Bot, 
   MapPin, 
-  Phone, 
   Mail, 
   LogOut, 
   ShieldCheck, 
   Sparkles, 
   Layers, 
-  ArrowUpRight 
+  ArrowUpRight,
+  Mic,
+  Activity
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
+import { AgentQueryAssistant } from "@/components/AgentQueryAssistant";
 
 export const DashboardPage = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("agent1");
+  const agentSectionRef = useRef(null);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const scrollToAgent = () => {
+    setActiveTab("agent1");
+    if (agentSectionRef.current) {
+      agentSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -79,13 +90,13 @@ export const DashboardPage = () => {
           <div className="relative z-10 max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-medium">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              System Status: Agents Active & Online
+              Agent 1 (Voice & Text NLP) Active
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               Ayubowan, {user?.full_name || "Farmer"}!
             </h1>
             <p className="text-sm text-emerald-100/80 leading-relaxed">
-              Welcome to your AgriKetha-AI control hub. Explore autonomous crop diagnostics, query localized farming advisory, or track today's wholesale produce prices.
+              Welcome to your AgriKetha-AI control hub. Ask questions via voice or text to activate Agent 1 NLP diagnostics, fertilizer plans, and crop advisory.
             </p>
           </div>
         </div>
@@ -143,15 +154,44 @@ export const DashboardPage = () => {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Smart Farming AI Advisor (Agent 1) */}
+            <Card 
+              onClick={scrollToAgent}
+              className="group cursor-pointer border-emerald-500/40 bg-emerald-500/5 hover:border-emerald-500 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+            >
+              <div className="absolute top-2 right-2">
+                <Badge className="bg-emerald-600 text-white text-[10px] gap-1">
+                  <Mic className="w-2.5 h-2.5" /> Voice Ready
+                </Badge>
+              </div>
+              <CardHeader className="pb-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <Bot className="w-6 h-6" />
+                </div>
+                <CardTitle className="text-lg flex items-center justify-between">
+                  Agent 1: Smart AI Advisor
+                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-emerald-600 transition-colors" />
+                </CardTitle>
+                <CardDescription>
+                  Ask farming queries by voice or text. Real-time NLP entity and symptom extraction.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Badge variant="secondary" className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                  Voice & Text Enabled
+                </Badge>
+              </CardContent>
+            </Card>
+
             {/* Disease Detector */}
             <Card className="group hover:border-emerald-500/40 hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-3">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-2xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                   <Leaf className="w-6 h-6" />
                 </div>
                 <CardTitle className="text-lg flex items-center justify-between">
                   Crop Disease Diagnostics
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-emerald-600 transition-colors" />
+                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-teal-600 transition-colors" />
                 </CardTitle>
                 <CardDescription>
                   Upload or snap a leaf photo for instant computer vision pathology and Sinhala/Tamil recommendations.
@@ -159,28 +199,7 @@ export const DashboardPage = () => {
               </CardHeader>
               <CardContent>
                 <Badge variant="secondary" className="text-xs font-normal">
-                  NER & Vision Agent
-                </Badge>
-              </CardContent>
-            </Card>
-
-            {/* RAG Query Agent */}
-            <Card className="group hover:border-emerald-500/40 hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-3">
-                <div className="w-12 h-12 rounded-2xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                  <Bot className="w-6 h-6" />
-                </div>
-                <CardTitle className="text-lg flex items-center justify-between">
-                  Smart Farming AI Advisor
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-teal-600 transition-colors" />
-                </CardTitle>
-                <CardDescription>
-                  Ask farming questions regarding pest management, fertilizer schedules, and seasonal crops.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Badge variant="secondary" className="text-xs font-normal">
-                  Vector RAG in Sinhala / English
+                  Vision Agent
                 </Badge>
               </CardContent>
             </Card>
@@ -207,7 +226,13 @@ export const DashboardPage = () => {
             </Card>
           </div>
         </div>
+
+        {/* Dedicated Agent 1 Workspace Section */}
+        <section ref={agentSectionRef} className="pt-2">
+          <AgentQueryAssistant />
+        </section>
       </main>
     </div>
   );
 };
+

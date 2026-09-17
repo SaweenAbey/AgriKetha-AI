@@ -96,10 +96,50 @@ async def run_tests():
         print(f"  -> POST /api/v1/farmer/crops: {crop_resp.status_code} | Crops count: {len(crop_resp.json())}")
         assert crop_resp.status_code == 200
 
-        # 3.7 RBAC Security Test: Farmer attempts to access Admin endpoint (Must receive 403 Forbidden)
+        # 3.7 Farmer sends Query to Agent 1 (Text & Voice modes)
+        query_text_resp = await client.post("/api/v1/farmer/query-agent", json={
+            "question": "My tomato leaves are turning yellow with brown spots.",
+            "input_mode": "text",
+            "auto_triggered": False
+        }, headers={"Authorization": f"Bearer {farmer_token}"})
+        print(f"  -> POST /api/v1/farmer/query-agent (Text Mode): {query_text_resp.status_code} | Crop: {query_text_resp.json()['agent_response']['agent_1_result']['crop']}")
+        assert query_text_resp.status_code == 200
+        assert query_text_resp.json()["agent_response"]["agent_1_result"]["crop"] == "tomato"
+        assert "yellow leaves" in query_text_resp.json()["agent_response"]["agent_1_result"]["symptoms"]
+
+        # Voice mode auto-triggered query test
+        query_voice_resp = await client.post("/api/v1/farmer/query-agent", json={
+            "question": "What is the best fertilizer dosage for paddy during vegetative growth?",
+            "input_mode": "voice",
+            "auto_triggered": True
+        }, headers={"Authorization": f"Bearer {farmer_token}"})
+        print(f"  -> POST /api/v1/farmer/query-agent (Voice Mode): {query_voice_resp.status_code} | Intent: {query_voice_resp.json()['agent_response']['agent_1_result']['intent']}")
+        assert query_voice_resp.status_code == 200
+        assert query_voice_resp.json()["agent_response"]["agent_1_result"]["crop"] == "rice"
+
+        # Sinhala Query test
+        query_sinhala_resp = await client.post("/api/v1/farmer/query-agent", json={
+            "question": "මගේ තක්කාලි වල කළුපාට ලප තියෙනවා",
+            "input_mode": "voice",
+            "auto_triggered": True
+        }, headers={"Authorization": f"Bearer {farmer_token}"})
+        print(f"  -> POST /api/v1/farmer/query-agent (Sinhala Query): {query_sinhala_resp.status_code} | Crop: {query_sinhala_resp.json()['agent_response']['agent_1_result']['crop']} | Symptoms: {query_sinhala_resp.json()['agent_response']['agent_1_result']['symptoms']}")
+        assert query_sinhala_resp.status_code == 200
+        assert query_sinhala_resp.json()["agent_response"]["agent_1_result"]["crop"] == "tomato"
+        assert "brown spots" in query_sinhala_resp.json()["agent_response"]["agent_1_result"]["symptoms"]
+        assert query_sinhala_resp.json()["agent_response"]["agent_1_result"]["intent"] == "disease diagnosis"
+
+        # Farmer checks Agent 1 status
+        status_resp = await client.get("/api/v1/farmer/agent-1-status")
+        print(f"  -> GET /api/v1/farmer/agent-1-status: {status_resp.status_code} | Status: {status_resp.json().get('status')}")
+        assert status_resp.status_code == 200
+
+
+        # 3.8 RBAC Security Test: Farmer attempts to access Admin endpoint (Must receive 403 Forbidden)
         forbidden_resp = await client.get("/api/v1/admin/users", headers={"Authorization": f"Bearer {farmer_token}"})
         print(f"  -> [RBAC CHECK] GET /api/v1/admin/users with Farmer token: {forbidden_resp.status_code} (Expected 403)")
         assert forbidden_resp.status_code == 403
+
 
         # 3.8 Register & Login Admin
         admin_data = {
