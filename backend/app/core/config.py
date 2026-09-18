@@ -41,8 +41,10 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     LOG_DIR: str = str(Path(__file__).resolve().parent.parent.parent / "logs")
 
-    # AI Microservice integrations
-    QUERY_AGENT_URL: str = "http://127.0.0.1:8004"
+    # AI Microservice integrationn
+    QUERY_AGENT_URL: str = "http://127.0.0.1:8001"
+    VISION_AGENT_URL: str = "http://127.0.0.1:8002"
+
 
     model_config = SettingsConfigDict(
         env_file=".env",
