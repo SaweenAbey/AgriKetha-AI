@@ -1,0 +1,109 @@
+2026-09-13 17:08:47 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-13 17:08:47 | INFO     | agriketha.backend:seed_initial_data:23 - Connecting to database for seeding...
+2026-09-13 17:08:47 | INFO     | agriketha.backend:connect_to_mongo:17 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-13 17:09:08 | ERROR    | agriketha.backend:connect_to_mongo:34 - Failed to connect to MongoDB: The resolution lifetime expired after 20.203 seconds: Server Do53:192.168.8.1@53 answered The DNS operation timed out.; Server Do53:172.16.10.100@53 answered The DNS operation timed out.; Server Do53:172.16.10.101@53 answered The DNS operation timed out.; Server Do53:10.123.147.28@53 answered The DNS operation timed out.; Server Do53:192.168.42.129@53 answered The DNS operation timed out.; Server Do53:192.168.8.1@53 answered The DNS operation timed out.; Server Do53:172.16.10.100@53 answered The DNS operation timed out.; Server Do53:172.16.10.101@53 answered The DNS operation timed out.; Server Do53:10.123.147.28@53 answered The DNS operation timed out.; Server Do53:192.168.42.129@53 answered The DNS operation timed out.
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 111, in _resolve_uri
+    results = _resolve(
+        "_" + self.__srv + "._tcp." + self.__fqdn, "SRV", lifetime=self.__connect_timeout
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 46, in _resolve
+    return resolver.resolve(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\dns\resolver.py", line 1572, in resolve
+    return get_default_resolver().resolve(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        qname,
+        ^^^^^^
+    ...<7 lines>...
+        search,
+        ^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\dns\resolver.py", line 1328, in resolve
+    timeout = self._compute_timeout(start, lifetime, resolution.errors)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\dns\resolver.py", line 1084, in _compute_timeout
+    raise LifetimeTimeout(timeout=duration, errors=errors)
+dns.resolver.LifetimeTimeout: The resolution lifetime expired after 20.203 seconds: Server Do53:192.168.8.1@53 answered The DNS operation timed out.; Server Do53:172.16.10.100@53 answered The DNS operation timed out.; Server Do53:172.16.10.101@53 answered The DNS operation timed out.; Server Do53:10.123.147.28@53 answered The DNS operation timed out.; Server Do53:192.168.42.129@53 answered The DNS operation timed out.; Server Do53:192.168.8.1@53 answered The DNS operation timed out.; Server Do53:172.16.10.100@53 answered The DNS operation timed out.; Server Do53:172.16.10.101@53 answered The DNS operation timed out.; Server Do53:10.123.147.28@53 answered The DNS operation timed out.; Server Do53:192.168.42.129@53 answered The DNS operation timed out.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\backend\app\core\database.py", line 28, in connect_to_mongo
+    await db_state.client.admin.command('ping')
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 946, in command
+    return self._client._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        inner, read_preference, session, command_name, None, False, is_run_command=True
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._server_selector,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        operation_id=self._operation_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1849, in _select_server
+    topology = self._get_topology()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1816, in _get_topology
+    self._resolve_srv()
+    ~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 950, in _resolve_srv
+    res = uri_parser._parse_srv(
+        entity,
+    ...<7 lines>...
+        srv_allowed_hosts_suffix=srv_allowed_hosts_suffix,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\uri_parser.py", line 175, in _parse_srv
+    nodes = dns_resolver.get_hosts()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 155, in get_hosts
+    _, nodes = self._get_srv_response_and_hosts(True)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 125, in _get_srv_response_and_hosts
+    results = self._resolve_uri(encapsulate_errors)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 119, in _resolve_uri
+    raise ConfigurationError(str(exc)) from exc
+pymongo.errors.ConfigurationError: The resolution lifetime expired after 20.203 seconds: Server Do53:192.168.8.1@53 answered The DNS operation timed out.; Server Do53:172.16.10.100@53 answered The DNS operation timed out.; Server Do53:172.16.10.101@53 answered The DNS operation timed out.; Server Do53:10.123.147.28@53 answered The DNS operation timed out.; Server Do53:192.168.42.129@53 answered The DNS operation timed out.; Server Do53:192.168.8.1@53 answered The DNS operation timed out.; Server Do53:172.16.10.100@53 answered The DNS operation timed out.; Server Do53:172.16.10.101@53 answered The DNS operation timed out.; Server Do53:10.123.147.28@53 answered The DNS operation timed out.; Server Do53:192.168.42.129@53 answered The DNS operation timed out.
+2026-09-13 17:10:22 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-13 17:10:22 | INFO     | agriketha.backend:seed_initial_data:23 - Connecting to database for seeding...
+2026-09-13 17:10:22 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-13 17:10:24 | INFO     | agriketha.backend:connect_to_mongo:39 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-13 17:10:26 | INFO     | agriketha.backend:init_db_indexes:81 - MongoDB indexes verified & created successfully.
+2026-09-13 17:10:26 | INFO     | agriketha.backend:seed_initial_data:49 - Admin created: admin@agriketha.ai (Password: Admin@123456, ID: 6aa68baaf037e617dc241134)
+2026-09-13 17:10:27 | INFO     | agriketha.backend:seed_initial_data:70 - Farmer created: farmer@agriketha.ai (Password: Farmer@123456, ID: 6aa68babf037e617dc241135)
+2026-09-13 17:10:27 | INFO     | agriketha.backend:seed_initial_data:101 - Sample Farm created for farmer farmer@agriketha.ai
+2026-09-13 17:10:27 | INFO     | agriketha.backend:close_mongo_connection:51 - Closing MongoDB connection pool...
+2026-09-13 17:10:27 | INFO     | agriketha.backend:close_mongo_connection:53 - MongoDB connection pool closed.
+2026-09-13 17:10:27 | INFO     | agriketha.backend:seed_initial_data:106 - Seeding completed successfully.

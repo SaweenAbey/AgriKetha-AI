@@ -1,0 +1,6 @@
+Pest_Brown_Planthopper
+Pest_Green_Leafhoppers
+Pest_LEAF_FOLDERS
+Pest_Rice_Bug
+Pest_Stemz_Borer
+Pest_Whorl_Maggot

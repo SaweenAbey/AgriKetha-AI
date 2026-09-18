@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+spacy
+pydantic
+requests
+langdetect
+SpeechRecognition
+python-multipart
