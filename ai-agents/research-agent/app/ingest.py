@@ -17,7 +17,7 @@ def ingest() -> int:
     pages = load_pdf_pages(DOCUMENTS_DIR)
     chunks = chunk_pages(pages, CHUNK_SIZE_WORDS, CHUNK_OVERLAP_WORDS)
     if not chunks:
-        raise RuntimeError("No non-empty PDF pages found in the crop document folders")
+        raise RuntimeError("No non-empty PDF or text documents found in the crop document folders")
     vectors = EmbeddingModel(EMBEDDING_MODEL_NAME).encode([chunk.text for chunk in chunks])
     store = VectorStore(VECTOR_STORE_DIR)
     store.build(vectors, chunks)
