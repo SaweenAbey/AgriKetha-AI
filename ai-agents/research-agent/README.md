@@ -2,7 +2,7 @@
 
 Member 3's independent evidence-retrieval service for AgriKetha-AI.
 
-The service retrieves evidence from local agricultural PDFs. It does not generate recommendations.
+The service retrieves evidence from local agricultural PDFs and text files. It does not generate recommendations.
 
 ## Layout
 
@@ -14,7 +14,7 @@ The service retrieves evidence from local agricultural PDFs. It does not generat
 - `vector-store/` - generated FAISS index files
 - `tests/` - agent tests
 
-Place source PDFs in the crop folders before ingestion. The PDF filename and real 1-based page number are preserved in every result; no source metadata is invented.
+Place source PDFs or text files in the crop folders before ingestion. PDF page numbers are preserved in every result; text files are treated as page 1. No source metadata is invented.
 
 ## Local environment
 
@@ -33,10 +33,10 @@ Install dependencies, then ingest documents:
 python -m app.ingest
 ```
 
-Start the service on port `8001`:
+Start the service on port `8004`:
 
 ```powershell
-uvicorn app.main:app --host 0.0.0.0 --port 8001
+uvicorn app.main:app --host 0.0.0.0 --port 8004
 ```
 
 The API provides `GET /agent/health` and `POST /agent/retrieve`. Set `RESEARCH_RELEVANCE_THRESHOLD` to adjust the minimum cosine similarity accepted as evidence.

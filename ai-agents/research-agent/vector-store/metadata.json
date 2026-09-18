@@ -1,0 +1,23 @@
+[
+  {
+    "text": "Chilli crop guide Planting: Use healthy seedlings and plant in well-drained soil with good sunlight. Leave enough spacing for air movement. Water: Water when the topsoil begins to dry. Avoid waterlogging and wet leaves for long periods. Fertilizer: Add mature compost before planting. Apply fertilizer in small split doses during vegetative growth and flowering. Pests: Check leaves regularly for aphids, thrips, and mites. Remove badly affected plant parts and use locally approved control methods when needed. Diseases: Good drainage, clean tools, crop rotation, and removal of infected leaves help reduce disease spread. Harvest: Pick mature green or red chillies carefully to avoid damaging branches.",
+    "source": "chilli_general.txt",
+    "page": 1,
+    "crop": "chilli",
+    "topic": "general"
+  },
+  {
+    "text": "Rice crop guide Planting: Use healthy seed and prepare a level field. Maintain suitable spacing and remove weeds early. Water: Keep enough water for establishment, but avoid unnecessary continuous flooding. Drain the field before harvest. Fertilizer: Apply nutrients according to soil-test results. Nitrogen is commonly divided into applications during crop growth. Pests: Inspect plants for stem borers, leaf folders, and planthoppers. Use integrated pest management and avoid unnecessary spraying. Diseases: Use clean seed, balanced fertilizer, proper spacing, and resistant varieties where available to reduce disease risk. Harvest: Harvest when most grains are mature and dry the grain properly after threshing.",
+    "source": "rice_general.txt",
+    "page": 1,
+    "crop": "rice",
+    "topic": "general"
+  },
+  {
+    "text": "Tomato crop guide Planting: Transplant healthy seedlings into fertile, well-drained soil with full sunlight. Provide support as plants grow. Water: Water deeply at the base and keep moisture consistent. Avoid frequent wetting of leaves and avoid waterlogging. Fertilizer: Add compost before planting and apply balanced fertilizer in stages. Increase attention to potassium during fruit development. Pests: Monitor for whiteflies, aphids, fruit borers, and mites. Remove damaged fruit and use locally approved integrated control methods. Diseases: Remove infected leaves, improve air circulation, rotate crops, and avoid working with wet plants. Harvest: Pick tomatoes at the maturity stage needed for transport or immediate use.",
+    "source": "tomato_general.txt",
+    "page": 1,
+    "crop": "tomato",
+    "topic": "general"
+  }
+]
