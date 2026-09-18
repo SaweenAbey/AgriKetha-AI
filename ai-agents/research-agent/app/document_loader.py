@@ -1,4 +1,4 @@
-"""Load and clean PDF pages while preserving source metadata."""
+"""Load and clean PDF and text documents while preserving source metadata."""
 
 from dataclasses import dataclass
 import re
@@ -40,19 +40,38 @@ def topic_from_filename(filename: str) -> str:
 
 
 def load_pdf_pages(documents_dir: Path) -> list[PageDocument]:
-    """Extract non-empty pages from PDFs below crop directories."""
+    """Extract non-empty pages from PDFs and text files below crop directories."""
     pages: list[PageDocument] = []
-    for pdf_path in sorted(documents_dir.glob("*/*.pdf")):
-        crop = pdf_path.parent.name.lower()
-        topic = topic_from_filename(pdf_path.name)
-        with fitz.open(pdf_path) as document:
+    document_paths = sorted(
+        path
+        for pattern in ("*/*.pdf", "*/*.txt")
+        for path in documents_dir.glob(pattern)
+    )
+    for document_path in document_paths:
+        crop = document_path.parent.name.lower()
+        topic = topic_from_filename(document_path.name)
+        if document_path.suffix.lower() == ".txt":
+            text = clean_text(document_path.read_text(encoding="utf-8"))
+            if text:
+                pages.append(
+                    PageDocument(
+                        text=text,
+                        source=document_path.name,
+                        page=1,
+                        crop=crop,
+                        topic=topic,
+                    )
+                )
+            continue
+
+        with fitz.open(document_path) as document:
             for page_number, page in enumerate(document, start=1):
                 text = clean_text(page.get_text())
                 if text:
                     pages.append(
                         PageDocument(
                             text=text,
-                            source=pdf_path.name,
+                            source=document_path.name,
                             page=page_number,
                             crop=crop,
                             topic=topic,
