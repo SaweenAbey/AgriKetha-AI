@@ -16,4 +16,5 @@ backend/data/
 # Environment variables (secrets)
 .env###
 #.envvenv/ 
-venv/ 
+venv/
+.env 

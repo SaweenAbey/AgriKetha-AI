@@ -9,6 +9,7 @@ from app.services.agent_clients import (
     call_vision_agent,
 )
 
+from app.services.llm_service import LLMService, LLMServiceError
 
 class OrchestratorService:
     """
@@ -21,6 +22,9 @@ class OrchestratorService:
     - Aggregate results
     - Prepare information for the advisory LLM
     """
+
+    def __init__(self):
+        self.llm_service = LLMService()
 
     async def process_request(
         self,
@@ -258,18 +262,43 @@ class OrchestratorService:
         # LLM generation will be added in the next step.
         # ---------------------------------------------------------
 
-        if evidence:
-
-            advisory = (
-                "Agricultural evidence was retrieved successfully. "
-                "LLM advisory generation will process this evidence."
+        # ---------------------------------------------------------
+        # Generate final agricultural advisory using Gemini
+        # ---------------------------------------------------------
+        advisory = ""
+        
+        try:
+            advisory = await self.llm_service.generate_advisory(
+                question=question,
+                crop=crop,
+                intent=intent,
+                vision_result=vision_result,
+                evidence=evidence,
+                detected_language=detected_language,
             )
 
-        else:
+            agent_activity.append({
+                "agent": "gemini-llm",
+                "status": "success",
+                "details": "Final agricultural advisory generated successfully.",
+            })
+
+        except LLMServiceError as exc:
+            logger.error(
+                "LLM advisory generation failed | session_id=%s | error=%s",
+                session_id,
+                exc,
+            )
+
+            agent_activity.append({
+                "agent": "gemini-llm",
+                "status": "failed",
+                "details": "Final advisory generation failed.",
+            })
 
             advisory = (
-                "Relevant agricultural evidence could not be retrieved. "
-                "Please consult an agricultural expert before taking action."
+                "I could not generate the final agricultural advisory at this time. "
+                "Please consult a qualified agricultural expert before taking action."
             )
 
         logger.info(
