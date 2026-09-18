@@ -44,6 +44,10 @@ class Settings(BaseSettings):
     # AI Microservice integrationn
     QUERY_AGENT_URL: str = "http://127.0.0.1:8001"
     VISION_AGENT_URL: str = "http://127.0.0.1:8002"
+    RESEARCH_AGENT_URL: str = "http://127.0.0.1:8003"
+
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-2.5-flash"
 
 
     model_config = SettingsConfigDict(
