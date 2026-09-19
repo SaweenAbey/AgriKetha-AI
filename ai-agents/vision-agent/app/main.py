@@ -12,6 +12,7 @@ from PIL import Image
 from app.schemas import VisionResponse, DiseasePrediction
 from app.preprocess import validate_image, preprocess_image
 from app.model_ensemble import EnsembledVisionModel
+from app.crop_classifier import CropClassifier
 
 print("✅ All imports loaded!")
 
@@ -22,16 +23,17 @@ print("✅ All imports loaded!")
 
 app = FastAPI(
     title="Vision Agent - AgriKetha",
-    description="Crop Disease Image Analysis with Explainability",
+    description="Crop Disease Image Analysis with Automatic Crop Detection",
     version="1.0.0",
 )
 
 
 # ============================================================
-# GLOBAL MODEL INSTANCE
+# GLOBAL MODEL INSTANCES
 # ============================================================
 
 vision_model = None
+crop_classifier = None
 
 SUPPORTED_CROPS = ["rice", "tomato"]
 
@@ -43,12 +45,21 @@ SUPPORTED_CROPS = ["rice", "tomato"]
 @app.on_event("startup")
 async def load_model():
     """
-    Load all vision models when the Vision Agent starts.
+    Load all vision models and the crop classifier
+    when the Vision Agent starts.
     """
+
     global vision_model
+    global crop_classifier
 
     print("🖼️ Loading Vision Models...")
+
+    # Existing disease/pest/nutrition/tomato models
     vision_model = EnsembledVisionModel()
+
+    # New automatic Rice/Tomato classifier
+    crop_classifier = CropClassifier()
+
     print("✅ Vision Agent ready!")
 
 
@@ -61,10 +72,12 @@ async def health_check():
     """
     Check whether the Vision Agent and models are available.
     """
+
     return {
         "status": "healthy",
         "agent": "vision-agent",
         "model_loaded": vision_model is not None,
+        "crop_classifier_loaded": crop_classifier is not None,
     }
 
 
@@ -75,34 +88,68 @@ async def health_check():
 def _gradcam_to_base64(gradcam_image: np.ndarray) -> str:
     """
     Convert a Grad-CAM array to a base64 PNG string.
-    Handles both 0-1 float output and 0-255 output.
+
+    Handles both:
+    - 0-1 float output
+    - 0-255 output
     """
-    img = np.asarray(gradcam_image, dtype=np.float32)
+
+    img = np.asarray(
+        gradcam_image,
+        dtype=np.float32
+    )
 
     if img.max() <= 1.0:
         img = img * 255.0
 
-    img = np.clip(img, 0, 255).astype(np.uint8)
+    img = np.clip(
+        img,
+        0,
+        255
+    ).astype(np.uint8)
 
     buffered = io.BytesIO()
-    Image.fromarray(img).save(buffered, format="PNG")
 
-    return base64.b64encode(buffered.getvalue()).decode("utf-8")
+    Image.fromarray(img).save(
+        buffered,
+        format="PNG"
+    )
+
+    return base64.b64encode(
+        buffered.getvalue()
+    ).decode("utf-8")
 
 
 def _find_class_index(prediction: str):
     """
-    Find the class index of the prediction in the model that produced it.
+    Find the class index of the prediction
+    in the model that produced it.
     """
-    model_key = getattr(vision_model, "current_model_key", None)
-    models = getattr(vision_model, "models", None) or {}
 
-    current_model_data = models.get(model_key)
+    model_key = getattr(
+        vision_model,
+        "current_model_key",
+        None
+    )
+
+    models = getattr(
+        vision_model,
+        "models",
+        None
+    ) or {}
+
+    current_model_data = models.get(
+        model_key
+    )
 
     if current_model_data is None:
         return None
 
-    for idx, class_name in current_model_data.get("class_map", {}).items():
+    for idx, class_name in current_model_data.get(
+        "class_map",
+        {}
+    ).items():
+
         if class_name == prediction:
             return idx
 
@@ -119,18 +166,28 @@ def _find_class_index(prediction: str):
 )
 async def analyze_image(
     file: UploadFile = File(...),
-    crop: str = "rice",
 ):
     """
     Analyze a crop leaf image.
 
-    Supported crops:
-    - rice   -> existing Disease/Nutrition/Pest specialist ensemble
-    - tomato -> dedicated tomato disease model
+    The crop type is automatically detected using
+    the CropClassifier.
+
+    Supported automatically detected crops:
+    - rice
+    - tomato
+
+    After crop detection:
+
+    Rice:
+        -> Rice Disease/Nutrition/Pest Specialist Ensemble
+
+    Tomato:
+        -> Dedicated Tomato Disease Model
     """
 
     # ========================================================
-    # 1. CHECK MODEL
+    # 1. CHECK MODELS
     # ========================================================
 
     if vision_model is None:
@@ -139,23 +196,14 @@ async def analyze_image(
             detail="Vision model is not loaded.",
         )
 
-    # ========================================================
-    # 2. NORMALIZE & VALIDATE CROP
-    # ========================================================
-
-    crop = (crop or "rice").lower().strip()
-
-    if crop not in SUPPORTED_CROPS:
+    if crop_classifier is None:
         raise HTTPException(
-            status_code=400,
-            detail=(
-                f"Unsupported crop '{crop}'. "
-                f"Supported crops are: {', '.join(SUPPORTED_CROPS)}."
-            ),
+            status_code=503,
+            detail="Crop classifier is not loaded.",
         )
 
     # ========================================================
-    # 3. VALIDATE FILE TYPE
+    # 2. VALIDATE FILE TYPE
     # ========================================================
 
     if not file.content_type:
@@ -170,22 +218,35 @@ async def analyze_image(
             detail="File must be an image.",
         )
 
+    # Crop is unknown until the classifier analyzes the image.
+    crop = "unknown"
+
     try:
+
         # ====================================================
-        # 4. READ IMAGE
+        # 3. READ IMAGE
         # ====================================================
 
         contents = await file.read()
-        image_pil = Image.open(io.BytesIO(contents)).convert("RGB")
-        image_np = np.array(image_pil)
+
+        image_pil = Image.open(
+            io.BytesIO(contents)
+        ).convert("RGB")
+
+        image_np = np.array(
+            image_pil
+        )
 
         # ====================================================
-        # 5. IMAGE QUALITY VALIDATION
+        # 4. IMAGE QUALITY VALIDATION
         # ====================================================
 
-        is_valid, validation_message = validate_image(image_np)
+        is_valid, validation_message = validate_image(
+            image_np
+        )
 
         if not is_valid:
+
             return VisionResponse(
                 status="error",
                 crop=crop,
@@ -193,70 +254,177 @@ async def analyze_image(
             )
 
         # ====================================================
-        # 6. PREPROCESS IMAGE
+        # 5. AUTOMATIC CROP DETECTION
         # ====================================================
 
-        image_tensor = preprocess_image(image_pil)
+        print("🔍 Detecting crop type...")
+
+        crop, crop_confidence = crop_classifier.predict(
+            image_pil
+        )
+
+        crop = crop.lower().strip()
+
+        print(
+            f"🌱 Detected Crop: {crop}"
+        )
+
+        print(
+            f"📊 Crop Confidence: "
+            f"{crop_confidence:.4f}"
+        )
 
         # ====================================================
-        # 7. RUN PREDICTION
+        # 6. VERIFY DETECTED CROP
+        # ====================================================
+
+        if crop not in SUPPORTED_CROPS:
+
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    f"Unsupported detected crop '{crop}'. "
+                    f"Supported crops are: "
+                    f"{', '.join(SUPPORTED_CROPS)}."
+                ),
+            )
+
+        # ====================================================
+        # 7. PREPROCESS IMAGE
+        # ====================================================
+
+        image_tensor = preprocess_image(
+            image_pil
+        )
+
+        # ====================================================
+        # 8. RUN CROP-SPECIFIC MODEL
         # ====================================================
 
         if crop == "tomato":
-            print("🍅 Using Tomato Model")
-            prediction, confidence, alternatives = vision_model.predict_tomato(image_tensor)
+
+            print("🍅 Using Tomato Disease Model")
+
+            prediction, confidence, alternatives = (
+                vision_model.predict_tomato(
+                    image_tensor
+                )
+            )
+
         else:
-            print("🌾 Using Rice Specialist Ensemble")
-            prediction, confidence, alternatives = vision_model.predict(image_tensor)
 
-        print(f"🔎 Prediction: {prediction}")
-        print(f"📊 Confidence: {confidence:.4f}")
-        print(f"🧠 Model: {getattr(vision_model, 'current_model_key', 'unknown')}")
+            print(
+                "🌾 Using Rice Specialist Ensemble"
+            )
+
+            prediction, confidence, alternatives = (
+                vision_model.predict(
+                    image_tensor
+                )
+            )
+
+        print(
+            f"🔎 Prediction: {prediction}"
+        )
+
+        print(
+            f"📊 Disease Confidence: "
+            f"{confidence:.4f}"
+        )
+
+        print(
+            f"🧠 Model: "
+            f"{getattr(vision_model, 'current_model_key', 'unknown')}"
+        )
 
         # ====================================================
-        # 8. FIND CLASS INDEX
+        # 9. FIND CLASS INDEX
         # ====================================================
 
-        class_idx = _find_class_index(prediction)
-        print(f"🔢 Class index: {class_idx}")
+        class_idx = _find_class_index(
+            prediction
+        )
+
+        print(
+            f"🔢 Class index: {class_idx}"
+        )
 
         # ====================================================
-        # 9. GENERATE GRAD-CAM (Explainability)
-        # A Grad-CAM failure must not break the prediction.
+        # 10. GENERATE GRAD-CAM
+        #
+        # A Grad-CAM failure must not break prediction.
         # ====================================================
 
         gradcam_base64 = None
         gradcam_image = None
 
         if class_idx is not None:
+
             try:
-                print("🔍 Generating Grad-CAM...")
-                gradcam_image = vision_model.generate_gradcam(image_tensor, class_idx)
+
+                print(
+                    "🔍 Generating Grad-CAM..."
+                )
+
+                gradcam_image = (
+                    vision_model.generate_gradcam(
+                        image_tensor,
+                        class_idx
+                    )
+                )
 
                 if gradcam_image is not None:
-                    gradcam_base64 = _gradcam_to_base64(gradcam_image)
-                    print("✅ Grad-CAM generated!")
+
+                    gradcam_base64 = (
+                        _gradcam_to_base64(
+                            gradcam_image
+                        )
+                    )
+
+                    print(
+                        "✅ Grad-CAM generated!"
+                    )
 
             except Exception as g_err:
-                print(f"⚠️ Grad-CAM warning: {g_err}")
+
+                print(
+                    f"⚠️ Grad-CAM warning: "
+                    f"{g_err}"
+                )
+
                 gradcam_image = None
                 gradcam_base64 = None
+
         else:
-            print("⚠️ Could not determine class index. Grad-CAM skipped.")
+
+            print(
+                "⚠️ Could not determine class index. "
+                "Grad-CAM skipped."
+            )
 
         # ====================================================
-        # 10. SEVERITY ESTIMATION
+        # 11. SEVERITY ESTIMATION
         # ====================================================
 
         severity_pct = None
         severity_level = None
 
         if gradcam_image is not None:
-            severity_pct, severity_level = vision_model.estimate_severity(gradcam_image)
-            print(f"📈 Severity: {severity_pct}% - {severity_level}")
+
+            severity_pct, severity_level = (
+                vision_model.estimate_severity(
+                    gradcam_image
+                )
+            )
+
+            print(
+                f"📈 Severity: "
+                f"{severity_pct}% - "
+                f"{severity_level}"
+            )
 
         # ====================================================
-        # 11. FORMAT ALTERNATIVES
+        # 12. FORMAT ALTERNATIVES
         # ====================================================
 
         alternatives_list = [
@@ -268,32 +436,54 @@ async def analyze_image(
         ]
 
         # ====================================================
-        # 12. RETURN RESPONSE
+        # 13. RETURN RESPONSE
         # ====================================================
 
         return VisionResponse(
             status="success",
+
+            # Automatically detected crop
             crop=crop,
+
             prediction=prediction,
+
             confidence=confidence,
+
             severity_percentage=severity_pct,
+
             severity_level=severity_level,
+
             gradcam_base64=gradcam_base64,
+
             alternatives=alternatives_list,
-            message="Image analyzed successfully",
+
+            message=(
+                f"Image analyzed successfully. "
+                f"Crop automatically detected as "
+                f"{crop} with "
+                f"{crop_confidence * 100:.2f}% confidence."
+            ),
         )
 
     # ========================================================
     # ERROR HANDLING
     # ========================================================
 
+    except HTTPException:
+        raise
+
     except Exception as e:
-        print(f"❌ Processing error: {str(e)}")
+
+        print(
+            f"❌ Processing error: {str(e)}"
+        )
 
         return VisionResponse(
             status="error",
             crop=crop,
-            message=f"Processing error: {str(e)}",
+            message=(
+                f"Processing error: {str(e)}"
+            ),
         )
 
 
@@ -303,10 +493,16 @@ async def analyze_image(
 
 @app.get("/")
 async def root():
+
     return {
         "message": "AgriKetha Vision Agent",
+
         "version": "1.0.0",
+
+        "automatic_crop_detection": True,
+
         "supported_crops": SUPPORTED_CROPS,
+
         "endpoints": {
             "health": "/agent/health",
             "analyze": "/agent/image/analyze (POST)",
@@ -319,7 +515,10 @@ async def root():
 # ============================================================
 
 if __name__ == "__main__":
-    print("🚀 Starting Vision Agent Server...")
+
+    print(
+        "🚀 Starting Vision Agent Server..."
+    )
 
     uvicorn.run(
         app,
