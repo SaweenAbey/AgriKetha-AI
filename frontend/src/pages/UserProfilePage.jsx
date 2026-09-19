@@ -80,11 +80,18 @@ export const UserProfilePage = () => {
     try {
       setLoadingInvoices(true);
       const data = await paymentService.getHistory();
-      if (data?.history) {
+      if (Array.isArray(data)) {
+        setInvoices(data);
+      } else if (data?.history && Array.isArray(data.history)) {
         setInvoices(data.history);
+      } else if (data?.orders && Array.isArray(data.orders)) {
+        setInvoices(data.orders);
+      } else {
+        setInvoices([]);
       }
     } catch (err) {
       console.warn("Could not fetch invoices:", err);
+      setInvoices([]);
     } finally {
       setLoadingInvoices(false);
     }

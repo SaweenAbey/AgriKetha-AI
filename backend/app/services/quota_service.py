@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from typing import Any, Optional, Tuple
+from bson import ObjectId
 from fastapi import HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.core.logging_config import logger
@@ -72,8 +73,9 @@ class QuotaService:
         """
         user_id = str(user.get("id") or user.get("_id"))
         role = user.get("role", "farmer")
-        plan = user.get("plan", "free")
-        is_premium = (plan in ["premium", "pro", "subscription"]) or (role == "admin")
+        plan = (user.get("plan") or user.get("subscription_plan") or "free").lower()
+        sub_status = user.get("subscription_status", "")
+        is_premium = (plan in ["premium", "pro", "subscription"]) or (sub_status == "active" and plan != "free") or (role == "admin")
 
         usage = await cls.get_or_create_daily_usage(db, user_id)
         text_used = usage.get("text_count", 0)
@@ -150,8 +152,9 @@ class QuotaService:
         """
         user_id = str(user.get("id") or user.get("_id"))
         role = user.get("role", "farmer")
-        plan = user.get("plan", "free")
-        is_premium = (plan in ["premium", "pro", "subscription"]) or (role == "admin")
+        plan = (user.get("plan") or user.get("subscription_plan") or "free").lower()
+        sub_status = user.get("subscription_status", "")
+        is_premium = (plan in ["premium", "pro", "subscription"]) or (sub_status == "active" and plan != "free") or (role == "admin")
 
         date_str = cls.get_current_date_str()
         usage = await cls.get_or_create_daily_usage(db, user_id, date_str)
@@ -204,7 +207,10 @@ class QuotaService:
             )
 
         # Return updated quota status
-        return await cls.get_user_quota_status(db, user)
+        fresh_user = await db.users.find_one({"_id": ObjectId(user_id)}) if ObjectId.is_valid(user_id) else user
+        if fresh_user:
+            fresh_user["id"] = str(fresh_user.get("_id", user_id))
+        return await cls.get_user_quota_status(db, fresh_user or user)
 
     @classmethod
     async def set_user_subscription(
@@ -217,17 +223,25 @@ class QuotaService:
         Updates the user's subscription plan ('free' or 'premium').
         """
         from bson import ObjectId
-        status_val = "active" if plan == "premium" else "none"
+        status_val = "active" if plan in ["premium", "pro", "subscription"] else "none"
+        now = datetime.now(timezone.utc)
+        
+        filter_q = {"_id": ObjectId(user_id)} if ObjectId.is_valid(user_id) else {"id": user_id}
         await db.users.update_one(
-            {"_id": ObjectId(user_id)},
+            filter_q,
             {
                 "$set": {
                     "plan": plan,
+                    "subscription_plan": plan,
                     "subscription_status": status_val,
-                    "updated_at": datetime.now(timezone.utc)
+                    "subscription_updated_at": now,
+                    "updated_at": now
                 }
             }
         )
-        updated_user = await db.users.find_one({"_id": ObjectId(user_id)})
-        updated_user["id"] = str(updated_user["_id"])
+        updated_user = await db.users.find_one(filter_q)
+        if updated_user:
+            updated_user["id"] = str(updated_user.get("_id", user_id))
+        else:
+            updated_user = {"id": user_id, "plan": plan, "subscription_status": status_val}
         return await cls.get_user_quota_status(db, updated_user)
