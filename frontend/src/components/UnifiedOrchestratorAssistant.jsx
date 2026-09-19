@@ -33,6 +33,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { orchestratorService } from "@/services/api";
 import { useLanguage } from "@/context/LanguageContext";
+import { useQuota } from "@/context/QuotaContext";
+import { QuotaWidget } from "@/components/QuotaWidget";
 
 const PRESET_QUESTIONS = [
   {
@@ -63,12 +65,15 @@ const PRESET_QUESTIONS = [
 
 export const UnifiedOrchestratorAssistant = () => {
   const { language, t } = useLanguage();
+  const { updateQuotaFromResponse, fetchQuota, setShowUpgradeModal } = useQuota();
   const [question, setQuestion] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [isQuotaError, setIsQuotaError] = useState(false);
+  const [lastInputMode, setLastInputMode] = useState("text");
   const [history, setHistory] = useState([]);
   const [copied, setCopied] = useState(false);
 
@@ -106,6 +111,7 @@ export const UnifiedOrchestratorAssistant = () => {
       recognition.onresult = (e) => {
         const transcript = e.results[0][0].transcript;
         setQuestion((prev) => (prev ? `${prev} ${transcript}` : transcript));
+        setLastInputMode("voice");
         setIsListening(false);
       };
       recognition.onerror = () => setIsListening(false);
@@ -173,6 +179,7 @@ export const UnifiedOrchestratorAssistant = () => {
       setIsListening(false);
     } else {
       setError(null);
+      setIsQuotaError(false);
       try {
         recognitionRef.current.lang = language === "si" ? "si-LK" : "en-US";
         recognitionRef.current.start();
@@ -221,6 +228,7 @@ export const UnifiedOrchestratorAssistant = () => {
 
     setLoading(true);
     setError(null);
+    setIsQuotaError(false);
     if (synthRef.current) synthRef.current.cancel();
     setIsSpeaking(false);
 
@@ -228,18 +236,31 @@ export const UnifiedOrchestratorAssistant = () => {
       const formData = new FormData();
       formData.append("question", question.trim());
       formData.append("language", language);
+      formData.append("is_voice", lastInputMode === "voice" ? "true" : "false");
+      formData.append("input_mode", lastInputMode);
       if (selectedFile) {
         formData.append("file", selectedFile);
       }
 
       const response = await orchestratorService.orchestrateQuery(formData);
       setResult(response);
+      if (response.quota_status) {
+        updateQuotaFromResponse(response.quota_status);
+      }
+      fetchQuota();
       loadHistory();
+      setLastInputMode("text");
     } catch (err) {
       console.error("Orchestrator request failed:", err);
+      const is429 = err.response?.status === 429;
+      setIsQuotaError(is429);
+      const serverDetail = err.response?.data?.detail;
+      const msg = typeof serverDetail === "object" ? serverDetail.message : serverDetail;
       setError(
-        err.response?.data?.detail ||
-          (language === "si"
+        msg ||
+          (is429
+            ? t("quotaExceededMsg")
+            : language === "si"
             ? "බහු-නියෝජිත විශ්ලේෂණය සම්පූර්ණ කළ නොහැකි විය. කරුණාකර අන්තර්ජාල සබඳතාව පරීක්ෂා කරන්න."
             : "Could not complete the multi-agent analysis. Please verify your internet connection and backend services.")
       );
@@ -415,9 +436,22 @@ export const UnifiedOrchestratorAssistant = () => {
             {/* Error Message */}
             {error && (
               <Alert variant="destructive" className="rounded-2xl">
-                <AlertCircle className="w-4 h-4" />
-                <AlertTitle>Notice</AlertTitle>
-                <AlertDescription className="text-xs">{error}</AlertDescription>
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <div className="flex-1 space-y-2">
+                  <AlertTitle className="font-bold">{isQuotaError ? t("quotaExceededTitle") : "Notice"}</AlertTitle>
+                  <AlertDescription className="text-xs leading-relaxed">{error}</AlertDescription>
+                  {isQuotaError && (
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={() => setShowUpgradeModal(true)}
+                      className="mt-1 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs gap-1.5 shadow-md"
+                    >
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>{t("upgradeToPro")} (Unlimited)</span>
+                    </Button>
+                  )}
+                </div>
               </Alert>
             )}
 

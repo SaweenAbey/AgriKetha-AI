@@ -18,19 +18,23 @@ import {
   Zap,
   BookOpen,
   Globe,
-  Languages
+  Languages,
+  Crown,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
+import { useQuota } from "@/context/QuotaContext";
 import { UnifiedOrchestratorAssistant } from "@/components/UnifiedOrchestratorAssistant";
 import { AgentQueryAssistant } from "@/components/AgentQueryAssistant";
 import { CropDiagnosticsAssistant } from "@/components/CropDiagnosticsAssistant";
 
 export const DashboardPage = () => {
   const { user, logout } = useAuth();
+  const { isUnlimited } = useQuota();
   const { language, toggleLanguage, t } = useLanguage();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("orchestrator"); // 'orchestrator', 'agent1', 'vision', 'market'
@@ -83,13 +87,37 @@ export const DashboardPage = () => {
               <span>{language === "si" ? "English" : "සිංහල"}</span>
             </Button>
 
-            <div className="hidden sm:flex flex-col items-end">
-              <span className="text-sm font-semibold text-foreground">{user?.full_name || t("guestFarmer")}</span>
-              <span className="text-xs text-muted-foreground flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-emerald-600" />
-                {user?.district || t("sriLanka")}
-              </span>
-            </div>
+            {/* Clickable User Profile & Plan Pill */}
+            <button
+              onClick={() => navigate("/profile")}
+              className="group flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-card border border-border/80 hover:border-emerald-500/50 hover:bg-muted/40 transition-all shadow-sm text-left cursor-pointer"
+              title={language === "si" ? "පරිශීලක තොරතුරු සහ ගිණුම් විස්තර සඳහා ක්ලික් කරන්න" : "Click to view Profile & Subscription Details"}
+            >
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-xs shadow-sm group-hover:scale-105 transition-transform">
+                {user?.full_name ? user.full_name.charAt(0).toUpperCase() : "A"}
+              </div>
+              <div className="hidden sm:flex flex-col">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-foreground group-hover:text-emerald-600 transition-colors">
+                    {user?.full_name || t("guestFarmer")}
+                  </span>
+                  {isUnlimited ? (
+                    <Badge className="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black text-[9px] px-1.5 py-0 border-0 shadow-sm">
+                      👑 PRO
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-[9px] px-1.5 py-0 text-muted-foreground border-border">
+                      FREE
+                    </Badge>
+                  )}
+                </div>
+                <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <MapPin className="w-2.5 h-2.5 text-emerald-600" />
+                  {user?.district || t("sriLanka")}
+                </span>
+              </div>
+            </button>
+
             <Button
               variant="outline"
               size="sm"
@@ -108,64 +136,40 @@ export const DashboardPage = () => {
         {/* Welcome Banner */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-900 to-teal-900 text-white p-6 sm:p-8 shadow-xl">
           <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-medium">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              {t("welcomeTag")}
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="max-w-2xl space-y-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-medium">
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                {t("welcomeTag")}
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                {t("ayubowan")}, {user?.full_name || t("farmer")}!
+              </h1>
+              <p className="text-sm text-emerald-100/80 leading-relaxed">
+                {t("welcomeDesc")}
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              {t("ayubowan")}, {user?.full_name || t("farmer")}!
-            </h1>
-            <p className="text-sm text-emerald-100/80 leading-relaxed">
-              {t("welcomeDesc")}
-            </p>
+
+            <div className="self-start sm:self-center shrink-0">
+              <Button
+                onClick={() => navigate("/profile")}
+                size="sm"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-2xl text-xs font-bold gap-2 backdrop-blur-sm shadow-md py-5 px-4"
+              >
+                {isUnlimited ? (
+                  <>
+                    <Crown className="w-4 h-4 text-amber-300" />
+                    <span>{language === "si" ? "Pro ගිණුම සහ විස්තර" : "Pro Profile & Billing"}</span>
+                  </>
+                ) : (
+                  <>
+                    <User className="w-4 h-4 text-emerald-300" />
+                    <span>{language === "si" ? "පරිශීලක ගිණුම (Profile)" : "User Profile & Plan"}</span>
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
-        </div>
-
-        {/* User Profile Overview */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Card className="glass-card">
-            <CardContent className="p-5 flex items-center gap-3.5">
-              <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                <Mail className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground font-medium">{t("accountEmail")}</p>
-                <p className="text-sm font-semibold text-foreground truncate max-w-[180px]">
-                  {user?.email || "user@agriketha.lk"}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card">
-            <CardContent className="p-5 flex items-center gap-3.5">
-              <div className="p-3 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400">
-                <MapPin className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground font-medium">{t("assignedDistrict")}</p>
-                <p className="text-sm font-semibold text-foreground">
-                  {user?.district || t("notSpecified")}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card">
-            <CardContent className="p-5 flex items-center gap-3.5">
-              <div className="p-3 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground font-medium">{t("securityRole")}</p>
-                <p className="text-sm font-semibold text-foreground capitalize">
-                  {user?.role || t("farmer")}
-                </p>
-              </div>
-
-            </CardContent>
-          </Card>
         </div>
 
         {/* Feature Cards Grid */}

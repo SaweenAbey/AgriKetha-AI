@@ -8,6 +8,7 @@ from app.core.database import get_db
 from app.core.logging_config import logger
 from app.schemas.orchestrator.schemas import OrchestratorResponse
 from app.services.orchestrator_service import OrchestratorService
+from app.services.quota_service import QuotaService
 
 
 import asyncio
@@ -103,23 +104,20 @@ async def get_orchestrator_history(
 async def orchestrate_query(
     question: str = Form(...),
     language: Optional[str] = Form(None),
+    is_voice: Optional[bool] = Form(False),
+    input_mode: Optional[str] = Form("text"),
     file: Optional[UploadFile] = File(None),
     current_user: dict = Depends(require_farmer_or_admin),
     db = Depends(get_db),
 ):
     """
-    Agent 4 main orchestration endpoint.
+    Agent 4 main orchestration endpoint with daily usage quota enforcement.
 
     Accepts:
     - Farmer's agricultural question
     - Optional preferred language (e.g. 'si', 'en')
+    - Optional is_voice flag (voice query)
     - Optional crop leaf image
-
-    Agent 4 coordinates:
-    - Agent 2: Query/NLP
-    - Agent 1: Vision (Leaf pathology with Grad-CAM)
-    - Agent 3: Research (Agricultural RAG vector retrieval)
-    - Agent 4: Gemini LLM Grounded Agricultural Advisory
     """
 
     question = question.strip()
@@ -151,6 +149,21 @@ async def orchestrate_query(
         image_filename = file.filename
         image_content_type = file.content_type
 
+    # ---------------------------------------------------------
+    # Enforce Usage Quota
+    # ---------------------------------------------------------
+    voice_used = 1 if (is_voice or input_mode == "voice") else 0
+    text_used = 0 if voice_used > 0 else 1
+    image_used = 1 if image_bytes else 0
+
+    quota_status = await QuotaService.check_and_consume_quota(
+        db=db,
+        user=current_user,
+        text_delta=text_used,
+        image_delta=image_used,
+        voice_delta=voice_used,
+    )
+
     result = await orchestrator_service.process_request(
         question=question,
         image_bytes=image_bytes,
@@ -158,6 +171,8 @@ async def orchestrate_query(
         image_content_type=image_content_type,
         preferred_language=language,
     )
+
+    result["quota_status"] = quota_status
 
     # Save session to MongoDB for historical tracking
     try:

@@ -49,6 +49,11 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
 
+    # Payment Gateway (PayHere Sri Lanka Sandbox / Live)
+    PAYHERE_MERCHANT_ID: str = "1211111"
+    PAYHERE_MERCHANT_SECRET: str = "4TkAgriKethaSecret2026Sample"
+    PAYHERE_MODE: str = "sandbox"  # sandbox or live
+    PAYHERE_URL: str = "https://sandbox.payhere.lk/pay/checkout"
 
     model_config = SettingsConfigDict(
         env_file=".env",

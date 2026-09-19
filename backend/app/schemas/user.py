@@ -25,6 +25,8 @@ class UserOut(BaseModel):
     phone_number: Optional[str] = None
     role: UserRole
     district: Optional[str] = None
+    plan: str = "free"
+    subscription_status: str = "none"
     is_active: bool
     created_at: datetime
     updated_at: datetime
@@ -39,3 +41,7 @@ class UserUpdate(BaseModel):
 class ChangePasswordRequest(BaseModel):
     current_password: str
     new_password: str = Field(..., min_length=6)
+
+
+class SubscriptionUpgradeRequest(BaseModel):
+    plan: str = Field("premium", description="Target plan: 'free' or 'premium'")

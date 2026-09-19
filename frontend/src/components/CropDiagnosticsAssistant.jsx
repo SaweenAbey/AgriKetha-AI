@@ -32,6 +32,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { visionService } from "@/services/api";
+import { useQuota } from "@/context/QuotaContext";
+import { QuotaWidget } from "@/components/QuotaWidget";
 
 const PRESET_LEAF_SAMPLES = [
   {
@@ -145,7 +147,7 @@ function generatePresetBlob(sampleType, name) {
   // Draw Pathology lesions if not healthy
   if (sampleType === "tomato_blight") {
     // Concentric dark rings
-    [ [160, 150, 35], [260, 220, 45], [180, 270, 30] ].forEach(([x, y, r]) => {
+    [[160, 150, 35], [260, 220, 45], [180, 270, 30]].forEach(([x, y, r]) => {
       ctx.beginPath();
       ctx.arc(x, y, r + 10, 0, Math.PI * 2);
       ctx.fillStyle = "rgba(234, 179, 8, 0.4)"; // yellow halo
@@ -169,7 +171,7 @@ function generatePresetBlob(sampleType, name) {
     });
   } else if (sampleType === "rice_spot") {
     // Reddish-brown oval spots
-    [ [190, 120, 25, 10], [220, 190, 35, 15], [170, 260, 30, 12], [230, 310, 20, 8] ].forEach(([x, y, rx, ry]) => {
+    [[190, 120, 25, 10], [220, 190, 35, 15], [170, 260, 30, 12], [230, 310, 20, 8]].forEach(([x, y, rx, ry]) => {
       ctx.beginPath();
       ctx.ellipse(x, y, rx, ry, Math.PI / 4, 0, Math.PI * 2);
       ctx.fillStyle = "#7f1d1d";
@@ -214,6 +216,7 @@ function generatePresetBlob(sampleType, name) {
 }
 
 export const CropDiagnosticsAssistant = () => {
+  const { updateQuotaFromResponse, openUpgradeModal, t } = useQuota();
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -283,7 +286,7 @@ export const CropDiagnosticsAssistant = () => {
       setPreviewUrl(url);
       setSelectedImage(preset.name);
       setResult(null);
-      
+
       // Auto analyze preset immediately for instant farmer delight
       await performAnalysis(file, preset.crop);
     } catch (err) {
@@ -316,6 +319,9 @@ export const CropDiagnosticsAssistant = () => {
       }
 
       const res = await visionService.analyzeImage(formData);
+      if (res?.quota_status) {
+        updateQuotaFromResponse(res.quota_status);
+      }
       setResult(res);
 
       // Refresh history
@@ -327,7 +333,12 @@ export const CropDiagnosticsAssistant = () => {
       }
     } catch (err) {
       console.error("Vision Analysis Error:", err);
-      setError(err.response?.data?.detail || "Vision analysis failed. Please try a clearer leaf photo.");
+      const isQuota429 = err.response?.status === 429;
+      const detailMsg = err.response?.data?.detail?.message || err.response?.data?.detail || "Vision analysis failed. Please try a clearer leaf photo.";
+      setError({
+        message: typeof detailMsg === "object" ? JSON.stringify(detailMsg) : detailMsg,
+        isQuotaExceeded: isQuota429
+      });
     } finally {
       setLoading(false);
     }
@@ -416,7 +427,7 @@ export const CropDiagnosticsAssistant = () => {
         </div>
 
         <div className="relative z-10 flex items-center gap-2.5">
-          <Badge 
+          <Badge
             variant="outline"
             className="px-3 py-1.5 text-xs font-semibold rounded-full bg-teal-500/10 border-teal-400/40 text-teal-200 flex items-center gap-1.5 shadow-sm"
           >
@@ -482,11 +493,10 @@ export const CropDiagnosticsAssistant = () => {
               {/* Drop / Preview Zone */}
               <div
                 onClick={() => !previewUrl && fileInputRef.current?.click()}
-                className={`relative group rounded-2xl border-2 border-dashed transition-all flex flex-col items-center justify-center p-4 min-h-[260px] overflow-hidden ${
-                  previewUrl 
-                    ? "border-emerald-500/60 bg-emerald-950/5" 
+                className={`relative group rounded-2xl border-2 border-dashed transition-all flex flex-col items-center justify-center p-4 min-h-[260px] overflow-hidden ${previewUrl
+                    ? "border-emerald-500/60 bg-emerald-950/5"
                     : "border-border hover:border-teal-500 hover:bg-teal-500/5 cursor-pointer"
-                }`}
+                  }`}
               >
                 {/* Laser Scanning Animation Overlay */}
                 {loading && (
@@ -600,7 +610,7 @@ export const CropDiagnosticsAssistant = () => {
               {/* Optional Crop Category Hint */}
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-muted-foreground flex items-center justify-between">
-                  <span>Crop Category (Optional)</span>
+                  <span>Crop Category</span>
                   <span className="text-[10px] text-muted-foreground">Assists model prior</span>
                 </label>
                 <div className="grid grid-cols-4 gap-1.5">
@@ -609,11 +619,10 @@ export const CropDiagnosticsAssistant = () => {
                       key={c}
                       type="button"
                       onClick={() => setCropHint(cropHint === c ? "" : c)}
-                      className={`text-xs py-1.5 px-2 rounded-xl border font-medium transition-all ${
-                        cropHint === c
+                      className={`text-xs py-1.5 px-2 rounded-xl border font-medium transition-all ${cropHint === c
                           ? "bg-teal-600 text-white border-teal-600 shadow-sm"
                           : "bg-background border-border text-foreground hover:bg-muted"
-                      }`}
+                        }`}
                     >
                       {c}
                     </button>
@@ -647,10 +656,35 @@ export const CropDiagnosticsAssistant = () => {
         {/* Right Column: Diagnostic Results & Explainability (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           {error && (
-            <Alert variant="destructive" className="rounded-2xl">
-              <AlertCircle className="w-4 h-4" />
-              <AlertTitle>Diagnostic Error</AlertTitle>
-              <AlertDescription className="text-xs">{error}</AlertDescription>
+            <Alert variant="destructive" className="py-3.5 rounded-2xl relative border-rose-500/30 bg-rose-500/10">
+              <AlertCircle className="w-4 h-4 text-rose-500 mt-0.5" />
+              <div className="flex-1">
+                <AlertTitle className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                  {error.isQuotaExceeded ? (t?.quota_exceeded || "Daily Limit Exceeded") : "Diagnostic Error"}
+                </AlertTitle>
+                <AlertDescription className="text-xs text-rose-700 dark:text-rose-300 mt-0.5">
+                  {typeof error === "string" ? error : error.message}
+                </AlertDescription>
+                {error.isQuotaExceeded && (
+                  <div className="mt-2.5 flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      onClick={openUpgradeModal}
+                      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold h-7 px-3 text-xs rounded-lg shadow-sm"
+                    >
+                      <Sparkles className="w-3 h-3 mr-1 text-slate-950" />
+                      {t?.upgrade_pro || "Upgrade to Unlimited Pro"}
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setError(null)}
+                className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
             </Alert>
           )}
 
@@ -821,33 +855,30 @@ export const CropDiagnosticsAssistant = () => {
                       <button
                         type="button"
                         onClick={() => setActiveTab("bio")}
-                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                          activeTab === "bio"
+                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${activeTab === "bio"
                             ? "bg-emerald-600 text-white shadow-sm"
                             : "bg-muted text-muted-foreground hover:text-foreground"
-                        }`}
+                          }`}
                       >
                         🌿 Organic & Biological
                       </button>
                       <button
                         type="button"
                         onClick={() => setActiveTab("chem")}
-                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                          activeTab === "chem"
+                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${activeTab === "chem"
                             ? "bg-teal-600 text-white shadow-sm"
                             : "bg-muted text-muted-foreground hover:text-foreground"
-                        }`}
+                          }`}
                       >
                         🧪 Chemical Control
                       </button>
                       <button
                         type="button"
                         onClick={() => setActiveTab("cultural")}
-                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                          activeTab === "cultural"
+                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${activeTab === "cultural"
                             ? "bg-amber-600 text-white shadow-sm"
                             : "bg-muted text-muted-foreground hover:text-foreground"
-                        }`}
+                          }`}
                       >
                         🚜 Cultural Practices
                       </button>

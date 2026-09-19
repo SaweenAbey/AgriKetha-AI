@@ -126,6 +126,47 @@ export const orchestratorService = {
   },
 };
 
+export const userService = {
+  getQuota: async () => {
+    const response = await api.get("/users/quota");
+    return response.data;
+  },
+  upgradeSubscription: async (plan = "premium") => {
+    const response = await api.post("/users/upgrade-subscription", { plan });
+    return response.data;
+  },
+  updateProfile: async (userData) => {
+    const response = await api.put("/users/me", userData);
+    return response.data;
+  },
+  changePassword: async (passwordData) => {
+    const response = await api.put("/users/me/password", passwordData);
+    return response.data;
+  },
+};
+
+export const paymentService = {
+  getConfig: async () => {
+    const response = await api.get("/payments/config");
+    return response.data;
+  },
+  createOrder: async (planId = "pro_monthly", paymentMethod = "payhere_card") => {
+    const response = await api.post("/payments/create-order", {
+      plan_id: planId,
+      payment_method: paymentMethod,
+    });
+    return response.data;
+  },
+  verifyPayment: async (paymentData) => {
+    const response = await api.post("/payments/verify", paymentData);
+    return response.data;
+  },
+  getHistory: async () => {
+    const response = await api.get("/payments/history");
+    return response.data;
+  },
+};
+
 export default api;
 
 

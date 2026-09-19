@@ -41,3 +41,4 @@ class OrchestratorResponse(BaseModel):
     agent_activity: List[AgentActivity] = []
 
     safety_note: Optional[str] = None
+    quota_status: Optional[dict[str, Any]] = None

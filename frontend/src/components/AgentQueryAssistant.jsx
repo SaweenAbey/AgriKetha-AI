@@ -28,6 +28,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { agentService } from "@/services/api";
+import { useQuota } from "@/context/QuotaContext";
+import { QuotaWidget } from "@/components/QuotaWidget";
 
 const QUICK_SUGGESTIONS = [
   {
@@ -70,6 +72,7 @@ const QUICK_SUGGESTIONS = [
 
 
 export const AgentQueryAssistant = ({ onCropDetected }) => {
+  const { updateQuotaFromResponse, openUpgradeModal, t } = useQuota();
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -264,6 +267,10 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
         language: language.split("-")[0]
       });
 
+      if (response?.quota_status) {
+        updateQuotaFromResponse(response.quota_status);
+      }
+
       setResult(response);
       loadHistory();
 
@@ -279,7 +286,12 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
       }
     } catch (err) {
       console.error("Agent 1 Query Error:", err);
-      setError(err.response?.data?.detail || "Failed to process query through Agent 1. Please try again.");
+      const isQuota429 = err.response?.status === 429;
+      const detailMsg = err.response?.data?.detail?.message || err.response?.data?.detail || "Failed to process query through Agent 1. Please try again.";
+      setError({
+        message: typeof detailMsg === "object" ? JSON.stringify(detailMsg) : detailMsg,
+        isQuotaExceeded: isQuota429
+      });
     } finally {
       setLoading(false);
     }
@@ -394,10 +406,28 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
         <CardContent className="space-y-4">
           {error && (
-            <Alert variant="destructive" className="py-2.5 relative">
-              <AlertCircle className="w-4 h-4" />
-              <AlertTitle className="text-xs font-semibold">Query Notice</AlertTitle>
-              <AlertDescription className="text-xs">{error}</AlertDescription>
+            <Alert variant="destructive" className="py-3 relative border-rose-500/30 bg-rose-500/10">
+              <AlertCircle className="w-4 h-4 text-rose-500 mt-0.5" />
+              <div className="flex-1">
+                <AlertTitle className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                  {error.isQuotaExceeded ? (t?.quota_exceeded || "Daily Limit Exceeded") : "Query Notice"}
+                </AlertTitle>
+                <AlertDescription className="text-xs text-rose-700 dark:text-rose-300 mt-0.5">
+                  {typeof error === "string" ? error : error.message}
+                </AlertDescription>
+                {error.isQuotaExceeded && (
+                  <div className="mt-2.5 flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      onClick={openUpgradeModal}
+                      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold h-7 px-3 text-xs rounded-lg shadow-sm"
+                    >
+                      <Sparkles className="w-3 h-3 mr-1 text-slate-950" />
+                      {t?.upgrade_pro || "Upgrade to Unlimited Pro"}
+                    </Button>
+                  </div>
+                )}
+              </div>
               <button 
                 type="button" 
                 onClick={() => setError(null)}
