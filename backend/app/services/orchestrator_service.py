@@ -87,12 +87,18 @@ class OrchestratorService:
         crop = None
         intent = None
         detected_language = None
+        translated_question = None
 
         if query_result:
 
             detected_language = query_result.get(
                 "detected_language"
             )
+
+            translated_question = query_result.get(
+                "translated_question"
+            )
+
 
             nlp_result = query_result.get(
                 "agent_1_result",
@@ -161,7 +167,7 @@ class OrchestratorService:
         # STEP 3: Prepare Research Query
         # ---------------------------------------------------------
 
-        research_query = question
+        research_query = translated_question or question
 
         if vision_result:
 
@@ -169,7 +175,7 @@ class OrchestratorService:
 
             if prediction:
                 research_query = (
-                    f"{question}. "
+                    f"{research_query}. "
                     f"Vision analysis indicates: {prediction}."
                 )
 
@@ -184,7 +190,7 @@ class OrchestratorService:
             research_result = await call_research_agent(
                 query=research_query,
                 crop=crop,
-                topic=intent,
+                topic=None,
                 top_k=5,
             )
 
