@@ -157,8 +157,38 @@ INTENT_KEYWORDS = {
     }
 }
 
+MULTILINGUAL_CROP_MAP = {
+    "tomato": ["tomato", "tomatoes", "තක්කාලි", "තක්කාලී", "thakkali", "takkali", "தக்காளி"],
+    "rice": ["rice", "paddy", "වී", "ගොයම්", "බාත්", "wee", "goyam", "nel", "நெல்"],
+    "chili": ["chili", "chilli", "pepper", "peppers", "මිරිස්", "අමු මිරිස්", "කොච්චි", "miris", "amu miris", "kochchi", "மிளகாய்"],
+    "potato": ["potato", "potatoes", "අල", "අර්තාපල්", "ala", "arthapal", "உருளைக்கிழங்கு"],
+    "onion": ["onion", "onions", "shallot", "shallots", "ලූණු", "ලූනු", "රතු ලූණු", "බිග් ලූණු", "loonu", "lunu", "rathu lunu", "வெங்காயம்"],
+    "brinjal": ["brinjal", "brinjals", "eggplant", "aubergine", "වම්බටු", "බටු", "wambatu", "batu", "கத்தரிக்காய்"],
+    "cucumber": ["cucumber", "cucumbers", "පිපිඤ්ඤා", "කැකිරි", "pipinna", "kekiri", "வெள்ளரி"],
+    "maize": ["maize", "corn", "sweetcorn", "බඩඉරිඟු", "ඉරිඟු", "badairingu", "iringu", "சோளம்"],
+    "carrot": ["carrot", "carrots", "කැරට්", "කැරට්ස්", "karat", "கேரட்"],
+    "cabbage": ["cabbage", "cabbages", "ගෝවා", "ගෝව", "gowa", "கோவா"],
+    "tea": ["tea", "තේ", "තේ වගාව", "the", "thee", "தேயிலை"],
+    "coconut": ["coconut", "coconuts", "පොල්", "pol", "தென்னை"],
+    "rubber": ["rubber", "රබර්", "rabar", "ரப்பர்"],
+    "cinnamon": ["cinnamon", "කුරුඳු", "කුරුදු", "kurundu", "இலவங்கப்பட்டை"],
+    "beetroot": ["beetroot", "beet", "බීට්රූට්", "බීට්", "பீட்ரூட்"],
+    "pumpkin": ["pumpkin", "pumpkins", "වට්ටක්කා", "ලබු", "wattakka", "labu", "பூசணிக்காய்"],
+    "okra": ["okra", "ladies finger", "ladies' finger", "lady's finger", "බණ්ඩක්කා", "බන්ඩක්කා", "bandakka", "வெண்டைக்காய்"],
+    "bean": ["bean", "beans", "බෝංචි", "bonchi", "அவரை"],
+    "leek": ["leek", "leeks", "ලීක්ස්", "leeks", "லீக்ஸ்"]
+}
+
 def extract_crop(doc) -> str:
-   
+    """
+    Extracts crop name from Doc with multilingual support (English, Sinhala, Tamil).
+    """
+    text_lower = doc.text.lower()
+    
+    # Check multilingual mapping first
+    for crop_name, aliases in MULTILINGUAL_CROP_MAP.items():
+        if any(alias in text_lower for alias in aliases):
+            return crop_name
 
     for ent in doc.ents:
         if ent.label_ == "CROP":
@@ -167,16 +197,13 @@ def extract_crop(doc) -> str:
             if "ladies" in crop_text and "finger" in crop_text:
                 return "okra"
                 
-            
             lemmas = [t.lemma_.lower() for t in ent]
-            
             for lemma in lemmas:
                 if lemma in CROP_MAP:
                     return CROP_MAP[lemma]
                 if lemma in CROPS:
                     return lemma
                     
-            
             for key, val in CROP_MAP.items():
                 if key in crop_text:
                     return val
@@ -185,7 +212,6 @@ def extract_crop(doc) -> str:
                 return crop_text[:-1]
             return crop_text
 
-    
     for token in doc:
         lemma = token.lemma_.lower()
         if lemma in CROPS:
@@ -193,16 +219,9 @@ def extract_crop(doc) -> str:
         if token.text.lower() in CROPS:
             return CROP_MAP.get(token.text.lower(), token.text.lower())
             
-    
-    text_lower = doc.text.lower()
-    for crop in CROPS:
-        if crop in text_lower:
-            return CROP_MAP.get(crop, crop)
-            
-    if "ladies finger" in text_lower or "ladies' finger" in text_lower or "okra" in text_lower:
-        return "okra"
-        
     return None
+
+
 
 def extract_grammatical_symptoms(doc) -> list:
     
@@ -242,16 +261,46 @@ def extract_grammatical_symptoms(doc) -> list:
                             found_symptoms.append("wilting")
 
 
-    if "yellow" in text_lower and ("leaf" in text_lower or "leaves" in text_lower or "leafs" in text_lower):
-        found_symptoms.append("yellow leaves")
-    if ("brown" in text_lower or "dark" in text_lower or "black" in text_lower or "spotted" in text_lower) and ("spot" in text_lower or "mark" in text_lower):
-        found_symptoms.append("brown spots")
-    if ("curl" in text_lower or "wrinkle" in text_lower) and ("leaf" in text_lower or "leaves" in text_lower):
-        found_symptoms.append("leaf curling")
-    if "wilt" in text_lower or "droop" in text_lower or "dry" in text_lower:
-        found_symptoms.append("wilting")
-    if "white" in text_lower and ("insect" in text_lower or "bug" in text_lower or "fly" in text_lower or "flies" in text_lower or "whitefly" in text_lower or "whiteflies" in text_lower):
-        found_symptoms.append("white insects")
+    # Multilingual symptom pattern matching (Sinhala, Singlish, Tamil, English)
+    symptom_rules = [
+        ("yellow leaves", [
+            "yellow", "yellowing", "chlorosis", "කහ", "කහපාට", "කහවීම", "කහ පාට", "කහ කොළ", 
+            "kaha", "kahapaata", "manjal", "மஞ்சள்"
+        ]),
+        ("brown spots", [
+            "brown spot", "brown spots", "black spot", "black spots", "dark spot", "dark spots", "spot", "spots", 
+            "ලප", "කළුපාට ලප", "කළු ලප", "දුඹුරු ලප", "තිත්", "කළු තිත්", "ලප තියෙනවා",
+            "lapa", "kalu lapa", "dumburu lapa", "pulli", "புள்ளிகள்", "கருப்பு புள்ளி"
+        ]),
+        ("leaf curling", [
+            "curl", "curling", "wrinkle", "wrinkled", "curled",
+            "හැකිලීම", "හැකිලෙනවා", "ගුලිවීම", "හැකිලිලා", "කොළ හැකිලීම", 
+            "hakilila", "hakilenawa", "suruttai", "சுருட்டை"
+        ]),
+        ("wilting", [
+            "wilt", "wilting", "wilted", "droop", "drooping", "dry", "drying", 
+            "මැළවීම", "මැලවෙනවා", "වේලෙනවා", "වියළීම", "මැලිලා", "මැලවිලා",
+            "melawenawa", "melila", "vadal", "வாடல்"
+        ]),
+        ("white insects", [
+            "whitefly", "whiteflies", "white insect", "insect", "insects", "bug", "bugs", "aphid", "aphids", "worm", "caterpillar",
+            "සුදු මැස්සන්", "සුදු මැස්සා", "මැස්සෝ", "මැක්කන්", "කුඩිත්තන්", "පණුවන්", "පණුවා", "ගොබ පණුවා",
+            "panuwo", "kudiththan", "poochi", "பூச்சி", "புழு"
+        ]),
+        ("fruit/root rot", [
+            "rot", "rotting", "decay", "blight", "damping off",
+            "කුණුවීම", "කුණු වෙනවා", "කුණු", "මුල් කුණුවීම", "ගෙඩි කුණුවීම", 
+            "kunu", "kunuvima", "azhukal", "அழுகல்"
+        ]),
+        ("fungal infection", [
+            "fungus", "fungi", "mold", "mildew", "rust", "canker",
+            "පුස්", "දිලීර", "දිලීර රෝග", "pus", "dileera", "poonjai", "பூஞ்சை"
+        ])
+    ]
+
+    for symptom_name, keywords in symptom_rules:
+        if any(kw in text_lower for kw in keywords):
+            found_symptoms.append(symptom_name)
         
     return list(sorted(set(found_symptoms)))
 
@@ -306,7 +355,9 @@ def extract_machinery_details(doc) -> list:
     return list(sorted(found_machinery))
 
 def detect_intent(doc) -> str:
-    
+    """
+    Classifies intent of the query using token lemma matching against defined intent keywords.
+    """
     scores = {intent: 0 for intent in INTENT_KEYWORDS}
     
  

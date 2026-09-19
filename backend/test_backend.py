@@ -96,10 +96,90 @@ async def run_tests():
         print(f"  -> POST /api/v1/farmer/crops: {crop_resp.status_code} | Crops count: {len(crop_resp.json())}")
         assert crop_resp.status_code == 200
 
-        # 3.7 RBAC Security Test: Farmer attempts to access Admin endpoint (Must receive 403 Forbidden)
+        # 3.7 Farmer sends Query to Agent 1 (Text & Voice modes)
+        query_text_resp = await client.post("/api/v1/farmer/query-agent", json={
+            "question": "My tomato leaves are turning yellow with brown spots.",
+            "input_mode": "text",
+            "auto_triggered": False
+        }, headers={"Authorization": f"Bearer {farmer_token}"})
+        print(f"  -> POST /api/v1/farmer/query-agent (Text Mode): {query_text_resp.status_code} | Crop: {query_text_resp.json()['agent_response']['agent_1_result']['crop']}")
+        assert query_text_resp.status_code == 200
+        assert query_text_resp.json()["agent_response"]["agent_1_result"]["crop"] == "tomato"
+        assert "yellow leaves" in query_text_resp.json()["agent_response"]["agent_1_result"]["symptoms"]
+
+        # Voice mode auto-triggered query test
+        query_voice_resp = await client.post("/api/v1/farmer/query-agent", json={
+            "question": "What is the best fertilizer dosage for paddy during vegetative growth?",
+            "input_mode": "voice",
+            "auto_triggered": True
+        }, headers={"Authorization": f"Bearer {farmer_token}"})
+        print(f"  -> POST /api/v1/farmer/query-agent (Voice Mode): {query_voice_resp.status_code} | Intent: {query_voice_resp.json()['agent_response']['agent_1_result']['intent']}")
+        assert query_voice_resp.status_code == 200
+        assert query_voice_resp.json()["agent_response"]["agent_1_result"]["crop"] == "rice"
+
+        # Sinhala Query test
+        query_sinhala_resp = await client.post("/api/v1/farmer/query-agent", json={
+            "question": "මගේ තක්කාලි වල කළුපාට ලප තියෙනවා",
+            "input_mode": "voice",
+            "auto_triggered": True
+        }, headers={"Authorization": f"Bearer {farmer_token}"})
+        print(f"  -> POST /api/v1/farmer/query-agent (Sinhala Query): {query_sinhala_resp.status_code} | Crop: {query_sinhala_resp.json()['agent_response']['agent_1_result']['crop']} | Symptoms: {query_sinhala_resp.json()['agent_response']['agent_1_result']['symptoms']}")
+        assert query_sinhala_resp.status_code == 200
+        assert query_sinhala_resp.json()["agent_response"]["agent_1_result"]["crop"] == "tomato"
+        assert "brown spots" in query_sinhala_resp.json()["agent_response"]["agent_1_result"]["symptoms"]
+        assert query_sinhala_resp.json()["agent_response"]["agent_1_result"]["intent"] == "disease diagnosis"
+
+        # Sinhala Brinjal Shoot Borer and Fruit Rot Query test
+        query_brinjal_resp = await client.post("/api/v1/farmer/query-agent", json={
+            "question": "වම්බටු ගෙඩි කුණුවීම සහ කරටි පණුවා මර්දනය කරන්නේ කොහොමද?",
+            "input_mode": "voice",
+            "auto_triggered": True
+        }, headers={"Authorization": f"Bearer {farmer_token}"})
+        print(f"  -> POST /api/v1/farmer/query-agent (Brinjal Query): {query_brinjal_resp.status_code} | Crop: {query_brinjal_resp.json()['agent_response']['agent_1_result']['crop']} | Symptoms: {query_brinjal_resp.json()['agent_response']['agent_1_result']['symptoms']}")
+        assert query_brinjal_resp.status_code == 200
+        assert query_brinjal_resp.json()["agent_response"]["agent_1_result"]["crop"] == "brinjal"
+        assert "fruit/root rot" in query_brinjal_resp.json()["agent_response"]["agent_1_result"]["symptoms"]
+        assert query_brinjal_resp.json()["agent_response"]["agent_1_result"]["intent"] == "disease diagnosis"
+
+        # Farmer checks Agent 1 status
+        status_resp = await client.get("/api/v1/farmer/agent-1-status")
+        print(f"  -> GET /api/v1/farmer/agent-1-status: {status_resp.status_code} | Status: {status_resp.json().get('status')}")
+        assert status_resp.status_code == 200
+
+        # 3.8 Vision Agent Diagnostics Tests
+        vision_status_resp = await client.get("/api/v1/farmer/vision/status")
+        print(f"  -> GET /api/v1/farmer/vision/status: {vision_status_resp.status_code} | Mode: {vision_status_resp.json().get('mode')}")
+        assert vision_status_resp.status_code == 200
+
+        # Upload and analyze leaf image
+        mock_image_bytes = b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00`\x00`\x00\x00\xff\xdb\x00C\x00"
+        files = {"image": ("test_tomato_early_blight.jpg", mock_image_bytes, "image/jpeg")}
+        data = {"crop": "Tomato", "notes": "Observed on 3 plants in field A"}
+        vision_analyze_resp = await client.post(
+            "/api/v1/farmer/vision/analyze",
+            files=files,
+            data=data,
+            headers={"Authorization": f"Bearer {farmer_token}"}
+        )
+        print(f"  -> POST /api/v1/farmer/vision/analyze: {vision_analyze_resp.status_code} | Prediction: {vision_analyze_resp.json().get('prediction')}")
+        assert vision_analyze_resp.status_code == 200
+        assert "treatment_advisory" in vision_analyze_resp.json()
+        assert vision_analyze_resp.json()["crop"] == "Tomato"
+
+        # Check Vision Diagnostics History
+        vision_hist_resp = await client.get("/api/v1/farmer/vision/history", headers={"Authorization": f"Bearer {farmer_token}"})
+        print(f"  -> GET /api/v1/farmer/vision/history: {vision_hist_resp.status_code} | History count: {len(vision_hist_resp.json())}")
+        assert vision_hist_resp.status_code == 200
+        assert len(vision_hist_resp.json()) >= 1
+
+
+
+
+        # 3.8 RBAC Security Test: Farmer attempts to access Admin endpoint (Must receive 403 Forbidden)
         forbidden_resp = await client.get("/api/v1/admin/users", headers={"Authorization": f"Bearer {farmer_token}"})
         print(f"  -> [RBAC CHECK] GET /api/v1/admin/users with Farmer token: {forbidden_resp.status_code} (Expected 403)")
         assert forbidden_resp.status_code == 403
+
 
         # 3.8 Register & Login Admin
         admin_data = {
