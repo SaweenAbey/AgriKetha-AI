@@ -52,7 +52,7 @@ def _infer_crop_from_prediction(prediction: Optional[str]) -> Optional[str]:
     pred_lower = prediction.lower()
     if "tomato" in pred_lower:
         return "tomato"
-    if "rice" in pred_lower or "paddy" in pred_lower or "blast" in pred_lower or "brown spot" in pred_lower or "tungro" in pred_lower or "sheath" in pred_lower:
+    if any(k in pred_lower for k in ["rice", "paddy", "blast", "brown spot", "tungro", "sheath"]):
         return "rice"
     if "chilli" in pred_lower or "chili" in pred_lower:
         return "chilli"
@@ -86,11 +86,7 @@ class OrchestratorService:
     ) -> dict[str, Any]:
 
         session_id = str(uuid.uuid4())
-
-        logger.info(
-            "Agent 4 request started | session_id=%s",
-            session_id,
-        )
+        logger.info("Agent 4 request started | session_id=%s", session_id)
 
         agent_activity: list[dict[str, Any]] = []
 
@@ -99,9 +95,10 @@ class OrchestratorService:
         # ---------------------------------------------------------
 
         query_result: Optional[dict[str, Any]] = None
-        crop = None
-        intent = None
-        detected_language = preferred_language
+        crop: Optional[str] = None
+        intent: Optional[str] = None
+        detected_language: Optional[str] = preferred_language
+        translated_question: Optional[str] = None
 
         try:
             query_result = await call_query_agent(question)
@@ -113,15 +110,11 @@ class OrchestratorService:
                     "details": "Question analyzed successfully by Agent 2.",
                 }
             )
-
-            logger.info(
-                "Agent 2 completed | session_id=%s",
-                session_id,
-            )
+            logger.info("Agent 2 completed | session_id=%s", session_id)
 
         except AgentClientError as exc:
             logger.warning(
-                "Agent 2 microservice unreachable, using resilient fallback parser | session_id=%s | error=%s",
+                "Agent 2 unreachable, using fallback parser | session_id=%s | error=%s",
                 session_id,
                 exc,
             )
@@ -129,7 +122,7 @@ class OrchestratorService:
             fallback_nlp = _fallback_crop_nlp(question)
             crop = fallback_nlp.get("crop")
             intent = fallback_nlp.get("intent")
-            detected_language = fallback_nlp.get("detected_language")
+            detected_language = preferred_language or fallback_nlp.get("detected_language")
 
             agent_activity.append(
                 {
@@ -139,10 +132,12 @@ class OrchestratorService:
                 }
             )
 
-        # Extract NLP information if query_result succeeded
+        # Extract NLP information if Agent 2 succeeded
         if query_result:
-            detected_language = query_result.get("detected_language")
-            nlp_result = query_result.get("agent_1_result", {})
+            detected_language = query_result.get("detected_language") or detected_language
+            translated_question = query_result.get("translated_question")
+
+            nlp_result = query_result.get("agent_1_result") or {}
             crop = nlp_result.get("crop") or crop
             intent = nlp_result.get("intent") or intent
 
@@ -164,16 +159,15 @@ class OrchestratorService:
                     {
                         "agent": "vision-agent",
                         "status": "success",
-                        "details": f"Vision analysis: {vision_result.get('prediction', 'Analyzed')} ({vision_result.get('severity_level', 'Diagnostic complete')})",
+                        "details": (
+                            f"Vision analysis: {vision_result.get('prediction', 'Analyzed')} "
+                            f"({vision_result.get('severity_level', 'Diagnostic complete')})"
+                        ),
                     }
                 )
+                logger.info("Agent 1 completed | session_id=%s", session_id)
 
-                logger.info(
-                    "Agent 1 completed | session_id=%s",
-                    session_id,
-                )
-
-                # If crop was not identified from question, infer from vision prediction
+                # If crop was not identified from the question, infer it from the prediction
                 if not crop:
                     crop = _infer_crop_from_prediction(vision_result.get("prediction"))
 
@@ -183,7 +177,6 @@ class OrchestratorService:
                     session_id,
                     exc,
                 )
-
                 agent_activity.append(
                     {
                         "agent": "vision-agent",
@@ -191,7 +184,6 @@ class OrchestratorService:
                         "details": str(exc),
                     }
                 )
-
         else:
             agent_activity.append(
                 {
@@ -203,17 +195,15 @@ class OrchestratorService:
 
         # ---------------------------------------------------------
         # STEP 3: Prepare Research Query
+        # (use the English translation when available, for better retrieval)
         # ---------------------------------------------------------
 
-        research_query = question
+        research_query = translated_question or question
 
         if vision_result:
             prediction = vision_result.get("prediction")
             if prediction:
-                research_query = (
-                    f"{question}. "
-                    f"Vision analysis indicates: {prediction}."
-                )
+                research_query = f"{research_query}. Vision analysis indicates: {prediction}."
 
         # ---------------------------------------------------------
         # STEP 4: Call Agent 3 - Research/RAG Agent
@@ -237,7 +227,6 @@ class OrchestratorService:
                     "details": f"Retrieved {result_count} relevant agricultural evidence chunks from knowledge base.",
                 }
             )
-
             logger.info(
                 "Agent 3 completed | session_id=%s | count=%d",
                 session_id,
@@ -250,7 +239,6 @@ class OrchestratorService:
                 session_id,
                 exc,
             )
-
             agent_activity.append(
                 {
                     "agent": "research-agent",
@@ -267,8 +255,7 @@ class OrchestratorService:
         sources: list[dict[str, Any]] = []
 
         if research_result:
-            results = research_result.get("results", [])
-            for item in results:
+            for item in research_result.get("results", []):
                 evidence.append(
                     {
                         "content": item.get("content"),
@@ -279,7 +266,6 @@ class OrchestratorService:
                         "similarity_score": item.get("similarity_score"),
                     }
                 )
-
                 sources.append(
                     {
                         "source": item.get("source"),
@@ -291,6 +277,7 @@ class OrchestratorService:
         # ---------------------------------------------------------
         # STEP 6: Generate Final Agricultural Advisory using Gemini
         # ---------------------------------------------------------
+
         advisory = ""
 
         try:
@@ -317,7 +304,6 @@ class OrchestratorService:
                 session_id,
                 exc,
             )
-
             agent_activity.append(
                 {
                     "agent": "gemini-llm",
@@ -325,16 +311,12 @@ class OrchestratorService:
                     "details": "Final advisory generation failed.",
                 }
             )
-
             advisory = (
                 "I could not generate the final agricultural advisory at this time. "
                 "Please consult a qualified agricultural extension officer or expert before taking action."
             )
 
-        logger.info(
-            "Agent 4 request completed | session_id=%s",
-            session_id,
-        )
+        logger.info("Agent 4 request completed | session_id=%s", session_id)
 
         return {
             "success": True,
@@ -352,4 +334,4 @@ class OrchestratorService:
                 "Agricultural recommendations are grounded in retrieved evidence. "
                 "Always verify chemical labels and consult extension officers."
             ),
-        }
+        }
