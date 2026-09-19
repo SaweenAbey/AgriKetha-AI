@@ -1,0 +1,283 @@
+export const translations = {
+  en: {
+    // Navigation & Header
+    appTitle: "AgriKetha-AI",
+    appSubtitle: "Sri Lanka Smart Agricultural Multi-Agent System",
+    farmerPortal: "Farmer Portal",
+    officerAdmin: "Officer / Admin",
+    signOut: "Sign Out",
+    guestFarmer: "Guest Farmer",
+    sriLanka: "Sri Lanka",
+    langSwitch: "සිංහල",
+    langCode: "en",
+
+    // Welcome Banner
+    welcomeTag: "Agent 4 (Multi-Agent Orchestrator) & All Microservices Active",
+    ayubowan: "Ayubowan",
+    welcomeDesc: "Welcome to your AgriKetha-AI smart farming control hub. Ask questions via voice or text, or upload crop leaf photos to run PyTorch deep learning diagnostics with Grad-CAM explainability and grounded AI guidance.",
+
+    // Profile Cards
+    accountEmail: "Account Email",
+    assignedDistrict: "Assigned District",
+    securityRole: "RBAC Security Role",
+    notSpecified: "Not Specified",
+    farmer: "Farmer",
+    admin: "Admin",
+
+    // Feature Cards
+    aiModulesTitle: "AI Modules & Multi-Agent Services",
+    agent4Title: "Agent 4: Multi-Agent Hub",
+    agent4Desc: "Coordinates NLP, Vision with Grad-CAM, and RAG Knowledge Retrieval into a unified Gemini advisory.",
+    agent4Badge: "4-in-1 AI",
+    agent4Sub: "Full Pipeline Active",
+
+    agent1Title: "Agent 1/2: NLP Advisor",
+    agent1Desc: "Ask farming queries by voice or text in English, Sinhala (සිංහල), or Tamil (தமிழ்).",
+    agent1Badge: "Voice Ready",
+    agent1Sub: "Voice & NLP Active",
+
+    visionTitle: "Crop Pathology (Vision)",
+    visionDesc: "Upload leaf photos for instant deep learning pathology with Grad-CAM explainability heatmaps.",
+    visionBadge: "Grad-CAM AI",
+    visionSub: "PyTorch Ensemble",
+
+    marketTitle: "Market Price Advisory",
+    marketDesc: "Real-time market wholesale prices across Dambulla, Meegoda, and Manning Dedicated Economic Centers.",
+    marketSub: "Live Price Feeds",
+
+    // Active Module Tabs
+    tabOrchestrator: "Agent 4: Multi-Agent Hub",
+    tabAgent1: "Agent 1/2: NLP & Voice",
+    tabVision: "Vision Agent: Grad-CAM",
+    tabMarket: "Market Prices",
+    activeModule: "Active Module",
+
+    // Market Section
+    marketCenterTitle: "Economic Center Price Feeds",
+    marketCenterDesc: "Real-time price feeds for Dambulla, Meegoda, and Manning Dedicated Economic Centers. You can also ask Agent 1 directly via voice: \"What is the cabbage wholesale price in Dambulla?\"",
+    askPricesBtn: "Ask Multi-Agent Hub for Prices",
+
+    // Unified Orchestrator Assistant
+    orchestratorTag: "Agent 4: Unified Multi-Agent Agricultural Orchestrator",
+    orchestratorHeading: "Full-Stack Agricultural AI Advisory",
+    orchestratorSub: "Coordinates Query NLP (Agent 2), Vision Deep Learning with Grad-CAM (Agent 1), and RAG Knowledge Retrieval (Agent 3) to generate grounded agricultural guidance with Gemini.",
+    
+    step1Label: "1. Describe your crop issue or question (Voice / Text)",
+    textareaPlaceholder: "E.g., My tomato leaves have black spots and yellowing, what is this disease and how to treat it?...",
+    quickPresets: "Quick Presets",
+    
+    step2Label: "2. Optional: Upload Crop Leaf Photo (Triggers Agent 1 Vision & Grad-CAM)",
+    uploadTitle: "Click to upload or take a leaf photo",
+    uploadSub: "Supports JPG, PNG, WEBP for PyTorch leaf diagnostics",
+    imageReady: "Image ready for Agent 1",
+    
+    runAnalysisBtn: "Run Multi-Agent Agricultural Advisory",
+    orchestratingBtn: "Orchestrating 4 AI Agents...",
+    
+    workflowChainTitle: "Multi-Agent Workflow Chain",
+    advisoryHeading: "Agricultural Advisory & Recommendations",
+    listenAudio: "Listen (TTS)",
+    stopAudio: "Stop Audio",
+    copyText: "Copy",
+    copiedText: "Copied!",
+    responsibleNotice: "Responsible Farming Notice",
+    
+    primaryDiagnosis: "Primary Diagnosis",
+    confidenceScore: "Confidence",
+    severityLevel: "Severity",
+    alternativeDiagnoses: "Alternative Diagnoses Considered",
+    heatmapExplain: "Grad-CAM visual heatmap highlights the infected leaf regions analyzed by PyTorch.",
+    
+    citationsHeading: "Agent 3: Verified Agricultural Knowledge Base Citations",
+    citationsSub: "The advisory above is grounded strictly on these verified agricultural research documents.",
+    pageLabel: "Page",
+    matchScore: "Match",
+    voiceInputTitle: "Voice input (Sinhala / English)",
+    listeningTitle: "Listening... Click to stop",
+
+    // Agent Query Assistant
+    nlpTag: "Agent 1/2: Multilingual Voice & NLP Assistant",
+    nlpHeading: "Agricultural Query Assistant",
+    nlpSub: "Ask in Sinhala, Tamil, or English for instant crop cultivation, disease symptoms, fertilizer dosages, and market pricing.",
+    typeQuestionLabel: "Type or speak your farming query",
+    askAssistantBtn: "Ask Agricultural Assistant",
+    analyzingBtn: "Analyzing query...",
+    previousSessions: "Recent Advisory History",
+    cropDetected: "Crop Detected",
+    intentDetected: "Intent",
+
+    // Vision Assistant
+    visionTag: "Agent 1: Deep Learning Crop Pathology",
+    visionHeading: "Crop Leaf Disease Classifier & Grad-CAM Heatmap",
+    visionSub: "Upload or capture high-resolution leaf photos to identify pathogens, severity index, and visualize attention regions.",
+    selectSamplePreset: "Select Leaf Sample Preset",
+    analyzeLeafBtn: "Analyze Leaf with PyTorch",
+    analyzingLeafBtn: "Running PyTorch & Grad-CAM...",
+    gradcamMapTitle: "Grad-CAM Visual Saliency Map",
+    diseaseSeverity: "Disease Severity",
+    confidenceRating: "Confidence Rating",
+
+    // Auth Pages
+    loginTitle: "Sign In to AgriKetha-AI",
+    loginSub: "Sri Lanka Smart Agricultural Intelligence Platform",
+    emailLabel: "Email Address",
+    passwordLabel: "Password",
+    signInBtn: "Sign In to Dashboard",
+    noAccount: "Don't have an account?",
+    registerNow: "Register as Farmer",
+    registerTitle: "Create Farmer Account",
+    registerSub: "Join Sri Lanka's smart agricultural network",
+    fullNameLabel: "Full Name",
+    districtLabel: "District",
+    phoneLabel: "Phone Number",
+    confirmPasswordLabel: "Confirm Password",
+    termsNotice: "I agree to the Agricultural Terms of Service and data privacy policies.",
+    createAccountBtn: "Create Farmer Account",
+    haveAccount: "Already registered?",
+    quickDemoFill: "Quick Demo Fill",
+    clickToTest: "Click to test",
+    demoFarmer: "Demo Farmer",
+    demoOfficer: "Demo Officer",
+  },
+
+  si: {
+    // Navigation & Header
+    appTitle: "අග්‍රිකෙත-AI",
+    appSubtitle: "ශ්‍රී ලංකා බහු-නියෝජිත ස්මාර්ට් කෘෂිකාර්මික පද්ධතිය",
+    farmerPortal: "ගොවි පද්ධතිය",
+    officerAdmin: "කෘෂි නිලධාරී / පරිපාලක",
+    signOut: "පිටවීම",
+    guestFarmer: "ගොවි මහතා",
+    sriLanka: "ශ්‍රී ලංකාව",
+    langSwitch: "English",
+    langCode: "si",
+
+    // Welcome Banner
+    welcomeTag: "Agent 4 (ප්‍රධාන ඒකාබද්ධ නියෝජිත) ඇතුළු සියලු AI නියෝජිතයන් සක්‍රියයි",
+    ayubowan: "ආයුබෝවන්",
+    welcomeDesc: "ඔබගේ අග්‍රිකෙත-AI කෘෂිකාර්මික පාලන මැදිරියට සාදරයෙන් පිළිගනිමු. හඬ හෝ කෙටි පණිවිඩ මඟින් ගැටළු විමසන්න, නැතහොත් පත්‍ර ඡායාරූප ලබාදී Grad-CAM තාක්ෂණයෙන් යුත් PyTorch AI රෝග විනිශ්චය සහ නිල කෘෂි උපදෙස් ලබාගන්න.",
+
+    // Profile Cards
+    accountEmail: "ගිණුමේ විද්‍යුත් තැපෑල",
+    assignedDistrict: "අදාළ දිස්ත්‍රික්කය",
+    securityRole: "පරිශීලක භූමිකාව",
+    notSpecified: "සඳහන් කර නැත",
+    farmer: "ගොවි මහතා",
+    admin: "පරිපාලක / නිලධාරී",
+
+    // Feature Cards
+    aiModulesTitle: "AI මොඩියුල සහ බහු-නියෝජිත සේවාවන්",
+    agent4Title: "Agent 4: ප්‍රධාන ඒකාබද්ධ කෘෂි AI",
+    agent4Desc: "භාෂා විශ්ලේෂණය, පත්‍ර රෝග නිර්ණය සහ විද්‍යාත්මක පර්යේෂණ දත්ත එක්කොට විශ්වාසනීය Gemini උපදෙස් සපයයි.",
+    agent4Badge: "4-in-1 AI",
+    agent4Sub: "සම්පූර්ණ පද්ධතිය සක්‍රියයි",
+
+    agent1Title: "Agent 1/2: භාෂා හා හඬ උපදේශක",
+    agent1Desc: "සිංහල, දෙමළ හෝ ඉංග්‍රීසි භාෂාවෙන් හඬ හෝ අකුරු මඟින් කෘෂිකාර්මික ගැටළු විමසන්න.",
+    agent1Badge: "හඬ සක්‍රියයි",
+    agent1Sub: "භාෂා විශ්ලේෂණය සක්‍රියයි",
+
+    visionTitle: "පත්‍ර රෝග විනිශ්චය (Vision)",
+    visionDesc: "Grad-CAM තාක්ෂණය සහිත ගැඹුරු ඉගෙනුම් (Deep Learning) මඟින් පත්‍ර රෝග සහ හානි හඳුනාගන්න.",
+    visionBadge: "Grad-CAM AI",
+    visionSub: "PyTorch එන්සෙම්බල්",
+
+    marketTitle: "තොග වෙළඳපල මිල ගණන්",
+    marketDesc: "දඹුල්ල, මීගොඩ සහ මැනිං වෙළඳපල ඇතුළු ආර්ථික මධ්‍යස්ථානවල සජීවී එළවළු තොග මිල තොරතුරු.",
+    marketSub: "සජීවී මිල ගණන්",
+
+    // Active Module Tabs
+    tabOrchestrator: "Agent 4: ඒකාබද්ධ කෘෂි AI",
+    tabAgent1: "Agent 1/2: භාෂා හා හඬ උපදේශක",
+    tabVision: "Vision: පත්‍ර රෝග විනිශ්චය",
+    tabMarket: "වෙළඳපල මිල",
+    activeModule: "ක්‍රියාකාරී මොඩියුලය",
+
+    // Market Section
+    marketCenterTitle: "ආර්ථික මධ්‍යස්ථාන තොග මිල විස්තර",
+    marketCenterDesc: "දඹුල්ල, මීගොඩ සහ මැනිං ආර්ථික මධ්‍යස්ථානවල සජීවී එළවළු තොග මිල. ඔබට හඬ මඟින්ද විමසිය හැක: \"දඹුල්ල ආර්ථික මධ්‍යස්ථානයේ ගෝවා තොග මිල කීයද?\"",
+    askPricesBtn: "මිල ගණන් විමසන්න",
+
+    // Unified Orchestrator Assistant
+    orchestratorTag: "Agent 4: කෘෂිකාර්මික බහු-නියෝජිත ප්‍රධාන පද්ධතිය",
+    orchestratorHeading: "සම්පූර්ණ කෘෂිකාර්මික AI උපදේශන සේවාව",
+    orchestratorSub: "භාෂා විශ්ලේෂණ Agent 2, පත්‍ර රෝග විනිශ්චය Agent 1, සහ විද්‍යාත්මක RAG පර්යේෂණ Agent 3 ඒකාබද්ධ කර Gemini මඟින් නිවැරදි උපදෙස් සම්පාදනය කරයි.",
+    
+    step1Label: "1. ඔබගේ වගා ගැටලුව හෝ ප්‍රශ්නය විස්තර කරන්න (හඬින් හෝ අකුරින්)",
+    textareaPlaceholder: "උදා: මගේ තක්කාලි කොළ වල කළු ලප සහ කහවීමක් තියෙනවා, මොකක්ද මේ රෝගය සහ කළ යුතු ප්‍රතිකාර මොනවාද?...",
+    quickPresets: "ක්ෂණික ප්‍රශ්න ආදර්ශ",
+    
+    step2Label: "2. අමතර: වගා පත්‍ර ඡායාරූපයක් එක්කරන්න (Agent 1 Vision සහ Grad-CAM ක්‍රියාත්මක වේ)",
+    uploadTitle: "පත්‍ර ඡායාරූපයක් තේරීමට හෝ ලබාගැනීමට ක්ලික් කරන්න",
+    uploadSub: "PyTorch රෝග විනිශ්චය සඳහා JPG, PNG, WEBP ගොනු භාවිත කළ හැක",
+    imageReady: "ඡායාරූපය Agent 1 සඳහා සූදානම්",
+    
+    runAnalysisBtn: "සම්පූර්ණ බහු-නියෝජිත AI උපදෙස් ලබාගන්න",
+    orchestratingBtn: "AI නියෝජිතයින් 4 දෙනා විශ්ලේෂණය කරමින් පවතී...",
+    
+    workflowChainTitle: "බහු-නියෝජිත ක්‍රියාකාරී දාමය (Workflow Chain)",
+    advisoryHeading: "කෘෂිකාර්මික උපදේශන වාර්තාව සහ නිර්දේශ",
+    listenAudio: "හඬින් අසන්න (TTS)",
+    stopAudio: "හඬ නවත්වන්න",
+    copyText: "පිටපත් කරන්න",
+    copiedText: "පිටපත් විය!",
+    responsibleNotice: "වගකීම් සහගත ගොවිතැන් දැනුම්දීම",
+    
+    primaryDiagnosis: "ප්‍රධාන රෝග විනිශ්චය",
+    confidenceScore: "විශ්වාසනීයත්වය",
+    severityLevel: "හානියේ මට්ටම",
+    alternativeDiagnoses: "සලකා බලන ලද අනෙකුත් රෝග",
+    heatmapExplain: "Grad-CAM තාප සිතියම මඟින් PyTorch AI විසින් රෝගය හඳුනාගත් පත්‍ර ප්‍රදේශය පෙන්වයි.",
+    
+    citationsHeading: "Agent 3: සත්‍යාපිත කෘෂිකර්ම දෙපාර්තමේන්තු පර්යේෂණ මූලාශ්‍ර",
+    citationsSub: "ඉහත උපදෙස් සකස් කර ඇත්තේ මෙම නිල කෘෂි පර්යේෂණ ලේඛන සහ පොත්පත් පදනම් කරගෙනය.",
+    pageLabel: "පිටුව",
+    matchScore: "ගැළපීම",
+    voiceInputTitle: "හඬ ආදානය (සිංහල / English)",
+    listeningTitle: "සවන් දෙමින් පවතී... නැවැත්වීමට ක්ලික් කරන්න",
+
+    // Agent Query Assistant
+    nlpTag: "Agent 1/2: බහුභාෂා හඬ සහ භාෂා සහයක",
+    nlpHeading: "කෘෂිකාර්මික විමසුම් සහයක",
+    nlpSub: "වගා පාලනය, රෝග ලක්ෂණ, පොහොර යෙදීම් සහ වෙළඳපල මිල පිළිබඳ සිංහලෙන් හෝ ඉංග්‍රීසියෙන් විමසන්න.",
+    typeQuestionLabel: "ඔබගේ ගැටලුව ලියන්න හෝ හඬින් පවසන්න",
+    askAssistantBtn: "කෘෂි උපදෙස් විමසන්න",
+    analyzingBtn: "විශ්ලේෂණය කරමින් පවතී...",
+    previousSessions: "පෙර උපදේශන ඉතිහාසය",
+    cropDetected: "හඳුනාගත් බෝගය",
+    intentDetected: "අරමුණ",
+
+    // Vision Assistant
+    visionTag: "Agent 1: පත්‍ර රෝග විනිශ්චය AI",
+    visionHeading: "පත්‍ර රෝග හඳුනාගැනීම සහ Grad-CAM තාප සිතියම",
+    visionSub: "පත්‍ර ඡායාරූපයක් ලබාදී ක්ෂණිකව රෝගය, හානි ප්‍රතිශතය සහ AI අවධානය යොමු කළ ප්‍රදේශ නිරීක්ෂණය කරන්න.",
+    selectSamplePreset: "ආදර්ශ පත්‍ර සාම්පලයක් තෝරන්න",
+    analyzeLeafBtn: "PyTorch මඟින් පත්‍රය විශ්ලේෂණය කරන්න",
+    analyzingLeafBtn: "PyTorch & Grad-CAM ක්‍රියාත්මක වේ...",
+    gradcamMapTitle: "Grad-CAM අවධානය යොමු කළ තාප සිතියම",
+    diseaseSeverity: "හානියේ මට්ටම",
+    confidenceRating: "විශ්වාසනීයත්ව අගය",
+
+    // Auth Pages
+    loginTitle: "අග්‍රිකෙත-AI වෙත පිවිසෙන්න",
+    loginSub: "ශ්‍රී ලංකා ස්මාර්ට් කෘෂිකාර්මික බුද්ධිමය වේදිකාව",
+    emailLabel: "විද්‍යුත් තැපෑල (Email)",
+    passwordLabel: "මුරපදය (Password)",
+    signInBtn: "පාලන පුවරුවට පිවිසෙන්න",
+    noAccount: "ගිණුමක් නොමැතිද?",
+    registerNow: "ගොවියෙකු ලෙස ලියාපදිංචි වන්න",
+    registerTitle: "ගොවි ගිණුමක් සාදන්න",
+    registerSub: "ශ්‍රී ලංකාවේ ස්මාර්ට් ගොවි ජාලය හා එක්වන්න",
+    fullNameLabel: "සම්පූර්ණ නම",
+    districtLabel: "දිස්ත්‍රික්කය",
+    phoneLabel: "දුරකථන අංකය",
+    confirmPasswordLabel: "මුරපදය තහවුරු කරන්න",
+    termsNotice: "කෘෂිකාර්මික සේවා කොන්දේසි සහ රහස්‍යතා ප්‍රතිපත්තිවලට මම එකඟ වෙමි.",
+    createAccountBtn: "ගොවි ගිණුම සාදන්න",
+    haveAccount: "දැනටමත් ලියාපදිංචි වී තිබේද?",
+    quickDemoFill: "ක්ෂණික ආදර්ශ පිරවීම",
+    clickToTest: "පරීක්ෂා කිරීමට ක්ලික් කරන්න",
+    demoFarmer: "ආදර්ශ ගොවි ගිණුම",
+    demoOfficer: "ආදර්ශ නිලධාරී ගිණුම",
+  },
+};

@@ -1,4 +1,4 @@
-print("🔥 main.py is executing!")
+print("[Vision Agent] main.py is executing...")
 
 import base64
 import io
@@ -14,7 +14,7 @@ from app.schemas import VisionResponse, DiseasePrediction
 from app.preprocess import validate_image, preprocess_image
 from app.model_ensemble import EnsembledVisionModel
 
-print("✅ All imports loaded!")
+print("[Vision Agent] All imports loaded successfully.")
 
 # Initialize FastAPI
 app = FastAPI(
@@ -30,14 +30,18 @@ vision_model = None
 async def load_model():
     """Load the vision model on server startup"""
     global vision_model
-    print("🖼️ Loading Ensembled Vision Model (3 Specialists)...")
-    vision_model = EnsembledVisionModel()
-    print("✅ Vision Agent ready!")
+    print("[Vision Agent] Loading Ensembled Vision Model...")
+    try:
+        vision_model = EnsembledVisionModel()
+        print("[Vision Agent] Vision Agent ready!")
+    except Exception as e:
+        print(f"[Vision Agent] Notice loading ensemble: {e}")
 
 @app.get("/agent/health")
 async def health_check():
     """Health check endpoint"""
     return {
+
         "status": "healthy", 
         "agent": "vision-agent",
         "model_loaded": vision_model is not None

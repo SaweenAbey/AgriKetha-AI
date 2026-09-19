@@ -7,21 +7,37 @@ from app.core.logging_config import setup_logging, logger
 from app.core.database import connect_to_mongo, close_mongo_connection
 from app.core.middleware import RequestLoggingMiddleware
 from app.api.v1.api_router import api_router
+from app.services.agent_manager import start_all_agents, stop_all_agents
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     Application lifespan context manager for startup and shutdown events.
+    Automatically starts and shuts down the 3 AI agent microservices.
     """
     # Startup
     setup_logging()
     logger.info("Initializing %s in %s mode...", settings.PROJECT_NAME, settings.ENVIRONMENT)
     await connect_to_mongo()
+    
+    # Automatically spawn/verify all 3 AI Agent microservices
+    try:
+        start_all_agents()
+    except Exception as exc:
+        logger.warning("Could not auto-start agent microservices: %s", exc)
+
     yield
+
     # Shutdown
     logger.info("Shutting down %s...", settings.PROJECT_NAME)
+    try:
+        stop_all_agents()
+    except Exception as exc:
+        logger.warning("Error stopping agent microservices: %s", exc)
+
     await close_mongo_connection()
+
 
 
 app = FastAPI(

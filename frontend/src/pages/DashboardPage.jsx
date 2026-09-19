@@ -14,19 +14,26 @@ import {
   ArrowUpRight,
   Mic,
   Activity,
-  Eye
+  Eye,
+  Zap,
+  BookOpen,
+  Globe,
+  Languages
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
+import { UnifiedOrchestratorAssistant } from "@/components/UnifiedOrchestratorAssistant";
 import { AgentQueryAssistant } from "@/components/AgentQueryAssistant";
 import { CropDiagnosticsAssistant } from "@/components/CropDiagnosticsAssistant";
 
 export const DashboardPage = () => {
   const { user, logout } = useAuth();
+  const { language, toggleLanguage, t } = useLanguage();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("agent1"); // 'agent1', 'vision', 'market'
+  const [activeTab, setActiveTab] = useState("orchestrator"); // 'orchestrator', 'agent1', 'vision', 'market'
   const agentSectionRef = useRef(null);
 
   const handleLogout = () => {
@@ -52,33 +59,45 @@ export const DashboardPage = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-lg text-foreground">AgriKetha-AI</span>
+                <span className="font-bold text-lg text-foreground">{t("appTitle")}</span>
                 <Badge variant="secondary" className="text-[10px]">
-                  {user?.role === "admin" ? "Officer / Admin" : "Farmer Portal"}
+                  {user?.role === "admin" ? t("officerAdmin") : t("farmerPortal")}
                 </Badge>
               </div>
               <p className="text-[11px] text-muted-foreground hidden sm:block">
-                Sri Lanka Smart Agricultural Multi-Agent System
+                {t("appSubtitle")}
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Language Switcher Toggle */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleLanguage}
+              className="gap-1.5 text-xs font-semibold border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10 rounded-xl"
+              title="Change Language / භාෂාව වෙනස් කරන්න"
+            >
+              <Languages className="w-3.5 h-3.5 text-emerald-600" />
+              <span>{language === "si" ? "English" : "සිංහල"}</span>
+            </Button>
+
             <div className="hidden sm:flex flex-col items-end">
-              <span className="text-sm font-semibold text-foreground">{user?.full_name || "Guest Farmer"}</span>
+              <span className="text-sm font-semibold text-foreground">{user?.full_name || t("guestFarmer")}</span>
               <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-emerald-600" />
-                {user?.district || "Sri Lanka"}
+                {user?.district || t("sriLanka")}
               </span>
             </div>
             <Button
               variant="outline"
               size="sm"
               onClick={handleLogout}
-              className="gap-1.5 text-xs text-muted-foreground hover:text-destructive hover:border-destructive"
+              className="gap-1.5 text-xs text-muted-foreground hover:text-destructive hover:border-destructive rounded-xl"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span>Sign Out</span>
+              <span>{t("signOut")}</span>
             </Button>
           </div>
         </div>
@@ -92,13 +111,13 @@ export const DashboardPage = () => {
           <div className="relative z-10 max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-medium">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              Agent 1 (Voice & Text NLP) & Vision Agent (Grad-CAM) Online
+              {t("welcomeTag")}
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Ayubowan, {user?.full_name || "Farmer"}!
+              {t("ayubowan")}, {user?.full_name || t("farmer")}!
             </h1>
             <p className="text-sm text-emerald-100/80 leading-relaxed">
-              Welcome to your AgriKetha-AI control hub. Ask questions via voice or text, or upload crop leaf photos to run PyTorch deep learning diagnostics with Grad-CAM explainability.
+              {t("welcomeDesc")}
             </p>
           </div>
         </div>
@@ -111,7 +130,7 @@ export const DashboardPage = () => {
                 <Mail className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground font-medium">Account Email</p>
+                <p className="text-xs text-muted-foreground font-medium">{t("accountEmail")}</p>
                 <p className="text-sm font-semibold text-foreground truncate max-w-[180px]">
                   {user?.email || "user@agriketha.lk"}
                 </p>
@@ -125,9 +144,9 @@ export const DashboardPage = () => {
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground font-medium">Assigned District</p>
+                <p className="text-xs text-muted-foreground font-medium">{t("assignedDistrict")}</p>
                 <p className="text-sm font-semibold text-foreground">
-                  {user?.district || "Not Specified"}
+                  {user?.district || t("notSpecified")}
                 </p>
               </div>
             </CardContent>
@@ -139,11 +158,12 @@ export const DashboardPage = () => {
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground font-medium">RBAC Security Role</p>
+                <p className="text-xs text-muted-foreground font-medium">{t("securityRole")}</p>
                 <p className="text-sm font-semibold text-foreground capitalize">
-                  {user?.role || "Farmer"}
+                  {user?.role || t("farmer")}
                 </p>
               </div>
+
             </CardContent>
           </Card>
         </div>
@@ -152,11 +172,44 @@ export const DashboardPage = () => {
         <div>
           <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
             <Layers className="w-4 h-4 text-emerald-600" />
-            AI Modules & Multi-Agent Services
+            {t("aiModulesTitle")}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Smart Farming AI Advisor (Agent 1) */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Agent 4: Unified Multi-Agent Orchestrator */}
+            <Card 
+              onClick={() => handleTabSwitch("orchestrator")}
+              className={`group cursor-pointer transition-all duration-300 relative overflow-hidden ${
+                activeTab === "orchestrator"
+                  ? "border-emerald-500 bg-emerald-500/10 shadow-lg ring-2 ring-emerald-500/20"
+                  : "border-border hover:border-emerald-500/50 hover:shadow-xl"
+              }`}
+            >
+              <div className="absolute top-2 right-2">
+                <Badge className="bg-emerald-600 text-white text-[10px] gap-1 animate-pulse">
+                  <Sparkles className="w-2.5 h-2.5" /> {t("agent4Badge")}
+                </Badge>
+              </div>
+              <CardHeader className="pb-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <CardTitle className="text-base flex items-center justify-between">
+                  {t("agent4Title")}
+                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-emerald-600 transition-colors" />
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  {t("agent4Desc")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Badge variant="secondary" className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                  {t("agent4Sub")}
+                </Badge>
+              </CardContent>
+            </Card>
+
+            {/* Smart Farming AI Advisor (Agent 1/2) */}
             <Card 
               onClick={() => handleTabSwitch("agent1")}
               className={`group cursor-pointer transition-all duration-300 relative overflow-hidden ${
@@ -167,24 +220,24 @@ export const DashboardPage = () => {
             >
               <div className="absolute top-2 right-2">
                 <Badge className="bg-emerald-600 text-white text-[10px] gap-1">
-                  <Mic className="w-2.5 h-2.5" /> Voice Ready
+                  <Mic className="w-2.5 h-2.5" /> {t("agent1Badge")}
                 </Badge>
               </div>
               <CardHeader className="pb-3">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                   <Bot className="w-6 h-6" />
                 </div>
-                <CardTitle className="text-lg flex items-center justify-between">
-                  Agent 1: Smart AI Advisor
+                <CardTitle className="text-base flex items-center justify-between">
+                  {t("agent1Title")}
                   <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-emerald-600 transition-colors" />
                 </CardTitle>
-                <CardDescription>
-                  Ask farming queries by voice or text in English, Sinhala (සිංහල), or Tamil (தமிழ்).
+                <CardDescription className="text-xs">
+                  {t("agent1Desc")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Badge variant="secondary" className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
-                  Voice & Multilingual NLP Active
+                  {t("agent1Sub")}
                 </Badge>
               </CardContent>
             </Card>
@@ -200,24 +253,24 @@ export const DashboardPage = () => {
             >
               <div className="absolute top-2 right-2">
                 <Badge className="bg-teal-600 text-white text-[10px] gap-1">
-                  <Eye className="w-2.5 h-2.5" /> Grad-CAM AI
+                  <Eye className="w-2.5 h-2.5" /> {t("visionBadge")}
                 </Badge>
               </div>
               <CardHeader className="pb-3">
                 <div className="w-12 h-12 rounded-2xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                   <Leaf className="w-6 h-6" />
                 </div>
-                <CardTitle className="text-lg flex items-center justify-between">
-                  Crop Disease Diagnostics
+                <CardTitle className="text-base flex items-center justify-between">
+                  {t("visionTitle")}
                   <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-teal-600 transition-colors" />
                 </CardTitle>
-                <CardDescription>
-                  Upload or snap a leaf photo for instant deep learning pathology with Grad-CAM explainability and DOA prescriptions.
+                <CardDescription className="text-xs">
+                  {t("visionDesc")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Badge variant="secondary" className="text-xs font-medium text-teal-700 dark:text-teal-300">
-                  Vision Agent (:8002) Ready
+                  {t("visionSub")}
                 </Badge>
               </CardContent>
             </Card>
@@ -235,17 +288,17 @@ export const DashboardPage = () => {
                 <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                   <TrendingUp className="w-6 h-6" />
                 </div>
-                <CardTitle className="text-lg flex items-center justify-between">
-                  Market Price Advisory
+                <CardTitle className="text-base flex items-center justify-between">
+                  {t("marketTitle")}
                   <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-amber-600 transition-colors" />
                 </CardTitle>
-                <CardDescription>
-                  Real-time market wholesale prices across Dambulla, Meegoda, and Manning Dedicated Economic Centers.
+                <CardDescription className="text-xs">
+                  {t("marketDesc")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Badge variant="secondary" className="text-xs font-normal">
-                  Live Price Feeds
+                  {t("marketSub")}
                 </Badge>
               </CardContent>
             </Card>
@@ -258,6 +311,18 @@ export const DashboardPage = () => {
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
             <div className="flex items-center gap-2">
               <Button
+                variant={activeTab === "orchestrator" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("orchestrator")}
+                className={`gap-2 rounded-xl text-xs font-bold ${
+                  activeTab === "orchestrator" ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""
+                }`}
+              >
+                <Zap className="w-4 h-4" />
+                {t("tabOrchestrator")}
+              </Button>
+
+              <Button
                 variant={activeTab === "agent1" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setActiveTab("agent1")}
@@ -266,7 +331,7 @@ export const DashboardPage = () => {
                 }`}
               >
                 <Bot className="w-4 h-4" />
-                Agent 1: Voice & NLP Advisor
+                {t("tabAgent1")}
               </Button>
 
               <Button
@@ -278,7 +343,7 @@ export const DashboardPage = () => {
                 }`}
               >
                 <Leaf className="w-4 h-4" />
-                Vision Agent: Leaf Diagnostics & Grad-CAM
+                {t("tabVision")}
               </Button>
 
               <Button
@@ -290,16 +355,24 @@ export const DashboardPage = () => {
                 }`}
               >
                 <TrendingUp className="w-4 h-4" />
-                Market Prices & Trends
+                {t("tabMarket")}
               </Button>
             </div>
 
             <Badge variant="secondary" className="text-xs">
-              Active Module: {activeTab === "agent1" ? "Agent 1 NLP" : activeTab === "vision" ? "Vision Agent" : "Market Feeds"}
+              {t("activeModule")}:{" "}
+              {activeTab === "orchestrator"
+                ? t("tabOrchestrator")
+                : activeTab === "agent1"
+                ? t("tabAgent1")
+                : activeTab === "vision"
+                ? t("tabVision")
+                : t("tabMarket")}
             </Badge>
           </div>
 
           {/* Active Module Body */}
+          {activeTab === "orchestrator" && <UnifiedOrchestratorAssistant />}
           {activeTab === "agent1" && <AgentQueryAssistant />}
           {activeTab === "vision" && <CropDiagnosticsAssistant />}
           {activeTab === "market" && (
@@ -307,23 +380,24 @@ export const DashboardPage = () => {
               <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center mx-auto">
                 <TrendingUp className="w-7 h-7" />
               </div>
-              <h3 className="text-lg font-bold text-foreground">Economic Center Price Feeds</h3>
+              <h3 className="text-lg font-bold text-foreground">{t("marketCenterTitle")}</h3>
               <p className="text-xs text-muted-foreground max-w-md mx-auto">
-                Real-time price feeds for Dambulla, Meegoda, and Manning Dedicated Economic Centers. You can also ask Agent 1 directly via voice: <em>"දඹුල්ල ආර්ථික මධ්‍යස්ථානයේ ගෝවා තොග මිල කීයද?"</em>
+                {t("marketCenterDesc")}
               </p>
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => setActiveTab("agent1")}
+                onClick={() => setActiveTab("orchestrator")}
                 className="text-xs font-bold text-emerald-700 dark:text-emerald-300"
               >
-                Ask Agent 1 for Prices
+                {t("askPricesBtn")}
               </Button>
             </Card>
           )}
         </section>
       </main>
     </div>
+
   );
 };
 

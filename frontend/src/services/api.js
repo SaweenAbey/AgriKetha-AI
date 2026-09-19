@@ -106,6 +106,27 @@ export const visionService = {
   },
 };
 
+export const orchestratorService = {
+  orchestrateQuery: async (formData) => {
+    const response = await api.post("/orchestrator/query", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 60000,
+    });
+    return response.data;
+  },
+  getOrchestratorHistory: async (limit = 15) => {
+    const response = await api.get(`/orchestrator/history?limit=${limit}`);
+    return response.data;
+  },
+  getOrchestratorStatus: async () => {
+    const response = await api.get("/orchestrator/status");
+    return response.data;
+  },
+};
+
 export default api;
+
 
 
