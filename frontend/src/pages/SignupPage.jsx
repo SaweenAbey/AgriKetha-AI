@@ -22,10 +22,12 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { SRI_LANKA_DISTRICTS } from "@/constants/sriLankaData";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const SignupPage = () => {
   const navigate = useNavigate();
   const { register, login, loading, error, setError } = useAuth();
+  const { language, t } = useLanguage();
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -72,27 +74,27 @@ export const SignupPage = () => {
     setSuccessMessage("");
 
     if (!formData.full_name.trim()) {
-      setLocalError("Please provide your full name.");
+      setLocalError(language === "si" ? "කරුණාකර ඔබගේ සම්පූර්ණ නම ඇතුළත් කරන්න." : "Please provide your full name.");
       return;
     }
 
     if (!formData.email.trim()) {
-      setLocalError("Please provide a valid email address.");
+      setLocalError(language === "si" ? "කරුණාකර වලංගු විද්‍යුත් තැපෑලක් ඇතුළත් කරන්න." : "Please provide a valid email address.");
       return;
     }
 
     if (formData.password.length < 6) {
-      setLocalError("Password must be at least 6 characters long.");
+      setLocalError(language === "si" ? "මුරපදයට අවම වශයෙන් අකුරු 6ක් අවශ්‍යයි." : "Password must be at least 6 characters long.");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setLocalError("Passwords do not match.");
+      setLocalError(language === "si" ? "මුරපද එකිනෙකට නොගැළපේ." : "Passwords do not match.");
       return;
     }
 
     if (!formData.agreeTerms) {
-      setLocalError("You must accept the terms of service to proceed.");
+      setLocalError(language === "si" ? "සේවා කොන්දේසි වලට එකඟ විය යුතුය." : "You must accept the terms of service to proceed.");
       return;
     }
 
@@ -107,7 +109,7 @@ export const SignupPage = () => {
 
     const res = await register(payload);
     if (res.success) {
-      setSuccessMessage("Account created successfully! Signing you in...");
+      setSuccessMessage(language === "si" ? "ගිණුම සාර්ථකව සාදන ලදී! ඔබව ප්‍රවේශ කරමින් පවතී..." : "Account created successfully! Signing you in...");
       // Auto login
       const loginRes = await login(formData.email, formData.password);
       if (loginRes.success) {
@@ -120,8 +122,8 @@ export const SignupPage = () => {
 
   return (
     <AuthLayout
-      title="Create Your Account"
-      subtitle="Join AgriKetha-AI to boost crop yield and optimize farm revenue"
+      title={t("registerTitle")}
+      subtitle={t("registerSub")}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Error notification */}
@@ -142,7 +144,7 @@ export const SignupPage = () => {
 
         {/* Role Selector Cards */}
         <div className="space-y-1.5">
-          <Label required>Account Type / ගිණුම් වර්ගය</Label>
+          <Label required>{language === "si" ? "ගිණුම් වර්ගය" : "Account Type"}</Label>
           <div className="grid grid-cols-2 gap-2.5">
             <button
               type="button"
@@ -161,9 +163,9 @@ export const SignupPage = () => {
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 )}
               </div>
-              <span className="text-xs font-bold text-foreground">Farmer</span>
+              <span className="text-xs font-bold text-foreground">{t("farmer")}</span>
               <span className="text-[10px] text-muted-foreground leading-tight mt-0.5">
-                Crop disease AI & market rates
+                {language === "si" ? "පත්‍ර රෝග AI සහ වෙළඳපල මිල" : "Crop disease AI & market rates"}
               </span>
             </button>
 
@@ -184,9 +186,9 @@ export const SignupPage = () => {
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 )}
               </div>
-              <span className="text-xs font-bold text-foreground">Officer / Admin</span>
+              <span className="text-xs font-bold text-foreground">{t("officerAdmin")}</span>
               <span className="text-[10px] text-muted-foreground leading-tight mt-0.5">
-                Regional oversight & reports
+                {language === "si" ? "පරිපාලන සහ දිස්ත්‍රික් නිරීක්ෂණ" : "Regional oversight & reports"}
               </span>
             </button>
           </div>
@@ -195,7 +197,7 @@ export const SignupPage = () => {
         {/* Full Name */}
         <div className="space-y-1.5">
           <Label htmlFor="full_name" required>
-            Full Name / සම්පූර්ණ නම
+            {t("fullNameLabel")}
           </Label>
           <Input
             id="full_name"
@@ -212,7 +214,7 @@ export const SignupPage = () => {
         {/* Email Address */}
         <div className="space-y-1.5">
           <Label htmlFor="email" required>
-            Email Address
+            {t("emailLabel")}
           </Label>
           <Input
             id="email"
@@ -230,7 +232,7 @@ export const SignupPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Phone Number */}
           <div className="space-y-1.5">
-            <Label htmlFor="phone_number">Phone (දුරකථන)</Label>
+            <Label htmlFor="phone_number">{t("phoneLabel")}</Label>
             <Input
               id="phone_number"
               name="phone_number"
@@ -244,7 +246,7 @@ export const SignupPage = () => {
 
           {/* District Dropdown */}
           <div className="space-y-1.5">
-            <Label htmlFor="district" required>District (දිස්ත්‍රික්කය)</Label>
+            <Label htmlFor="district" required>{t("districtLabel")}</Label>
             <div className="relative">
               <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
                 <MapPin className="w-4 h-4" />
@@ -270,14 +272,14 @@ export const SignupPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1.5">
             <Label htmlFor="password" required>
-              Password
+              {t("passwordLabel")}
             </Label>
             <div className="relative">
               <Input
                 id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Min 6 characters"
+                placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
                 icon={<Lock className="w-4 h-4" />}
@@ -296,13 +298,13 @@ export const SignupPage = () => {
 
           <div className="space-y-1.5">
             <Label htmlFor="confirmPassword" required>
-              Confirm Password
+              {t("confirmPasswordLabel")}
             </Label>
             <Input
               id="confirmPassword"
               name="confirmPassword"
               type={showPassword ? "text" : "password"}
-              placeholder="Re-type password"
+              placeholder="••••••••"
               value={formData.confirmPassword}
               onChange={handleChange}
               icon={<Lock className="w-4 h-4" />}
@@ -328,9 +330,15 @@ export const SignupPage = () => {
               />
             </div>
             <div className="flex justify-between text-[10px] text-muted-foreground">
-              <span>Security level</span>
+              <span>{language === "si" ? "ආරක්ෂණ මට්ටම" : "Security level"}</span>
               <span className="font-semibold">
-                {pwdScore <= 1 ? "Weak" : pwdScore === 2 ? "Moderate" : pwdScore === 3 ? "Good" : "Strong"}
+                {pwdScore <= 1
+                  ? language === "si" ? "දුර්වලයි" : "Weak"
+                  : pwdScore === 2
+                  ? language === "si" ? "මධ්‍යස්ථයි" : "Moderate"
+                  : pwdScore === 3
+                  ? language === "si" ? "හොඳයි" : "Good"
+                  : language === "si" ? "ශක්තිමත්" : "Strong"}
               </span>
             </div>
           </div>
@@ -347,11 +355,7 @@ export const SignupPage = () => {
               className="mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-border accent-emerald-600"
             />
             <span className="text-xs text-muted-foreground leading-snug">
-              I agree to the{" "}
-              <a href="#terms" className="text-emerald-600 dark:text-emerald-400 underline">
-                Terms of Agricultural Data Usage
-              </a>{" "}
-              and Privacy Policy.
+              {t("termsNotice")}
             </span>
           </label>
         </div>
@@ -367,11 +371,11 @@ export const SignupPage = () => {
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Creating AgriKetha Account...
+              {language === "si" ? "ගිණුම සාදමින් පවතී..." : "Creating AgriKetha Account..."}
             </>
           ) : (
             <>
-              Register & Start Farming Smart
+              {t("createAccountBtn")}
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
             </>
           )}
@@ -380,12 +384,12 @@ export const SignupPage = () => {
         {/* Sign In prompt */}
         <div className="text-center pt-3 border-t border-border/60">
           <p className="text-xs text-muted-foreground">
-            Already have an account?{" "}
+            {t("haveAccount")}{" "}
             <Link
               to="/login"
               className="font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 hover:underline"
             >
-              Sign In here
+              {t("signInBtn")}
             </Link>
           </p>
         </div>
