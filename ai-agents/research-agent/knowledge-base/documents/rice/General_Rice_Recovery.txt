@@ -1,0 +1,18 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: General Recovery
+
+When a farmer asks “How can I recover my rice crop?”:
+
+1.  Identify the likely problem first.
+2.  Check crop age and growth stage.
+3.  Inspect several plants rather than one plant.
+4.  Look for patterns across the field.
+5.  Check recent fertilizer use and water management.
+6.  Check for insects, disease lesions, and nutrient symptoms.
+7.  Correct the underlying cause.
+8.  Protect healthy/new growth.
+9.  Avoid unnecessary pesticide applications.
+10. Use resistant varieties and good field sanitation for future crops.
+11. If diagnosis is uncertain or damage is severe, recommend
+    professional confirmation.

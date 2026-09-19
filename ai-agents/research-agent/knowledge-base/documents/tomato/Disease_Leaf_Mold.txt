@@ -1,0 +1,6 @@
+AgriKetha-AI Knowledge Base
+Crop: Tomato
+Category: Disease
+
+5. LEAF
+MOLD

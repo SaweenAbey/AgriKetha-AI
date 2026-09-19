@@ -1,0 +1,24 @@
+AgriKetha-AI Knowledge Base
+Crop: Tomato
+Category: General Recovery
+
+When a farmer asks how to recover a tomato plant:
+
+1.  Identify the likely disease/pest first.
+2.  Check whether the problem is fungal, bacterial, viral,
+    insect-related, or environmental.
+3.  Inspect multiple leaves and plants.
+4.  Check the underside of leaves for mites and insects.
+5.  Check irrigation, humidity, drainage, temperature, and recent
+    weather.
+6.  Review fertilizer use and nutrient balance.
+7.  Remove or isolate severely infected plant material when appropriate.
+8.  Improve airflow and reduce unnecessary leaf wetness.
+9.  Use resistant varieties for future planting where available.
+10. Use chemical control only when justified and according to local
+    label requirements.
+11. For suspected viral disease, focus on prevention and vector
+    management rather than attempting a “cure”.
+12. If diagnosis is uncertain or the crop is severely affected,
+    recommend confirmation by an agricultural extension officer or plant
+    pathologist.

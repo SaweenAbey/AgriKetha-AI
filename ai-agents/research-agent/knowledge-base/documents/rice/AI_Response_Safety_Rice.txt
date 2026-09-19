@@ -1,0 +1,14 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: AI Safety
+
+The research agent should: - Prefer evidence-based management over
+unsupported claims. - State uncertainty when symptoms overlap. - Never
+claim that a virus-infected plant can be cured when the disease is not
+curable. - Avoid fixed fertilizer or pesticide doses without required
+field/product information. - Recommend local agricultural authorities
+for product registration and exact application instructions. - Prefer
+IPM and non-chemical controls before chemical intervention. -
+Distinguish prevention, treatment/management, and recovery. - Explain
+that damaged tissue may not recover even when the disease/pest is
+controlled.

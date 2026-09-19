@@ -1,0 +1,29 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Disease
+
+Disease: Brown Spot
+
+Scientific cause: Bipolaris oryzae (commonly associated with brown spot)
+
+Identification / symptoms: - Small circular to oval brown lesions occur
+on leaves. - Mature lesions may have a darker margin and lighter
+center. - Severe infection can affect grains. - Brown spot can be
+confused with blast.
+
+Common contributing factors: - Nutrient stress, particularly poor
+overall crop nutrition. - Drought or water stress. - Poor soil
+fertility. - Weak or stressed plants.
+
+Effects: - Reduced photosynthesis. - Reduced grain quality and yield
+under severe disease pressure.
+
+Management: 1. Maintain balanced soil fertility. 2. Correct confirmed
+nutrient deficiencies. 3. Avoid prolonged water stress. 4. Use healthy
+seed. 5. Remove or manage infected crop residues where appropriate. 6.
+Improve field sanitation. 7. Use locally recommended fungicide options
+only when needed and according to local labels.
+
+Recovery: - Correct underlying nutrient or water stress. - Protect new
+growth. - Severely damaged leaves will not recover, but improved
+management can reduce new infection.

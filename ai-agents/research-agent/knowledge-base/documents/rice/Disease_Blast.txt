@@ -1,0 +1,32 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Disease
+
+Disease: Blast
+
+Scientific cause: Magnaporthe oryzae
+
+Identification / symptoms: - Leaf lesions are often spindle- or
+diamond-shaped with pointed ends. - Lesions can enlarge and join
+together. - Collar or neck infections can cause serious damage to
+panicles. - Blast can be confused with brown spot, so diagnosis should
+consider lesion shape and plant stage.
+
+Effects: - Severe leaf blast can reduce leaf area available for grain
+filling. - Neck or panicle blast can cause poor grain development and
+major yield loss.
+
+Management: 1. Plant resistant varieties recommended for the local area.
+2. Avoid excessive nitrogen. 3. Split nitrogen applications instead of
+applying excessive nitrogen at once. 4. Maintain suitable water
+management. 5. Use balanced nutrition. 6. Use clean seed and good field
+sanitation. 7. Where locally recommended and legally registered,
+fungicides such as appropriate triazole or strobilurin products may be
+used according to the label and local extension guidance. 8. Monitor
+especially around heading when neck blast risk is important.
+
+Recovery: - Existing dead lesions will not become healthy again. -
+Protect newly emerging leaves and panicles. - Correct excessive nitrogen
+or other management problems. - Severe neck blast should be reported to
+an agricultural officer because yield protection may require timely
+intervention.

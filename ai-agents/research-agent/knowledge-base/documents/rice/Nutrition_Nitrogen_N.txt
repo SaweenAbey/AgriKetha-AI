@@ -1,0 +1,27 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Nutrition
+
+Nutrition: Nitrogen (N) Deficiency
+
+Role: - Nitrogen is essential for vegetative growth, chlorophyll
+formation, and yield.
+
+Typical symptoms: - Older leaves become yellowish or pale green first. -
+Plants may be stunted. - Reduced tillering. - Overall crop growth is
+weak.
+
+Possible causes: - Low soil nitrogen. - Insufficient fertilizer. -
+Nutrient losses. - Poor timing or placement of nitrogen fertilizer.
+
+Management / recovery: 1. Confirm the diagnosis because yellowing can
+have several causes. 2. Follow a site-specific or locally recommended
+nitrogen management plan. 3. Apply nitrogen at the recommended rate and
+timing rather than applying a large amount at once. 4. Split nitrogen
+applications where recommended. 5. Consider soil and crop history. 6.
+Avoid over-application because excessive nitrogen can increase
+susceptibility to some pests and diseases.
+
+Warning: - Do not tell a farmer to apply a fixed amount of urea without
+knowing field size, soil condition, crop stage, previous fertilizer use,
+and local recommendation.

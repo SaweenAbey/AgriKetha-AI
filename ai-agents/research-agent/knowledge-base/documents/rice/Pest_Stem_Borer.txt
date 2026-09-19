@@ -1,0 +1,24 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Pest
+
+Pest: Stem Borer
+
+Examples: - Yellow stem borer - Striped stem borer - Other rice stem
+borers
+
+Damage / symptoms: - Larvae bore into stems. - Vegetative-stage damage
+causes deadhearts. - Reproductive-stage damage can cause whiteheads. -
+Frass or larval material may be found inside damaged stems.
+
+Management: 1. Use resistant or locally suitable varieties. 2. Handpick
+and destroy egg masses where practical. 3. Synchronize planting. 4.
+Remove volunteer rice and manage crop residues. 5. Harvest and manage
+stubble appropriately. 6. Encourage natural enemies and biological
+control. 7. Apply nitrogen according to recommended timing and rate. 8.
+Use insecticide only when justified by monitoring and local
+recommendations.
+
+Recovery: - Dead tillers generally will not recover. - Protect
+unaffected tillers and panicles. - Improve field sanitation for the next
+crop.
