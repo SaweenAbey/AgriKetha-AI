@@ -1341,3 +1341,166 @@ pymongo.errors.ConfigurationError: The resolution lifetime expired after 10.006 
 2026-09-19 09:47:00 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
 2026-09-19 09:47:01 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
 2026-09-19 09:47:01 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1343.02ms
+2026-09-19 10:11:32 | INFO     | agriketha.backend:lifespan:33 - Shutting down AgriKetha-AI Backend...
+2026-09-19 10:11:32 | INFO     | agriketha.backend:stop_all_agents:150 - Stopping auto-started agent [query-agent] (PID: 14264)...
+2026-09-19 10:11:32 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-19 10:11:33 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-19 10:11:36 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-19 10:11:36 | INFO     | agriketha.backend:lifespan:21 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-19 10:11:36 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-19 10:11:46 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-19 10:11:47 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-19 10:11:47 | INFO     | agriketha.backend:start_all_agents:140 - Auto-initializing all AgriKetha AI Agent microservices...
+2026-09-19 10:11:48 | INFO     | agriketha.backend:start_agent_process:124 - Auto-started agent [query-agent] on port 8001 (PID: 15312) using D:\AgriKetha-AI\ai-agents\query-agent\venv\Scripts\python.exe
+2026-09-19 10:11:48 | INFO     | agriketha.backend:start_agent_process:88 - Agent [vision-agent] is already running on port 8002.
+2026-09-19 10:11:48 | INFO     | agriketha.backend:start_agent_process:88 - Agent [research-agent] is already running on port 8004.
+2026-09-19 10:11:48 | INFO     | agriketha.backend:lifespan:33 - Shutting down AgriKetha-AI Backend...
+2026-09-19 10:11:48 | INFO     | agriketha.backend:stop_all_agents:150 - Stopping auto-started agent [query-agent] (PID: 15312)...
+2026-09-19 10:11:48 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-19 10:11:48 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-19 10:11:51 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-19 10:11:51 | INFO     | agriketha.backend:lifespan:21 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-19 10:11:51 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-19 10:12:00 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-19 10:12:03 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-19 10:12:03 | INFO     | agriketha.backend:start_all_agents:140 - Auto-initializing all AgriKetha AI Agent microservices...
+2026-09-19 10:12:03 | INFO     | agriketha.backend:start_agent_process:124 - Auto-started agent [query-agent] on port 8001 (PID: 33336) using D:\AgriKetha-AI\ai-agents\query-agent\venv\Scripts\python.exe
+2026-09-19 10:12:03 | INFO     | agriketha.backend:start_agent_process:88 - Agent [vision-agent] is already running on port 8002.
+2026-09-19 10:12:03 | INFO     | agriketha.backend:start_agent_process:88 - Agent [research-agent] is already running on port 8004.
+2026-09-19 10:12:03 | INFO     | agriketha.backend:lifespan:33 - Shutting down AgriKetha-AI Backend...
+2026-09-19 10:12:03 | INFO     | agriketha.backend:stop_all_agents:150 - Stopping auto-started agent [query-agent] (PID: 33336)...
+2026-09-19 10:12:03 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-19 10:12:04 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-19 10:12:06 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-19 10:12:06 | INFO     | agriketha.backend:lifespan:21 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-19 10:12:06 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-19 10:12:09 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-19 10:12:15 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-19 10:12:15 | INFO     | agriketha.backend:start_all_agents:140 - Auto-initializing all AgriKetha AI Agent microservices...
+2026-09-19 10:12:16 | INFO     | agriketha.backend:start_agent_process:124 - Auto-started agent [query-agent] on port 8001 (PID: 14592) using D:\AgriKetha-AI\ai-agents\query-agent\venv\Scripts\python.exe
+2026-09-19 10:12:16 | INFO     | agriketha.backend:start_agent_process:88 - Agent [vision-agent] is already running on port 8002.
+2026-09-19 10:12:16 | INFO     | agriketha.backend:start_agent_process:88 - Agent [research-agent] is already running on port 8004.
+2026-09-19 10:12:20 | INFO     | agriketha.backend:lifespan:33 - Shutting down AgriKetha-AI Backend...
+2026-09-19 10:12:20 | INFO     | agriketha.backend:stop_all_agents:150 - Stopping auto-started agent [query-agent] (PID: 14592)...
+2026-09-19 10:12:20 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-19 10:12:20 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-19 10:17:24 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-19 10:17:24 | INFO     | agriketha.backend:lifespan:21 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-19 10:17:24 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-19 10:17:28 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-19 10:17:31 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-19 10:17:31 | INFO     | agriketha.backend:start_all_agents:140 - Auto-initializing all AgriKetha AI Agent microservices...
+2026-09-19 10:17:31 | INFO     | agriketha.backend:start_agent_process:88 - Agent [query-agent] is already running on port 8001.
+2026-09-19 10:17:31 | INFO     | agriketha.backend:start_agent_process:88 - Agent [vision-agent] is already running on port 8002.
+2026-09-19 10:17:31 | INFO     | agriketha.backend:start_agent_process:88 - Agent [research-agent] is already running on port 8004.
+2026-09-19 10:17:52 | WARNING  | agriketha.backend:login:100 - Failed login attempt for email: farmer@agriketha.lk from IP: 127.0.0.1
+2026-09-19 10:17:52 | WARNING  | agriketha.backend:dispatch:32 - 127.0.0.1 | POST /api/v1/auth/login | Status: 401 | 430.54ms
+2026-09-19 10:21:38 | INFO     | agriketha.backend:login:149 - User logged in successfully: farmer@agriketha.ai (Role: farmer)
+2026-09-19 10:21:38 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 1626.37ms
+2026-09-19 10:21:41 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 2369.24ms
+2026-09-19 10:21:52 | INFO     | agriketha.backend:login:149 - User logged in successfully: farmer@agriketha.ai (Role: farmer)
+2026-09-19 10:21:52 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 816.63ms
+2026-09-19 10:21:53 | INFO     | agriketha.backend:upgrade_subscription:51 - User farmer@agriketha.ai switched subscription plan to premium
+2026-09-19 10:21:53 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/users/upgrade-subscription | Status: 200 | 1113.06ms
+2026-09-19 10:22:26 | INFO     | agriketha.backend:login:149 - User logged in successfully: farmer@agriketha.ai (Role: farmer)
+2026-09-19 10:22:26 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 1566.16ms
+2026-09-19 10:22:27 | INFO     | agriketha.backend:upgrade_subscription:51 - User farmer@agriketha.ai switched subscription plan to free
+2026-09-19 10:22:27 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/users/upgrade-subscription | Status: 200 | 1072.86ms
+2026-09-19 10:22:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:22:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:22:57 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:22:57 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 2066.27ms
+2026-09-19 10:22:58 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:22:58 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:22:59 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 4212.67ms
+2026-09-19 10:22:59 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:22:59 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 2111.55ms
+2026-09-19 10:23:00 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 740.34ms
+2026-09-19 10:23:16 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:23:16 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:23:17 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:23:17 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1877.36ms
+2026-09-19 10:23:18 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:23:18 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:23:19 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:23:19 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1856.41ms
+2026-09-19 10:23:20 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 4752.80ms
+2026-09-19 10:23:21 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1001.07ms
+2026-09-19 10:24:00 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:24:00 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:24:00 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1212.97ms
+2026-09-19 10:24:01 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 152.04ms
+2026-09-19 10:24:01 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:24:01 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1970.65ms
+2026-09-19 10:24:02 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:24:02 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:24:03 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:24:03 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1870.58ms
+2026-09-19 10:24:03 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 3258.55ms
+2026-09-19 10:24:08 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 4853.18ms
+2026-09-19 10:24:40 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:24:40 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:24:41 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:24:41 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 2100.08ms
+2026-09-19 10:24:42 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:24:42 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:24:43 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:24:43 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1767.30ms
+2026-09-19 10:24:44 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 4742.58ms
+2026-09-19 10:24:45 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 874.88ms
+2026-09-19 10:25:06 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:25:06 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:25:07 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1417.65ms
+2026-09-19 10:25:07 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 285.21ms
+2026-09-19 10:25:07 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:25:07 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 2203.68ms
+2026-09-19 10:25:08 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:25:08 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:25:10 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-19 10:25:10 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 2196.11ms
+2026-09-19 10:31:52 | INFO     | agriketha.backend:lifespan:33 - Shutting down AgriKetha-AI Backend...
+2026-09-19 10:31:52 | INFO     | agriketha.backend:close_mongo_connection:56 - Closing MongoDB connection pool...
+2026-09-19 10:31:53 | INFO     | agriketha.backend:close_mongo_connection:58 - MongoDB connection pool closed.
+2026-09-19 10:34:40 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-19 10:34:40 | INFO     | agriketha.backend:lifespan:21 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-19 10:34:40 | INFO     | agriketha.backend:connect_to_mongo:26 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-19 10:34:46 | INFO     | agriketha.backend:connect_to_mongo:44 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-19 10:34:47 | INFO     | agriketha.backend:init_db_indexes:86 - MongoDB indexes verified & created successfully.
+2026-09-19 10:34:47 | INFO     | agriketha.backend:start_all_agents:140 - Auto-initializing all AgriKetha AI Agent microservices...
+2026-09-19 10:34:47 | INFO     | agriketha.backend:start_agent_process:88 - Agent [query-agent] is already running on port 8001.
+2026-09-19 10:34:48 | INFO     | agriketha.backend:start_agent_process:124 - Auto-started agent [vision-agent] on port 8002 (PID: 15572) using D:\AgriKetha-AI\.venv\Scripts\python.exe
+2026-09-19 10:34:48 | INFO     | agriketha.backend:start_agent_process:124 - Auto-started agent [research-agent] on port 8004 (PID: 35644) using D:\AgriKetha-AI\.venv\Scripts\python.exe
+2026-09-19 10:35:30 | INFO     | agriketha.backend:upgrade_subscription:51 - User chamudith@gmail.com switched subscription plan to free
+2026-09-19 10:35:30 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/users/upgrade-subscription | Status: 200 | 8816.29ms
+2026-09-19 10:35:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-19 10:35:39 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 3025.38ms
+2026-09-19 10:35:39 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 3095.11ms
+2026-09-19 10:35:45 | INFO     | agriketha.backend:upgrade_subscription:51 - User chamudith@gmail.com switched subscription plan to free
+2026-09-19 10:35:45 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/users/upgrade-subscription | Status: 200 | 2668.52ms
+2026-09-19 10:35:51 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 494.33ms
+2026-09-19 10:35:52 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 506.33ms
+2026-09-19 10:36:00 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/status | Status: 200 | 2210.43ms
+2026-09-19 10:36:00 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 2239.52ms
+2026-09-19 10:36:01 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 752.67ms
+2026-09-19 10:36:02 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/status | Status: 200 | 2239.36ms
+2026-09-19 10:36:06 | INFO     | agriketha.backend:analyze_crop_image:555 - Vision Agent microservice on http://127.0.0.1:8002 unavailable (All connection attempts failed). Using integrated vision engine.
+2026-09-19 10:36:07 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/vision/analyze | Status: 200 | 3536.94ms
+2026-09-19 10:36:07 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 409.12ms
+2026-09-19 10:36:37 | INFO     | agriketha.backend:analyze_crop_image:555 - Vision Agent microservice on http://127.0.0.1:8002 unavailable (All connection attempts failed). Using integrated vision engine.
+2026-09-19 10:36:38 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/vision/analyze | Status: 200 | 3538.78ms
+2026-09-19 10:36:41 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 3696.14ms
+2026-09-19 10:37:07 | INFO     | agriketha.backend:analyze_crop_image:555 - Vision Agent microservice on http://127.0.0.1:8002 unavailable (All connection attempts failed). Using integrated vision engine.
+2026-09-19 10:37:07 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/vision/analyze | Status: 200 | 4215.41ms
+2026-09-19 10:37:10 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 2500.49ms
+2026-09-19 10:37:18 | INFO     | agriketha.backend:analyze_crop_image:555 - Vision Agent microservice on http://127.0.0.1:8002 unavailable (All connection attempts failed). Using integrated vision engine.
+2026-09-19 10:37:18 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/vision/analyze | Status: 200 | 2912.35ms
+2026-09-19 10:37:19 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 650.29ms
+2026-09-19 10:37:35 | INFO     | agriketha.backend:analyze_crop_image:555 - Vision Agent microservice on http://127.0.0.1:8002 unavailable (All connection attempts failed). Using integrated vision engine.
+2026-09-19 10:37:35 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/vision/analyze | Status: 200 | 2901.29ms
+2026-09-19 10:37:36 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 798.29ms
+2026-09-19 10:38:18 | INFO     | agriketha.backend:analyze_crop_image:555 - Vision Agent microservice on http://127.0.0.1:8002 unavailable (All connection attempts failed). Using integrated vision engine.
+2026-09-19 10:38:20 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/vision/analyze | Status: 200 | 7123.07ms
+2026-09-19 10:38:21 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 1106.53ms
+2026-09-19 10:39:42 | INFO     | agriketha.backend:analyze_crop_image:555 - Vision Agent microservice on http://127.0.0.1:8002 unavailable (All connection attempts failed). Using integrated vision engine.
+2026-09-19 10:39:44 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | POST /api/v1/farmer/vision/analyze | Status: 200 | 6233.47ms
+2026-09-19 10:39:53 | INFO     | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Status: 200 | 8872.38ms

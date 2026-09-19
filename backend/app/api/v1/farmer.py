@@ -13,6 +13,7 @@ from app.core.logging_config import logger
 from app.schemas.farm import FarmOut, FarmCreate, FarmUpdate, CropCreate, CropItem
 from app.schemas.agent import QueryAgentRequest
 from app.api.deps import require_farmer_or_admin
+from app.services.quota_service import QuotaService
 
 
 router = APIRouter(prefix="/farmer", tags=["Farmer Operations"])
@@ -373,6 +374,15 @@ async def ask_query_agent(
     if not question:
         raise HTTPException(status_code=400, detail="Question cannot be empty.")
 
+    # Enforce daily quota
+    is_voice = request_data.input_mode == "voice"
+    quota_status = await QuotaService.check_and_consume_quota(
+        db=db,
+        user=current_user,
+        text_delta=0 if is_voice else 1,
+        voice_delta=1 if is_voice else 0
+    )
+
     now = datetime.now(timezone.utc)
     agent_response = None
     agent_status = "offline"
@@ -421,6 +431,7 @@ async def ask_query_agent(
         "language": request_data.language or "en",
         "agent_status": agent_status,
         "agent_response": agent_response,
+        "quota_status": quota_status,
         "created_at": now
     }
     insert_res = await db.farmer_queries.insert_one(record)
@@ -517,6 +528,13 @@ async def analyze_crop_image(
     if not file_bytes:
         raise HTTPException(status_code=400, detail="Image file is empty or missing.")
 
+    # Enforce daily image analysis quota
+    quota_status = await QuotaService.check_and_consume_quota(
+        db=db,
+        user=current_user,
+        image_delta=1
+    )
+
     # Encode preview image as base64 data URI for easy UI rendering and history inspection
     content_type = image.content_type or "image/jpeg"
     image_base64 = f"data:{content_type};base64,{base64.b64encode(file_bytes).decode('utf-8')}"
@@ -607,6 +625,7 @@ async def analyze_crop_image(
         "notes": notes,
         "engine_status": engine_status,
         "image_preview": image_base64,
+        "quota_status": quota_status,
         "created_at": now
     }
 

@@ -28,6 +28,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { UnifiedOrchestratorAssistant } from "@/components/UnifiedOrchestratorAssistant";
 import { AgentQueryAssistant } from "@/components/AgentQueryAssistant";
 import { CropDiagnosticsAssistant } from "@/components/CropDiagnosticsAssistant";
+import { QuotaWidget } from "@/components/QuotaWidget";
 
 export const DashboardPage = () => {
   const { user, logout } = useAuth();
@@ -121,6 +122,9 @@ export const DashboardPage = () => {
             </p>
           </div>
         </div>
+
+        {/* Daily Usage Quota & Subscription Widget */}
+        <QuotaWidget />
 
         {/* User Profile Overview */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

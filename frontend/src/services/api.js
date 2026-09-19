@@ -126,6 +126,17 @@ export const orchestratorService = {
   },
 };
 
+export const userService = {
+  getQuota: async () => {
+    const response = await api.get("/users/quota");
+    return response.data;
+  },
+  upgradeSubscription: async (plan = "premium") => {
+    const response = await api.post("/users/upgrade-subscription", { plan });
+    return response.data;
+  },
+};
+
 export default api;
 
 
