@@ -1,6 +1,7 @@
 import hashlib
 from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List
+from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, status, Form, Request
 from pydantic import BaseModel, Field
 
@@ -8,6 +9,7 @@ from app.core.database import get_db
 from app.core.config import settings
 from app.core.logging_config import logger
 from app.api.deps import require_farmer_or_admin
+from app.services.quota_service import QuotaService
 
 router = APIRouter(prefix="/payments", tags=["Payment Gateway"])
 
@@ -194,9 +196,10 @@ async def verify_payment_and_upgrade(
     and activates AgriKetha Pro Unlimited plan for the farmer.
     """
     now = datetime.now(timezone.utc)
+    user_id = current_user["id"]
 
     # 1. Look up order
-    order = await db.payment_orders.find_one({"order_id": req.order_id, "user_id": current_user["id"]})
+    order = await db.payment_orders.find_one({"order_id": req.order_id, "user_id": user_id})
     if not order:
         # If created on the fly in sandbox
         order = {
@@ -213,6 +216,8 @@ async def verify_payment_and_upgrade(
         {"order_id": req.order_id},
         {
             "$set": {
+                "user_id": user_id,
+                "user_email": current_user.get("email"),
                 "status": "PAID",
                 "payment_id": payment_id,
                 "payment_method": req.payment_method,
@@ -224,18 +229,26 @@ async def verify_payment_and_upgrade(
         upsert=True
     )
 
-    # 3. Upgrade user subscription
-    await db.users.update_one(
-        {"id": current_user["id"]},
-        {
-            "$set": {
-                "subscription_plan": "premium",
-                "subscription_status": "active",
-                "subscription_updated_at": now,
-                "subscription_expires_at": None  # Active unlimited
+    # 3. Upgrade user subscription properly using QuotaService & ObjectId
+    updated_quota = await QuotaService.set_user_subscription(db, user_id, "premium")
+
+    # Ensure all subscription attributes are present in the user doc
+    try:
+        obj_id = ObjectId(user_id)
+        await db.users.update_one(
+            {"_id": obj_id},
+            {
+                "$set": {
+                    "plan": "premium",
+                    "subscription_plan": "premium",
+                    "subscription_status": "active",
+                    "subscription_updated_at": now,
+                    "subscription_expires_at": None
+                }
             }
-        }
-    )
+        )
+    except Exception as e:
+        logger.warning("Could not update user by ObjectId: %s", e)
 
     logger.info("Payment verified for user %s: Order %s (%s %s)", current_user.get("email"), req.order_id, order.get("currency"), order.get("amount"))
 
@@ -248,6 +261,7 @@ async def verify_payment_and_upgrade(
         "unlimited": True,
         "amount": order.get("amount", 1500.0),
         "currency": order.get("currency", "LKR"),
+        "quota": updated_quota,
         "activated_at": now.isoformat()
     }
 
@@ -304,16 +318,23 @@ async def payhere_instant_payment_notification(
         )
 
         if user_id:
-            await db.users.update_one(
-                {"id": user_id},
-                {
-                    "$set": {
-                        "subscription_plan": "premium",
-                        "subscription_status": "active",
-                        "subscription_updated_at": now
+            try:
+                await QuotaService.set_user_subscription(db, str(user_id), "premium")
+                obj_id = ObjectId(user_id)
+                await db.users.update_one(
+                    {"_id": obj_id},
+                    {
+                        "$set": {
+                            "plan": "premium",
+                            "subscription_plan": "premium",
+                            "subscription_status": "active",
+                            "subscription_updated_at": now
+                        }
                     }
-                }
-            )
+                )
+            except Exception as e:
+                logger.error("Failed to update user subscription via IPN: %s", e)
+
             logger.info("PayHere IPN successfully upgraded user %s for order %s", user_id, order_id)
 
     return {"status": "received"}
@@ -333,5 +354,5 @@ async def get_user_payment_history(
         doc["id"] = str(doc["_id"])
         del doc["_id"]
         orders.append(doc)
-    return orders
+    return {"history": orders, "orders": orders}
 

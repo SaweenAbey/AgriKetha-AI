@@ -737,3 +737,67 @@ Traceback (most recent call last):
   File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 119, in _resolve_uri
     raise ConfigurationError(str(exc)) from exc
 pymongo.errors.ConfigurationError: The resolution lifetime expired after 10.006 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.; Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.
+2026-09-19 18:13:55 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 904, in connect
+    conn.authenticate()
+    ~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 473, in authenticate
+    auth.authenticate(creds, self, reauthenticate=reauthenticate)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 447, in authenticate
+    auth_func(credentials, conn)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 354, in _authenticate_default
+    return _authenticate_scram(credentials, conn, "SCRAM-SHA-1")
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 96, in _authenticate_scram
+    res = conn.command(source, cmd)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 344, in receive_data
+    wait_for_read(conn, deadline)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 319, in wait_for_read
+    raise _OperationCancelled("operation cancelled")
+pymongo.errors._OperationCancelled: operation cancelled
