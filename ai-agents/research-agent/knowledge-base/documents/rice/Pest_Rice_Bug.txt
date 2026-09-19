@@ -1,0 +1,19 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Pest
+
+Pest: Rice Bug
+
+Common name: Rice bug / rice stink bug Damage / symptoms: - Adults and
+nymphs suck developing grains. - Damaged grains may become discolored,
+shriveled, or poorly filled. - Damage is particularly important around
+flowering and grain development.
+
+Management: 1. Monitor fields during flowering and grain filling. 2.
+Remove or manage weeds that provide alternate habitat when practical. 3.
+Maintain field sanitation. 4. Use locally recommended control only when
+monitoring indicates an economically important infestation. 5. Protect
+natural enemies.
+
+Recovery: - Damaged grains cannot be restored. - The goal is to protect
+remaining developing grains.

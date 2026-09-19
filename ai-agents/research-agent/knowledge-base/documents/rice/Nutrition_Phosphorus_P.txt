@@ -1,0 +1,17 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Nutrition
+
+Nutrition: Phosphorus (P) Deficiency
+
+Role: - Important for root development, energy transfer, early growth,
+and reproductive development.
+
+Typical symptoms: - Stunted growth. - Dark green foliage may occur. -
+Reduced tillering. - Delayed crop development.
+
+Management / recovery: 1. Confirm deficiency using soil/plant assessment
+where possible. 2. Apply phosphorus according to soil test and local
+rice fertilizer recommendations. 3. Correct soil conditions that reduce
+phosphorus availability when applicable. 4. Avoid unnecessary
+over-application.

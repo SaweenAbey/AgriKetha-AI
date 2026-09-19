@@ -1,0 +1,18 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Pest
+
+Pest: Green Leafhopper (GLH)
+
+Damage / symptoms: - Adults and nymphs suck sap from leaves. - Heavy
+feeding can weaken plants. - Important vector of tungro disease.
+
+Management: 1. Use resistant varieties where available. 2. Synchronize
+planting where practical. 3. Remove volunteer rice and manage weeds that
+can maintain vector populations. 4. Monitor populations. 5. Avoid
+unnecessary broad-spectrum insecticides that kill natural enemies. 6.
+Manage tungro by reducing vector movement and using resistant varieties.
+
+Recovery: - Reduce leafhopper pressure and protect young plants. - If
+tungro has already infected plants, the virus cannot be cured; protect
+the remaining crop.

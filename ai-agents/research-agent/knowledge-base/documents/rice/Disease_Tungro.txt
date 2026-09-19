@@ -1,0 +1,32 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Disease
+
+Disease: Tungro
+
+Cause: - Rice tungro disease is caused by a combination of rice tungro
+viruses. - Green leafhoppers are important vectors.
+
+Identification / symptoms: - Yellow to orange-yellow leaves. - Stunted
+plants. - Reduced tillering. - Symptoms can resemble nitrogen
+deficiency, zinc deficiency, water stress, or pest damage.
+
+Effects: - Severe early infection can strongly reduce plant growth and
+yield.
+
+Important fact: - An already infected rice plant cannot be cured of
+tungro.
+
+Management: 1. Plant tungro- or leafhopper-resistant varieties where
+locally available. 2. Synchronize planting with neighboring farms when
+practical. 3. Avoid planting at times of high green leafhopper abundance
+where local guidance supports this. 4. Remove severely infected plants
+when appropriate. 5. Plow infected stubble after harvest according to
+local recommendations. 6. Manage weeds and volunteer rice that may
+support vectors. 7. Do not rely on insecticide alone because green
+leafhoppers can move rapidly between fields.
+
+Recovery: - Individual infected plants cannot be cured. - Protect the
+rest of the crop by reducing vector pressure and removing infection
+sources. - Replanting decisions should be made with local agricultural
+advice when infection is severe.
