@@ -387,9 +387,6 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
         </div>
       </div>
 
-      {/* Daily Usage Quota Widget */}
-      <QuotaWidget compact={true} className="shadow-sm" />
-
       {/* Main Interactive Query Box */}
       <Card className="glass-card shadow-lg border-emerald-500/20">
         <CardHeader className="pb-3">

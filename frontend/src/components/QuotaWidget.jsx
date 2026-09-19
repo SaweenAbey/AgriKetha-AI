@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Sparkles,
   Crown,
@@ -13,17 +14,21 @@ import {
   ShieldCheck,
   RotateCcw,
   Loader2,
+  UserCheck,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuota } from "@/context/QuotaContext";
 import { useLanguage } from "@/context/LanguageContext";
+import { PaymentCheckoutModal } from "@/components/PaymentCheckoutModal";
 
 export const QuotaWidget = ({ compact = false }) => {
   const { quota, isUnlimited, upgradePlan, showUpgradeModal, setShowUpgradeModal, loading } = useQuota();
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
   const [upgrading, setUpgrading] = useState(false);
   const [statusMsg, setStatusMsg] = useState("");
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const textUsed = quota?.text?.used ?? 0;
   const textLimit = quota?.text?.limit ?? 25;
@@ -65,128 +70,158 @@ export const QuotaWidget = ({ compact = false }) => {
   return (
     <>
       {/* Quota Strip / Widget */}
-      <div className="p-3.5 sm:p-4 rounded-2xl bg-card border border-border/70 shadow-sm transition-all hover:border-emerald-500/30">
+      <div className={`p-3.5 sm:p-4 rounded-2xl border transition-all ${
+        isUnlimited 
+          ? "bg-gradient-to-r from-amber-500/10 via-card to-emerald-500/10 border-amber-500/40 shadow-md shadow-amber-500/5" 
+          : "bg-card border-border/70 shadow-sm hover:border-emerald-500/30"
+      }`}>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           {/* Plan Header */}
           <div className="flex items-center gap-2.5">
             <div
-              className={`p-2 rounded-xl flex items-center justify-center ${
+              className={`p-2.5 rounded-xl flex items-center justify-center ${
                 isUnlimited
-                  ? "bg-gradient-to-tr from-amber-500/20 to-yellow-500/30 text-amber-500 border border-amber-500/30 shadow-sm shadow-amber-500/10"
+                  ? "bg-gradient-to-tr from-amber-500 to-yellow-400 text-white shadow-md shadow-amber-500/20"
                   : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
               }`}
             >
-              {isUnlimited ? <Crown className="w-4 h-4 animate-bounce" /> : <Zap className="w-4 h-4" />}
+              {isUnlimited ? <Crown className="w-5 h-5 animate-pulse" /> : <Zap className="w-4 h-4" />}
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-black uppercase tracking-wider text-foreground">
-                  {isUnlimited ? t("planPro") : t("planFree")}
+                  {isUnlimited ? "AgriKetha PRO (Active)" : t("planFree")}
                 </span>
                 <Badge
-                  variant={isUnlimited ? "default" : "outline"}
-                  className={`text-[10px] px-2 py-0.5 ${
+                  className={`text-[10px] px-2 py-0.5 font-bold ${
                     isUnlimited
-                      ? "bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-bold border-0 shadow-sm"
-                      : "bg-muted text-muted-foreground"
+                      ? "bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 border-0 shadow-sm"
+                      : "bg-muted text-muted-foreground border-border"
                   }`}
                 >
-                  {isUnlimited ? "👑 UNLIMITED" : "25 TEXT • 5 IMG • 5 VOICE"}
+                  {isUnlimited ? "👑 UNLIMITED ACCESS" : "25 TEXT • 5 IMG • 5 VOICE"}
                 </Badge>
               </div>
-              <p className="text-[11px] text-muted-foreground">{t("dailyReset")}</p>
+              <p className="text-[11px] text-muted-foreground">
+                {isUnlimited 
+                  ? (language === "si" ? "සියලුම AI නියෝජිතයන් සඳහා අසීමිත ප්‍රවේශය සක්‍රියයි" : "Zero daily restrictions across all 4 AI agents")
+                  : t("dailyReset")
+                }
+              </p>
             </div>
           </div>
 
-          {/* Counters Grid */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
-            {/* Text Quota */}
-            <div className="p-2 sm:px-3 sm:py-2 rounded-xl bg-muted/40 border border-border/50">
-              <div className="flex items-center justify-between gap-1 text-[11px] font-semibold text-muted-foreground mb-1">
-                <span className="flex items-center gap-1">
-                  <MessageSquare className="w-3 h-3 text-emerald-500" />
-                  <span className="hidden sm:inline">{t("textQueries")}</span>
-                  <span className="sm:hidden">Text</span>
-                </span>
-                <span className="text-foreground font-bold">
-                  {isUnlimited ? "∞" : `${textRemaining}/${textLimit}`}
-                </span>
-              </div>
-              {!isUnlimited && (
+          {/* Counters Grid (or Pro Perks if unlimited) */}
+          {isUnlimited ? (
+            <div className="flex items-center gap-2 sm:gap-4 text-xs font-bold text-emerald-700 dark:text-emerald-300">
+              <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Unlimited Text</span>
+              </span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-500/10 border border-teal-500/20">
+                <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
+                <span>Unlimited Scans</span>
+              </span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 hidden sm:flex">
+                <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
+                <span>Priority Inference</span>
+              </span>
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              {/* Text Quota */}
+              <div className="p-2 sm:px-3 sm:py-2 rounded-xl bg-muted/40 border border-border/50">
+                <div className="flex items-center justify-between gap-1 text-[11px] font-semibold text-muted-foreground mb-1">
+                  <span className="flex items-center gap-1">
+                    <MessageSquare className="w-3 h-3 text-emerald-500" />
+                    <span className="hidden sm:inline">{t("textQueries")}</span>
+                    <span className="sm:hidden">Text</span>
+                  </span>
+                  <span className="text-foreground font-bold">{textRemaining}/{textLimit}</span>
+                </div>
                 <div className="w-full bg-muted h-1 rounded-full overflow-hidden">
                   <div
                     className={`h-full ${getBarColor(getPercentage(textUsed, textLimit))}`}
                     style={{ width: `${getPercentage(textUsed, textLimit)}%` }}
                   />
                 </div>
-              )}
-            </div>
-
-            {/* Image Quota */}
-            <div className="p-2 sm:px-3 sm:py-2 rounded-xl bg-muted/40 border border-border/50">
-              <div className="flex items-center justify-between gap-1 text-[11px] font-semibold text-muted-foreground mb-1">
-                <span className="flex items-center gap-1">
-                  <ImageIcon className="w-3 h-3 text-teal-500" />
-                  <span className="hidden sm:inline">{t("imageScans")}</span>
-                  <span className="sm:hidden">Images</span>
-                </span>
-                <span className="text-foreground font-bold">
-                  {isUnlimited ? "∞" : `${imageRemaining}/${imageLimit}`}
-                </span>
               </div>
-              {!isUnlimited && (
+
+              {/* Image Quota */}
+              <div className="p-2 sm:px-3 sm:py-2 rounded-xl bg-muted/40 border border-border/50">
+                <div className="flex items-center justify-between gap-1 text-[11px] font-semibold text-muted-foreground mb-1">
+                  <span className="flex items-center gap-1">
+                    <ImageIcon className="w-3 h-3 text-teal-500" />
+                    <span className="hidden sm:inline">{t("imageScans")}</span>
+                    <span className="sm:hidden">Images</span>
+                  </span>
+                  <span className="text-foreground font-bold">{imageRemaining}/{imageLimit}</span>
+                </div>
                 <div className="w-full bg-muted h-1 rounded-full overflow-hidden">
                   <div
                     className={`h-full ${getBarColor(getPercentage(imageUsed, imageLimit))}`}
                     style={{ width: `${getPercentage(imageUsed, imageLimit)}%` }}
                   />
                 </div>
-              )}
-            </div>
-
-            {/* Voice Quota */}
-            <div className="p-2 sm:px-3 sm:py-2 rounded-xl bg-muted/40 border border-border/50">
-              <div className="flex items-center justify-between gap-1 text-[11px] font-semibold text-muted-foreground mb-1">
-                <span className="flex items-center gap-1">
-                  <Mic className="w-3 h-3 text-amber-500" />
-                  <span className="hidden sm:inline">{t("voiceQueries")}</span>
-                  <span className="sm:hidden">Voice</span>
-                </span>
-                <span className="text-foreground font-bold">
-                  {isUnlimited ? "∞" : `${voiceRemaining}/${voiceLimit}`}
-                </span>
               </div>
-              {!isUnlimited && (
+
+              {/* Voice Quota */}
+              <div className="p-2 sm:px-3 sm:py-2 rounded-xl bg-muted/40 border border-border/50">
+                <div className="flex items-center justify-between gap-1 text-[11px] font-semibold text-muted-foreground mb-1">
+                  <span className="flex items-center gap-1">
+                    <Mic className="w-3 h-3 text-amber-500" />
+                    <span className="hidden sm:inline">{t("voiceQueries")}</span>
+                    <span className="sm:hidden">Voice</span>
+                  </span>
+                  <span className="text-foreground font-bold">{voiceRemaining}/{voiceLimit}</span>
+                </div>
                 <div className="w-full bg-muted h-1 rounded-full overflow-hidden">
                   <div
                     className={`h-full ${getBarColor(getPercentage(voiceUsed, voiceLimit))}`}
                     style={{ width: `${getPercentage(voiceUsed, voiceLimit)}%` }}
                   />
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Action Upgrade / Switch Button */}
+          {/* Action Button: Manage Profile & Subscription */}
           <div className="flex items-center gap-2 self-end md:self-center">
-            <Button
-              type="button"
-              size="sm"
-              onClick={() => setShowUpgradeModal(true)}
-              className={`rounded-xl text-xs font-bold gap-1.5 shadow-sm ${
-                isUnlimited
-                  ? "bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30"
-                  : "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white"
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{isUnlimited ? t("planPro") : t("upgradeToPro")}</span>
-            </Button>
+            {isUnlimited ? (
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => navigate("/profile")}
+                className="rounded-xl text-xs font-bold gap-1.5 shadow-sm bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950"
+              >
+                <Crown className="w-3.5 h-3.5 fill-slate-950" />
+                <span>{language === "si" ? "Pro ගිණුම් විස්තර" : "Pro Profile & Billing"}</span>
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => setShowCheckout(true)}
+                className="rounded-xl text-xs font-bold gap-1.5 shadow-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>{t("upgradeToPro")}</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Modern Glassmorphic Upgrade Modal */}
+      {/* PayHere Checkout Modal */}
+      <PaymentCheckoutModal
+        isOpen={showCheckout}
+        onClose={() => setShowCheckout(false)}
+        onPaymentSuccess={() => {
+          setShowCheckout(false);
+        }}
+      />
+
+      {/* Modern Glassmorphic Upgrade / Manage Modal */}
       {showUpgradeModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-card border border-emerald-500/30 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 relative overflow-hidden">
@@ -247,20 +282,28 @@ export const QuotaWidget = ({ compact = false }) => {
             {/* Action Buttons */}
             <div className="space-y-2 pt-1">
               {!isUnlimited ? (
-                <Button
-                  onClick={() => handlePlanToggle("premium")}
-                  disabled={upgrading}
-                  className="w-full py-5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold text-sm shadow-lg shadow-amber-500/20 gap-2"
-                >
-                  {upgrading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <>
-                      <Sparkles className="w-4 h-4" />
-                      <span>{t("activateProBtn")}</span>
-                    </>
-                  )}
-                </Button>
+                <>
+                  <Button
+                    onClick={() => {
+                      setShowUpgradeModal(false);
+                      setShowCheckout(true);
+                    }}
+                    className="w-full py-5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold text-sm shadow-lg shadow-amber-500/20 gap-2"
+                  >
+                    <Crown className="w-4 h-4" />
+                    <span>Pay with PayHere (LKR 1,500/mo)</span>
+                  </Button>
+
+                  <Button
+                    onClick={() => handlePlanToggle("premium")}
+                    disabled={upgrading}
+                    variant="outline"
+                    className="w-full py-4 rounded-2xl text-xs font-semibold border-border gap-2"
+                  >
+                    {upgrading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5 text-teal-600" />}
+                    <span>Quick Instant Demo Upgrade</span>
+                  </Button>
+                </>
               ) : (
                 <Button
                   onClick={() => handlePlanToggle("free")}

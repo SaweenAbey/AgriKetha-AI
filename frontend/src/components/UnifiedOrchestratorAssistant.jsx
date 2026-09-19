@@ -271,9 +271,6 @@ export const UnifiedOrchestratorAssistant = () => {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      {/* Daily Usage Quota Widget */}
-      <QuotaWidget />
-
       {/* Header Banner with Agent Architecture */}
       <Card className="border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-background to-teal-950/20 backdrop-blur-xl shadow-xl overflow-hidden">
         <CardHeader className="pb-4">

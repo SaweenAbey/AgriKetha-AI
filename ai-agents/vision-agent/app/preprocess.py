@@ -14,29 +14,37 @@ transform = transforms.Compose([
 
 def validate_image(image_np: np.ndarray):
     """
-    Validate image quality to prevent hallucinations.
+    Validate image quality.
     Returns: (is_valid, message)
     """
-    gray = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
-    
-    # 1. Check Blurriness (Laplacian variance)
-    blur_score = cv2.Laplacian(gray, cv2.CV_64F).var()
-    if blur_score < 100:
-        return False, "Image is too blurry. Please hold the camera steady and retake."
-    
-    # 2. Check Brightness
-    mean_brightness = np.mean(gray)
-    if mean_brightness < 30:
-        return False, "Image is too dark. Please take the photo in good lighting."
-    if mean_brightness > 225:
-        return False, "Image is overexposed. Please reduce brightness and retake."
-    
-    # 3. Check if image contains a leaf (edge detection)
-    edges = cv2.Canny(gray, 50, 150)
-    edge_density = np.sum(edges > 0) / (image_np.shape[0] * image_np.shape[1])
-    if edge_density < 0.01:
-        return False, "No clear leaf structure detected. Please upload a photo of a leaf."
-    
+    if image_np is None or image_np.size == 0:
+        return False, "Invalid image data."
+
+    # Convert to grayscale
+    if len(image_np.shape) == 3:
+        if image_np.shape[2] == 4:
+            # RGBA to RGB
+            image_np = image_np[:, :, :3]
+        gray = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY) if 'cv2' in globals() else np.mean(image_np, axis=2).astype(np.uint8)
+    else:
+        gray = image_np
+
+    # 1. Check Extreme Brightness (pitch black or completely washed out)
+    mean_brightness = float(np.mean(gray))
+    if mean_brightness < 8:
+        return False, "Image is pitch black. Please take the photo in better lighting."
+    if mean_brightness > 250:
+        return False, "Image is completely overexposed. Please retake the photo."
+
+    # 2. Check Blurriness (Laplacian variance) - gentle threshold for mobile cameras
+    if 'cv2' in globals():
+        try:
+            blur_score = cv2.Laplacian(gray, cv2.CV_64F).var()
+            if blur_score < 10:
+                return False, "Image is extremely blurred. Please hold camera steady."
+        except Exception:
+            pass
+
     return True, "Valid Image"
 
 def preprocess_image(image_pil: Image.Image) -> torch.Tensor:

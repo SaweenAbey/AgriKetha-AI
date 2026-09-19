@@ -147,7 +147,7 @@ function generatePresetBlob(sampleType, name) {
   // Draw Pathology lesions if not healthy
   if (sampleType === "tomato_blight") {
     // Concentric dark rings
-    [ [160, 150, 35], [260, 220, 45], [180, 270, 30] ].forEach(([x, y, r]) => {
+    [[160, 150, 35], [260, 220, 45], [180, 270, 30]].forEach(([x, y, r]) => {
       ctx.beginPath();
       ctx.arc(x, y, r + 10, 0, Math.PI * 2);
       ctx.fillStyle = "rgba(234, 179, 8, 0.4)"; // yellow halo
@@ -171,7 +171,7 @@ function generatePresetBlob(sampleType, name) {
     });
   } else if (sampleType === "rice_spot") {
     // Reddish-brown oval spots
-    [ [190, 120, 25, 10], [220, 190, 35, 15], [170, 260, 30, 12], [230, 310, 20, 8] ].forEach(([x, y, rx, ry]) => {
+    [[190, 120, 25, 10], [220, 190, 35, 15], [170, 260, 30, 12], [230, 310, 20, 8]].forEach(([x, y, rx, ry]) => {
       ctx.beginPath();
       ctx.ellipse(x, y, rx, ry, Math.PI / 4, 0, Math.PI * 2);
       ctx.fillStyle = "#7f1d1d";
@@ -286,7 +286,7 @@ export const CropDiagnosticsAssistant = () => {
       setPreviewUrl(url);
       setSelectedImage(preset.name);
       setResult(null);
-      
+
       // Auto analyze preset immediately for instant farmer delight
       await performAnalysis(file, preset.crop);
     } catch (err) {
@@ -427,7 +427,7 @@ export const CropDiagnosticsAssistant = () => {
         </div>
 
         <div className="relative z-10 flex items-center gap-2.5">
-          <Badge 
+          <Badge
             variant="outline"
             className="px-3 py-1.5 text-xs font-semibold rounded-full bg-teal-500/10 border-teal-400/40 text-teal-200 flex items-center gap-1.5 shadow-sm"
           >
@@ -437,9 +437,6 @@ export const CropDiagnosticsAssistant = () => {
           </Badge>
         </div>
       </div>
-
-      {/* Daily Usage Quota Widget */}
-      <QuotaWidget compact={true} className="shadow-sm" />
 
       {/* Preset Test Leaves Row */}
       <div className="space-y-2">
@@ -496,11 +493,10 @@ export const CropDiagnosticsAssistant = () => {
               {/* Drop / Preview Zone */}
               <div
                 onClick={() => !previewUrl && fileInputRef.current?.click()}
-                className={`relative group rounded-2xl border-2 border-dashed transition-all flex flex-col items-center justify-center p-4 min-h-[260px] overflow-hidden ${
-                  previewUrl 
-                    ? "border-emerald-500/60 bg-emerald-950/5" 
+                className={`relative group rounded-2xl border-2 border-dashed transition-all flex flex-col items-center justify-center p-4 min-h-[260px] overflow-hidden ${previewUrl
+                    ? "border-emerald-500/60 bg-emerald-950/5"
                     : "border-border hover:border-teal-500 hover:bg-teal-500/5 cursor-pointer"
-                }`}
+                  }`}
               >
                 {/* Laser Scanning Animation Overlay */}
                 {loading && (
@@ -614,7 +610,7 @@ export const CropDiagnosticsAssistant = () => {
               {/* Optional Crop Category Hint */}
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-muted-foreground flex items-center justify-between">
-                  <span>Crop Category (Optional)</span>
+                  <span>Crop Category</span>
                   <span className="text-[10px] text-muted-foreground">Assists model prior</span>
                 </label>
                 <div className="grid grid-cols-4 gap-1.5">
@@ -623,11 +619,10 @@ export const CropDiagnosticsAssistant = () => {
                       key={c}
                       type="button"
                       onClick={() => setCropHint(cropHint === c ? "" : c)}
-                      className={`text-xs py-1.5 px-2 rounded-xl border font-medium transition-all ${
-                        cropHint === c
+                      className={`text-xs py-1.5 px-2 rounded-xl border font-medium transition-all ${cropHint === c
                           ? "bg-teal-600 text-white border-teal-600 shadow-sm"
                           : "bg-background border-border text-foreground hover:bg-muted"
-                      }`}
+                        }`}
                     >
                       {c}
                     </button>
@@ -683,8 +678,8 @@ export const CropDiagnosticsAssistant = () => {
                   </div>
                 )}
               </div>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setError(null)}
                 className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
               >
@@ -860,33 +855,30 @@ export const CropDiagnosticsAssistant = () => {
                       <button
                         type="button"
                         onClick={() => setActiveTab("bio")}
-                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                          activeTab === "bio"
+                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${activeTab === "bio"
                             ? "bg-emerald-600 text-white shadow-sm"
                             : "bg-muted text-muted-foreground hover:text-foreground"
-                        }`}
+                          }`}
                       >
                         🌿 Organic & Biological
                       </button>
                       <button
                         type="button"
                         onClick={() => setActiveTab("chem")}
-                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                          activeTab === "chem"
+                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${activeTab === "chem"
                             ? "bg-teal-600 text-white shadow-sm"
                             : "bg-muted text-muted-foreground hover:text-foreground"
-                        }`}
+                          }`}
                       >
                         🧪 Chemical Control
                       </button>
                       <button
                         type="button"
                         onClick={() => setActiveTab("cultural")}
-                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
-                          activeTab === "cultural"
+                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${activeTab === "cultural"
                             ? "bg-amber-600 text-white shadow-sm"
                             : "bg-muted text-muted-foreground hover:text-foreground"
-                        }`}
+                          }`}
                       >
                         🚜 Cultural Practices
                       </button>

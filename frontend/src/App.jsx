@@ -6,6 +6,7 @@ import { QuotaProvider } from "@/context/QuotaContext";
 import { LoginPage } from "@/pages/LoginPage";
 import { SignupPage } from "@/pages/SignupPage";
 import { DashboardPage } from "@/pages/DashboardPage";
+import { UserProfilePage } from "@/pages/UserProfilePage";
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -37,6 +38,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <DashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <UserProfilePage />
                   </ProtectedRoute>
                 }
               />

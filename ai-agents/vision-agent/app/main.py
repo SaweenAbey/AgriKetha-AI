@@ -77,23 +77,20 @@ async def analyze_image(file: UploadFile = File(...)):
         prediction, confidence, alternatives = vision_model.predict(image_tensor)
         
         # 6. Generate Grad-CAM (Explainability)
-        class_idx = None
-        for idx, name in vision_model.class_names.items():
-            if name == prediction:
-                class_idx = idx
-                break
-        
         gradcam_base64 = None
-        if class_idx is not None:
-            gradcam_image = vision_model.generate_gradcam(image_tensor, class_idx)
-            gradcam_pil = Image.fromarray((gradcam_image * 255).astype(np.uint8))
-            buffered = io.BytesIO()
-            gradcam_pil.save(buffered, format="PNG")
-            gradcam_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
-        
+        try:
+            gradcam_image = vision_model.generate_gradcam(image_tensor, 0)
+            if gradcam_image is not None:
+                gradcam_pil = Image.fromarray(np.uint8(np.clip(gradcam_image * 255.0, 0, 255)))
+                buffered = io.BytesIO()
+                gradcam_pil.save(buffered, format="PNG")
+                gradcam_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+        except Exception as g_err:
+            print(f"[Vision Agent] Grad-CAM encoding warning: {g_err}")
+
         # 7. Severity Estimation
         severity_pct, severity_level = vision_model.estimate_severity(
-            gradcam_image if 'gradcam_image' in locals() else np.random.rand(224, 224, 3)
+            gradcam_image if 'gradcam_image' in locals() else None
         )
         
         # 8. Format alternatives
@@ -101,11 +98,13 @@ async def analyze_image(file: UploadFile = File(...)):
             DiseasePrediction(disease=alt["disease"], confidence=alt["confidence"])
             for alt in alternatives
         ]
+
+        detected_crop = "Rice" if "rice" in prediction.lower() or "bipolaris" in prediction.lower() or "blast" in prediction.lower() or "blight" in prediction.lower() else "Crop"
         
         # 9. Return structured response
         return VisionResponse(
             status="success",
-            crop="unknown",
+            crop=detected_crop,
             prediction=prediction,
             confidence=confidence,
             severity_percentage=severity_pct,

@@ -68,6 +68,7 @@ export const QuotaProvider = ({ children }) => {
         updateQuotaFromResponse,
         showUpgradeModal,
         setShowUpgradeModal,
+        openUpgradeModal: () => setShowUpgradeModal(true),
         isUnlimited: quota?.is_unlimited || quota?.plan === "premium" || user?.role === "admin",
       }}
     >
