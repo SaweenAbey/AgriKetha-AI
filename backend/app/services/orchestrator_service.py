@@ -99,7 +99,7 @@ class OrchestratorService:
         query_result: Optional[dict[str, Any]] = None
         crop: Optional[str] = None
         intent: Optional[str] = None
-        detected_language: Optional[str] = preferred_language
+        detected_input_language: Optional[str] = None
         translated_question: Optional[str] = None
 
         try:
@@ -124,7 +124,7 @@ class OrchestratorService:
             fallback_nlp = _fallback_crop_nlp(question)
             crop = fallback_nlp.get("crop")
             intent = fallback_nlp.get("intent")
-            detected_language = preferred_language or fallback_nlp.get("detected_language")
+            detected_input_language = fallback_nlp.get("detected_language")
 
             agent_activity.append(
                 {
@@ -136,12 +136,15 @@ class OrchestratorService:
 
         # Extract NLP information if Agent 2 succeeded
         if query_result:
-            detected_language = query_result.get("detected_language") or detected_language
+            detected_input_language = query_result.get("detected_language") or detected_input_language
             translated_question = query_result.get("translated_question")
 
             nlp_result = query_result.get("agent_1_result") or {}
             crop = nlp_result.get("crop") or crop
             intent = nlp_result.get("intent") or intent
+
+        # Target response language: user's preferred language takes top priority, default to English
+        target_language = preferred_language or detected_input_language or "en"
 
         # ---------------------------------------------------------
         # STEP 2: Call Agent 1 - Vision Agent
@@ -339,14 +342,14 @@ class OrchestratorService:
                 intent=intent,
                 vision_result=vision_result,
                 evidence=evidence,
-                detected_language=detected_language,
+                detected_language=target_language,
             )
 
             agent_activity.append(
                 {
                     "agent": "gemini-llm",
                     "status": "success",
-                    "details": "Final agricultural advisory generated with grounded citations.",
+                    "details": f"Final agricultural advisory generated with grounded citations ({target_language.upper()}).",
                 }
             )
 
@@ -380,7 +383,8 @@ class OrchestratorService:
                 "question": question,
                 "crop": crop,
                 "intent": intent,
-                "detected_language": detected_language,
+                "detected_language": target_language,
+                "input_language": detected_input_language,
                 "agents": [
                     activity.get("agent")
                     for activity in agent_activity
@@ -391,13 +395,13 @@ class OrchestratorService:
             },
         )
 
-        logger.info("Agent 4 request completed | session_id=%s", session_id)
+        logger.info("Agent 4 request completed | session_id=%s | lang=%s", session_id, target_language)
 
         return {
             "success": True,
             "session_id": session_id,
             "question": question,
-            "detected_language": detected_language,
+            "detected_language": target_language,
             "crop": crop,
             "intent": intent,
             "advisory": advisory,

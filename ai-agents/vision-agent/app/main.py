@@ -1,4 +1,4 @@
-print("🔥 main.py is executing!")
+print("[Vision Agent] main.py is executing!")
 
 import base64
 import io
@@ -14,7 +14,7 @@ from app.preprocess import validate_image, preprocess_image
 from app.model_ensemble import EnsembledVisionModel
 from app.crop_classifier import CropClassifier
 
-print("✅ All imports loaded!")
+print("[Vision Agent] All imports loaded!")
 
 
 # ============================================================
@@ -52,7 +52,7 @@ async def load_model():
     global vision_model
     global crop_classifier
 
-    print("🖼️ Loading Vision Models...")
+    print("[Vision Agent] Loading Vision Models...")
 
     # Existing disease/pest/nutrition/tomato models
     vision_model = EnsembledVisionModel()
@@ -60,7 +60,7 @@ async def load_model():
     # Automatic Rice/Tomato classifier
     crop_classifier = CropClassifier()
 
-    print("✅ Vision Agent ready!")
+    print("[Vision Agent] Vision Agent ready!")
 
 
 # ============================================================
