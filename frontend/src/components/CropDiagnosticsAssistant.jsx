@@ -25,7 +25,8 @@ import {
   FileImage,
   Crosshair,
   Radio,
-  Sliders
+  Sliders,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -74,6 +75,15 @@ const PRESET_LEAF_SAMPLES = [
     seedText: "Brinjal leaf with withered tip necrosis and sunken brown circular spots"
   },
   {
+    name: "Potato Common Scab",
+    crop: "Potato",
+    icon: "🥔",
+    description: "Streptomyces scabies corky tuber lesions",
+    svgColor: "#ca8a04",
+    sampleType: "potato_scab",
+    seedText: "Golden potato tuber with corky circular brown scab lesions"
+  },
+  {
     name: "Healthy Tomato Leaf",
     crop: "Tomato",
     icon: "🍃",
@@ -105,6 +115,10 @@ function generatePresetBlob(sampleType, name) {
     bgGrad.addColorStop(0, "#4f772d");
     bgGrad.addColorStop(0.5, "#90a955");
     bgGrad.addColorStop(1, "#a3b18a");
+  } else if (sampleType === "potato_scab") {
+    bgGrad.addColorStop(0, "#ca8a04");
+    bgGrad.addColorStop(0.5, "#d97706");
+    bgGrad.addColorStop(1, "#b45309");
   } else {
     bgGrad.addColorStop(0, "#386641");
     bgGrad.addColorStop(0.7, "#6a994e");
@@ -113,35 +127,57 @@ function generatePresetBlob(sampleType, name) {
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, 400, 400);
 
-  // Draw Leaf Shape
-  ctx.beginPath();
-  ctx.moveTo(200, 30);
-  ctx.bezierCurveTo(340, 90, 370, 280, 200, 370);
-  ctx.bezierCurveTo(30, 280, 60, 90, 200, 30);
-  ctx.fillStyle = sampleType === "healthy_leaf" ? "#38b000" : "#4f772d";
-  ctx.fill();
-  ctx.lineWidth = 4;
-  ctx.strokeStyle = "#1b4332";
-  ctx.stroke();
-
-  // Draw Central Vein
-  ctx.beginPath();
-  ctx.moveTo(200, 35);
-  ctx.quadraticCurveTo(195, 200, 200, 370);
-  ctx.strokeStyle = sampleType === "healthy_leaf" ? "#70e000" : "#aacc00";
-  ctx.lineWidth = 4;
-  ctx.stroke();
-
-  // Draw Secondary Veins
-  for (let y = 80; y <= 320; y += 40) {
+  if (sampleType === "potato_scab") {
+    // Draw Potato Tuber shape
     ctx.beginPath();
-    ctx.moveTo(200, y);
-    ctx.quadraticCurveTo(260, y - 10, 300, y - 25);
-    ctx.moveTo(200, y);
-    ctx.quadraticCurveTo(140, y - 10, 100, y - 25);
-    ctx.strokeStyle = "rgba(255,255,255,0.3)";
-    ctx.lineWidth = 2;
+    ctx.ellipse(200, 200, 150, 120, Math.PI / 12, 0, Math.PI * 2);
+    ctx.fillStyle = "#eab308";
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#854d0e";
     ctx.stroke();
+
+    // Draw Potato Scab lesions (corky pitted spots)
+    [[160, 160, 20], [240, 180, 28], [190, 240, 22], [260, 250, 16]].forEach(([x, y, r]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = "#713f12";
+      ctx.fill();
+      ctx.strokeStyle = "#451a03";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+  } else {
+    // Draw Leaf Shape
+    ctx.beginPath();
+    ctx.moveTo(200, 30);
+    ctx.bezierCurveTo(340, 90, 370, 280, 200, 370);
+    ctx.bezierCurveTo(30, 280, 60, 90, 200, 30);
+    ctx.fillStyle = sampleType === "healthy_leaf" ? "#38b000" : "#4f772d";
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#1b4332";
+    ctx.stroke();
+
+    // Draw Central Vein
+    ctx.beginPath();
+    ctx.moveTo(200, 35);
+    ctx.quadraticCurveTo(195, 200, 200, 370);
+    ctx.strokeStyle = sampleType === "healthy_leaf" ? "#70e000" : "#aacc00";
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // Draw Secondary Veins
+    for (let y = 80; y <= 320; y += 40) {
+      ctx.beginPath();
+      ctx.moveTo(200, y);
+      ctx.quadraticCurveTo(260, y - 10, 300, y - 25);
+      ctx.moveTo(200, y);
+      ctx.quadraticCurveTo(140, y - 10, 100, y - 25);
+      ctx.strokeStyle = "rgba(255,255,255,0.3)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
   }
 
   // Draw Pathology lesions if not healthy
@@ -449,7 +485,7 @@ export const CropDiagnosticsAssistant = () => {
             Click any leaf to run instant automated diagnosis
           </span>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
           {PRESET_LEAF_SAMPLES.map((preset, idx) => (
             <button
               key={idx}
@@ -613,8 +649,8 @@ export const CropDiagnosticsAssistant = () => {
                   <span>Crop Category</span>
                   <span className="text-[10px] text-muted-foreground">Assists model prior</span>
                 </label>
-                <div className="grid grid-cols-4 gap-1.5">
-                  {["Tomato", "Rice", "Chili", "Brinjal"].map((c) => (
+                <div className="grid grid-cols-5 gap-1.5">
+                  {["Rice", "Tomato", "Potato", "Chili", "Brinjal"].map((c) => (
                     <button
                       key={c}
                       type="button"
@@ -690,44 +726,104 @@ export const CropDiagnosticsAssistant = () => {
 
           {result ? (
             <div className="space-y-4 animate-in fade-in-50 duration-300">
-              {/* Top Result Banner */}
-              <Card className="border-teal-500/40 shadow-xl bg-card overflow-hidden">
-                <div className="bg-gradient-to-r from-teal-600 to-emerald-600 text-white p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
+              {result.is_recognized === false || result.status === "unrecognized" || result.prediction?.includes("Not in Knowledge Base") ? (
+                /* Unrecognized / Out of Knowledge Base Card */
+                <Card className="border-amber-500/40 shadow-xl bg-card overflow-hidden">
+                  <div className="bg-gradient-to-r from-amber-600 to-orange-600 text-white p-5">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge className="bg-white/20 text-white border-none text-[10px] uppercase tracking-wider">
-                        {result.crop || "Identified Crop"}
+                        Unrecognized Image
                       </Badge>
-                      <span className="text-xs text-teal-100 font-medium">
-                        {(result.confidence * 100).toFixed(1)}% Neural Confidence
+                      <span className="text-xs text-amber-100 font-medium">
+                        Not in Agricultural Knowledge Base
                       </span>
                     </div>
                     <h3 className="text-lg sm:text-xl font-extrabold tracking-tight">
-                      {result.prediction}
+                      {result.prediction || "Not in Knowledge Base (Unrecognized Image)"}
                     </h3>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={handleToggleSpeak}
-                      className="h-8 gap-1.5 text-xs bg-white text-teal-900 hover:bg-white/90 shadow font-semibold"
-                    >
-                      {isSpeaking ? <VolumeX className="w-3.5 h-3.5 text-rose-600" /> : <Volume2 className="w-3.5 h-3.5 text-teal-600" />}
-                      {isSpeaking ? "Stop Voice" : "Listen Advisory"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={handleCopyPrescription}
-                      className="h-8 gap-1.5 text-xs bg-teal-800/80 text-white hover:bg-teal-800 border border-teal-400/30"
-                    >
-                      {copied ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
-                      {copied ? "Copied" : "Copy"}
-                    </Button>
+                  <CardContent className="p-5 space-y-4">
+                    <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs sm:text-sm space-y-2">
+                      <p className="font-semibold flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                        {result.message || "The uploaded photo does not appear to be a recognized crop leaf (Rice, Tomato, Chili, Brinjal)."}
+                      </p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        AgriKetha-AI Vision AI models specialize in detecting pathology, pests, and deficiencies on <strong>Rice, Tomato, Chili, and Brinjal</strong> leaves.
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-muted/40 border border-border/70 space-y-2.5">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+                        <Info className="w-3.5 h-3.5 text-teal-600" />
+                        Tips for Accurate Leaf Diagnostics:
+                      </h4>
+                      <ul className="text-xs text-muted-foreground space-y-1.5 list-disc list-inside">
+                        <li>Capture a clear close-up photo of an individual plant leaf under natural daylight.</li>
+                        <li>Ensure the leaf is centered and in sharp focus (avoid blurry or distant foliage).</li>
+                        <li>Avoid uploading non-plant photos, people, screenshots, or room interiors.</li>
+                        <li>Select the matching <strong>Crop Category</strong> button (Rice, Tomato, Chili, Brinjal) to guide the AI model.</li>
+                      </ul>
+                    </div>
+
+                    <div className="pt-2 flex justify-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setResult(null);
+                          setPreviewUrl(null);
+                          setImageFile(null);
+                          setSelectedImage(null);
+                        }}
+                        className="text-xs gap-1.5"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        Try Another Photo
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                /* Top Result Banner for Valid Diagnosed Leaf */
+                <Card className="border-teal-500/40 shadow-xl bg-card overflow-hidden">
+                  <div className="bg-gradient-to-r from-teal-600 to-emerald-600 text-white p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Badge className="bg-white/20 text-white border-none text-[10px] uppercase tracking-wider">
+                          {result.crop || "Identified Crop"}
+                        </Badge>
+                        <span className="text-xs text-teal-100 font-medium">
+                          {(Number(result.confidence || 0) * 100).toFixed(1)}% Neural Confidence
+                        </span>
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-extrabold tracking-tight">
+                        {result.prediction || "Crop Leaf Pathology"}
+                      </h3>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={handleToggleSpeak}
+                        className="h-8 gap-1.5 text-xs bg-white text-teal-900 hover:bg-white/90 shadow font-semibold"
+                      >
+                        {isSpeaking ? <VolumeX className="w-3.5 h-3.5 text-rose-600" /> : <Volume2 className="w-3.5 h-3.5 text-teal-600" />}
+                        {isSpeaking ? "Stop Voice" : "Listen Advisory"}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={handleCopyPrescription}
+                        className="h-8 gap-1.5 text-xs bg-teal-800/80 text-white hover:bg-teal-800 border border-teal-400/30"
+                      >
+                        {copied ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
+                        {copied ? "Copied" : "Copy"}
+                      </Button>
+                    </div>
                   </div>
-                </div>
 
                 <CardContent className="p-5 space-y-5">
                   {/* Severity & Metrics Row */}
@@ -739,13 +835,13 @@ export const CropDiagnosticsAssistant = () => {
                           Pathological Severity Index
                         </span>
                         <Badge variant="outline" className={getSeverityBadgeColor(result.severity_level)}>
-                          {result.severity_level} ({result.severity_percentage}%)
+                          {result.severity_level || "Moderate"} ({result.severity_percentage ?? 0}%)
                         </Badge>
                       </div>
                       <div className="w-full bg-border rounded-full h-2 overflow-hidden">
                         <div
                           className={`h-full ${getSeverityProgressColor(result.severity_level)} transition-all duration-500`}
-                          style={{ width: `${Math.min(100, Math.max(5, result.severity_percentage))}%` }}
+                          style={{ width: `${Math.min(100, Math.max(5, Number(result.severity_percentage) || 10))}%` }}
                         />
                       </div>
                     </div>
@@ -933,7 +1029,7 @@ export const CropDiagnosticsAssistant = () => {
                       <div className="flex flex-wrap gap-2">
                         {result.alternatives.map((alt, i) => (
                           <Badge key={i} variant="secondary" className="text-[11px] font-medium py-1 px-2.5">
-                            {alt.disease}: {(alt.confidence * 100).toFixed(1)}%
+                            {alt.disease || "Unknown"}: {(Number(alt.confidence || 0) * 100).toFixed(1)}%
                           </Badge>
                         ))}
                       </div>
@@ -941,8 +1037,9 @@ export const CropDiagnosticsAssistant = () => {
                   )}
                 </CardContent>
               </Card>
-            </div>
-          ) : (
+            )}
+          </div>
+        ) : (
             <Card className="border-dashed border-2 border-border/80 p-8 text-center flex flex-col items-center justify-center min-h-[400px] text-muted-foreground space-y-3">
               <div className="w-16 h-16 rounded-3xl bg-teal-500/10 text-teal-600 flex items-center justify-center">
                 <Leaf className="w-8 h-8" />

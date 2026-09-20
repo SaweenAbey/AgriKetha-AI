@@ -67,6 +67,53 @@ def main():
     print(f"   - Diagnosis: {res_brinjal['prediction']}")
     assert res_brinjal["crop"] == "Brinjal"
 
+    # 6. Test with Potato Tuber / Scab Image
+    potato_img = Image.new("RGB", (320, 260), color=(220, 180, 80)) # golden tan potato skin
+    d_p = ImageDraw.Draw(potato_img)
+    d_p.ellipse([80, 70, 140, 130], fill=(110, 60, 20)) # brown scab spot
+    d_p.ellipse([180, 120, 240, 170], fill=(95, 50, 15)) # brown scab spot
+
+    buf_p = io.BytesIO()
+    potato_img.save(buf_p, format="JPEG")
+    potato_bytes = buf_p.getvalue()
+
+    res_potato = vision_engine.analyze_crop_image(potato_bytes, filename="potato_photo.jpg")
+    print("\n6. Potato Photo Scan (potato_photo.jpg):")
+    print(f"   - Identified Crop: {res_potato['crop']}")
+    print(f"   - Diagnosis: {res_potato['prediction']}")
+    print(f"   - Confidence: {res_potato['confidence'] * 100:.1f}%")
+    assert res_potato["crop"] == "Potato"
+    assert "Scab" in res_potato["prediction"] or "Potato" in res_potato["prediction"]
+
+    adv_potato = _generate_vision_advisory(res_potato["prediction"], res_potato["crop"], res_potato["severity_level"])
+    print(f"   - DOA Scab Control: {adv_potato['biological_control'][:70]}...")
+    assert "Trichoderma" in adv_potato["biological_control"] or "tuber" in adv_potato["biological_control"]
+
+    # 7. Test with Non-Leaf / Unrelated Image (e.g. gray wall or car or unrelated image)
+    non_leaf_img = Image.new("RGB", (300, 300), color=(180, 180, 210)) # solid bluish gray, no foliage
+    d_nl = ImageDraw.Draw(non_leaf_img)
+    d_nl.rectangle([50, 50, 250, 250], fill=(70, 70, 80)) # dark square
+
+    buf_nl = io.BytesIO()
+    non_leaf_img.save(buf_nl, format="JPEG")
+    non_leaf_bytes = buf_nl.getvalue()
+
+    res_nl = vision_engine.analyze_crop_image(non_leaf_bytes, filename="random_object.jpg")
+    print("\n6. Non-Leaf / Unrelated Photo Scan (random_object.jpg):")
+    print(f"   - Status: {res_nl['status']}")
+    print(f"   - Is Recognized: {res_nl['is_recognized']}")
+    print(f"   - Identified Crop: {res_nl['crop']}")
+    print(f"   - Diagnosis: {res_nl['prediction']}")
+    print(f"   - Message: {res_nl['message']}")
+    assert res_nl["status"] == "unrecognized"
+    assert res_nl["is_recognized"] is False
+    assert "Not in Knowledge Base" in res_nl["prediction"]
+
+    adv_nl = _generate_vision_advisory(res_nl["prediction"], res_nl["crop"], res_nl["severity_level"])
+    print(f"   - Advisory Disease Title: {adv_nl['disease_name']}")
+    print(f"   - Advisory Guidance: {adv_nl['biological_control']}")
+    assert "No crop leaf identified" in adv_nl["biological_control"]
+
     print("\n" + "=" * 60)
     print("[PASS] ALL VISION DIAGNOSTIC VERIFICATION TESTS PASSED SUCCESSFULLY!")
     print("=" * 60)

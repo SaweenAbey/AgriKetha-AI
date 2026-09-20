@@ -1,7 +1,9 @@
+import io
 import re
 import base64
 from datetime import datetime, timezone
 from typing import List, Optional
+from PIL import Image
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
 from bson import ObjectId
 import httpx
@@ -450,6 +452,18 @@ def _generate_vision_advisory(prediction: str, crop: str, severity_level: str = 
     pred_lower = prediction.lower() if prediction else ""
     crop_display = (crop or "Crop").capitalize()
 
+    # Check for unrecognized / not in knowledge base images
+    if "not in knowledge base" in pred_lower or "unrecognized" in pred_lower or "unknown" in pred_lower or "not a crop" in pred_lower:
+        return {
+            "disease_name": "Image Not in Agricultural Knowledge Base",
+            "crop": crop_display or "Unknown",
+            "severity_level": "N/A",
+            "urgency": "Info - Verification Required",
+            "biological_control": "No crop leaf identified. Please verify the uploaded photo is a supported crop leaf (Rice, Tomato, Chili, or Brinjal).",
+            "chemical_control": "No chemical intervention needed. Never apply chemical fungicides or insecticides without a confirmed diagnosis.",
+            "cultural_practices": "Photograph a single crop leaf in clear, natural daylight with the affected symptoms centered and clearly in focus."
+        }
+
     biological = "Prune infected lower foliage, ensure wide spacing for air circulation, and apply organic neem seed oil extract (3-5ml/L)."
     chemical = "Apply broad-spectrum copper fungicide or Department of Agriculture approved contact spray."
     cultural = "Avoid overhead irrigation in late evening; disinfect pruning tools with 70% alcohol."
@@ -480,11 +494,16 @@ def _generate_vision_advisory(prediction: str, crop: str, severity_level: str = 
         chemical = "Spray Thiamethoxam 25% WG (2g/10L) or Imidacloprid 200 SL (5ml/10L) to eliminate insect vectors."
         cultural = "Adopt synchronous planting in yaya; rogue out and destroy severely infected stunted clumps."
         urgency = "Critical - Viral complex has no cure; urgent vector suppression required."
+    elif "scab" in pred_lower or "streptomyces" in pred_lower or "tuber" in pred_lower:
+        biological = "Apply Trichoderma viride or Pseudomonas fluorescens bio-inoculant to seed tubers and planting beds before ridging."
+        chemical = "Treat seed tubers with Mancozeb 75% WP (25g/10L water) or Fludioxonil prior to planting."
+        cultural = "Maintain soil pH around 5.2 - 5.5; ensure consistent soil moisture during early tuber initiation (4-6 weeks after emergence) and avoid excess liming."
+        urgency = "Moderate - Common in Nuwara Eliya and Badulla potato beds; downgrades tuber grade and market value."
     elif "early blight" in pred_lower or "late blight" in pred_lower or "blight" in pred_lower:
-        biological = "Remove and safely burn severely infected lower leaves. Spray Trichoderma viride or Bacillus subtilis bio-fungicide."
-        chemical = "Apply Mancozeb 75% WP (20g/10L water) or Chlorothalonil. For late blight, apply Metalaxyl + Mancozeb (Ridomil)."
-        cultural = "Stake tomato plants, mulch beds with clean straw to prevent soil-splash pathogen transmission."
-        urgency = "High - Rapid fungal spore dispersal risk during humid weather."
+        biological = "Remove and safely burn severely infected lower leaves/culls. Spray Trichoderma viride or Bacillus subtilis bio-fungicide."
+        chemical = "Apply Mancozeb 75% WP (20g/10L water) or Chlorothalonil. For late blight, apply Metalaxyl-M + Mancozeb (Ridomil Gold 20g/10L)."
+        cultural = "Stake plants or hill up potato ridges high to protect tubers from fungal spore rain-wash; avoid late evening overhead irrigation."
+        urgency = "High - Rapid fungal spore dispersal risk during humid misty weather in hill country."
     elif "curl" in pred_lower or "virus" in pred_lower:
         biological = "Install yellow sticky traps (10-15/acre) to trap whitefly and thrips vectors. Spray 1% soap solution."
         chemical = "Spray Imidacloprid 200 SL (5ml/10L) or Acetamiprid to suppress vector populations."
@@ -523,7 +542,7 @@ async def get_vision_agent_status():
     Checks if Vision Agent Microservice (PyTorch + Grad-CAM) or Integrated Vision Engine is active.
     """
     try:
-        async with httpx.AsyncClient(timeout=2.0) as client:
+        async with httpx.AsyncClient(timeout=0.2) as client:
             res = await client.get(f"{settings.VISION_AGENT_URL}/agent/health")
             if res.status_code == 200:
                 return {"status": "online", "mode": "microservice", "detail": res.json()}
@@ -556,9 +575,19 @@ async def analyze_crop_image(
         image_delta=1
     )
 
-    # Encode preview image as base64 data URI for easy UI rendering and history inspection
-    content_type = image.content_type or "image/jpeg"
-    image_base64 = f"data:{content_type};base64,{base64.b64encode(file_bytes).decode('utf-8')}"
+    # Generate a lightweight compressed thumbnail (< 30KB) to prevent MongoDB Atlas write timeouts
+    image_base64 = None
+    try:
+        pil_thumb = Image.open(io.BytesIO(file_bytes)).convert("RGB")
+        pil_thumb.thumbnail((360, 360))
+        thumb_buf = io.BytesIO()
+        pil_thumb.save(thumb_buf, format="JPEG", quality=75, optimize=True)
+        image_base64 = f"data:image/jpeg;base64,{base64.b64encode(thumb_buf.getvalue()).decode('utf-8')}"
+    except Exception as thumb_err:
+        logger.warning("Thumbnail compression warning: %s", thumb_err)
+        if len(file_bytes) < 100000:
+            content_type = image.content_type or "image/jpeg"
+            image_base64 = f"data:{content_type};base64,{base64.b64encode(file_bytes).decode('utf-8')}"
 
     now = datetime.now(timezone.utc)
     vision_response = None
@@ -566,19 +595,20 @@ async def analyze_crop_image(
 
     # 1. Forward image to Vision Agent microservice if available
     try:
-        async with httpx.AsyncClient(timeout=8.0) as client:
-            files = {"file": (image.filename or "leaf.jpg", file_bytes, content_type)}
+        async with httpx.AsyncClient(timeout=0.3) as client:
+            files = {"file": (image.filename or "leaf.jpg", file_bytes, image.content_type or "image/jpeg")}
             res = await client.post(f"{settings.VISION_AGENT_URL}/agent/image/analyze", files=files)
             if res.status_code == 200:
                 body = res.json()
-                if body.get("status") == "success":
+                if body.get("status") in ["success", "unrecognized"]:
                     vision_response = body
                     engine_status = "microservice_connected"
-    except Exception as e:
-        logger.info("Vision Agent microservice on %s unavailable (%s). Running Integrated Vision Engine.", settings.VISION_AGENT_URL, e)
+    except Exception:
+        # Microservice is offline; smoothly use in-process Integrated Vision Engine
+        pass
 
     # 2. Execute Integrated Vision Engine (PyTorch MobileNetV3 deep learning + morphology classifier)
-    if not vision_response or vision_response.get("status") != "success":
+    if not vision_response or vision_response.get("status") not in ["success", "unrecognized"]:
         try:
             vision_response = vision_engine.analyze_crop_image(
                 image_bytes=file_bytes,
@@ -613,7 +643,7 @@ async def analyze_crop_image(
 
     advisory = _generate_vision_advisory(pred_name, detected_crop_name, severity_level)
 
-    # 4. Save diagnostic record in MongoDB
+    # 4. Save diagnostic record in MongoDB with safe error handling
     record = {
         "user_id": current_user["id"],
         "farmer_name": current_user["full_name"],
@@ -630,12 +660,22 @@ async def analyze_crop_image(
         "engine_status": engine_status,
         "image_preview": image_base64,
         "quota_status": quota_status,
+        "status": vision_response.get("status", "success"),
+        "is_recognized": vision_response.get("is_recognized", True),
+        "message": vision_response.get("message", "Analysis completed successfully"),
         "created_at": now
     }
 
-    insert_res = await db.crop_diagnostics.insert_one(record)
-    record["id"] = str(insert_res.inserted_id)
-    del record["_id"]
+    record_id = None
+    try:
+        insert_res = await db.crop_diagnostics.insert_one(record)
+        record_id = str(insert_res.inserted_id)
+    except Exception as db_err:
+        logger.error("MongoDB Atlas insert error for crop diagnostics: %s", db_err)
+        record_id = f"diag_{int(now.timestamp())}"
+
+    record["id"] = record_id
+    record.pop("_id", None)
 
     return record
 

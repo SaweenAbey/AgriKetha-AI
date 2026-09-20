@@ -45,6 +45,23 @@ def validate_image(image_np: np.ndarray):
         except Exception:
             pass
 
+    # 3. Check Botanical Foliage presence (ensuring image contains plant foliage)
+    if len(image_np.shape) == 3 and image_np.shape[2] >= 3:
+        arr = image_np[:, :, :3].astype(float)
+        r, g, b = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
+        max_rgb = np.maximum(np.maximum(r, g), b)
+        min_rgb = np.minimum(np.minimum(r, g), b)
+        saturation = (max_rgb - min_rgb) / np.maximum(max_rgb, 1.0)
+        chromatic = saturation > 0.14
+
+        green_mask = chromatic & (g > 35) & (g > r * 1.05) & (g > b * 1.10)
+        yellow_mask = chromatic & (r > 75) & (g > 65) & (b < r * 0.78) & (b < g * 0.78)
+        brown_mask = chromatic & (r > 45) & (r < 185) & (g > 25) & (g < 155) & (b < g * 0.85) & (r > g + 5)
+        botanical_pct = float(np.mean(green_mask | yellow_mask | brown_mask)) * 100.0
+
+        if botanical_pct < 8.0:
+            return False, "The uploaded image does not appear to be a recognized crop leaf (Rice, Tomato, Chili, Brinjal) or is not in our knowledge base. Please upload a clear photo of a crop leaf."
+
     return True, "Valid Image"
 
 def preprocess_image(image_pil: Image.Image) -> torch.Tensor:
