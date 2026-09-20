@@ -9,7 +9,7 @@ from app.core.logging_config import logger
 from app.schemas.orchestrator.schemas import OrchestratorResponse
 from app.services.orchestrator_service import OrchestratorService
 from app.services.quota_service import QuotaService
-
+from app.core.database import db_state
 
 import asyncio
 
@@ -95,6 +95,53 @@ async def get_orchestrator_history(
         del s["_id"]
         sessions.append(s)
     return sessions
+
+@router.get("/activity")
+async def get_activity_logs(
+    current_user: dict = Depends(require_farmer_or_admin),
+):
+    """
+    Returns recent Agent 4 orchestration activity logs.
+    """
+
+    if db_state.db is None:
+        return {
+            "success": False,
+            "activities": [],
+            "message": "Database is not available.",
+        }
+
+    logs = await (
+        db_state.db.audit_logs
+        .find({"action": "AGENT4_ORCHESTRATION"})
+        .sort("created_at", -1)
+        .limit(20)
+        .to_list(length=20)
+    )
+
+    activities = []
+
+    for log in logs:
+        activities.append(
+            {
+                "action": log.get("action"),
+                "status": log.get("status"),
+                "session_id": log.get("details", {}).get("session_id"),
+                "question": log.get("details", {}).get("question"),
+                "crop": log.get("details", {}).get("crop"),
+                "intent": log.get("details", {}).get("intent"),
+                "evidence_count": log.get("details", {}).get("evidence_count", 0),
+                "vision_used": log.get("details", {}).get("vision_used", False),
+                "agent_activity": log.get("details", {}).get("agent_activity", []),
+                "created_at": log.get("created_at"),
+            }
+        )
+
+    return {
+        "success": True,
+        "count": len(activities),
+        "activities": activities,
+    }
 
 
 @router.post(
@@ -195,4 +242,4 @@ async def orchestrate_query(
     except Exception as db_err:
         logger.warning("Could not persist orchestrator session to MongoDB: %s", db_err)
 
-    return result
+    return result
