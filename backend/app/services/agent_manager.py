@@ -105,6 +105,7 @@ def start_agent_process(config: dict) -> Optional[subprocess.Popen]:
         env["PYTHONPATH"] = str(agent_dir)
         env["PYTHONUNBUFFERED"] = "1"
         env["PYTHONIOENCODING"] = "utf-8"
+        env["PYTHONUTF8"] = "1"
 
         # On Windows, spawn without popping up new CMD windows
         creationflags = 0

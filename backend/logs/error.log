@@ -801,3 +801,2378 @@ Traceback (most recent call last):
   File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 319, in wait_for_read
     raise _OperationCancelled("operation cancelled")
 pymongo.errors._OperationCancelled: operation cancelled
+2026-09-20 08:15:42 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 898, in connect
+    conn.hello()
+    ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 237, in hello
+    return self._hello(None, None)
+           ~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 280, in _hello
+    doc = self.command("admin", cmd, publish_events=False, exhaust_allowed=awaitable)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 362, in receive_data
+    raise _OperationCancelled("operation cancelled") from None
+pymongo.errors._OperationCancelled: operation cancelled
+2026-09-20 09:03:26 | ERROR    | agriketha.backend:dispatch:40 - 127.0.0.1 | POST /api/v1/farmer/vision/analyze | Exception: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The write operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms) | 50387.69ms
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 435, in send_message
+    sendall(self.conn.get_conn, message)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 240, in sendall
+    sock.sendall(buf)
+    ~~~~~~~~~~~~^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1263, in sendall
+    v = self.send(byte_view[count:])
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1232, in send
+    return self._sslobj.write(data)
+           ~~~~~~~~~~~~~~~~~~^^^^^^
+TimeoutError: The write operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 23, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\api\v1\farmer.py", line 636, in analyze_crop_image
+    insert_res = await db.crop_diagnostics.insert_one(record)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 875, in insert_one
+    self._insert_one(
+    ~~~~~~~~~~~~~~~~^
+        document,
+        ^^^^^^^^^
+    ...<5 lines>...
+        comment=comment,
+        ^^^^^^^^^^^^^^^^
+    ),
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 815, in _insert_one
+    self._database.client._retryable_write(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        acknowledged, _insert_command, session, operation=_Op.INSERT
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2099, in _retryable_write
+    return self._retry_with_session(retryable, func, s, bulk, operation, operation_id)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1969, in _retry_with_session
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func=func,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        operation_id=operation_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+                                             ~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3103, in _write
+    return self._func(self._session, conn, self._retryable)  # type: ignore
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 803, in _insert_command
+    result = conn.command(
+        self._database.name,
+    ...<5 lines>...
+        retryable_write=retryable_write,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 190, in _run_command
+    conn.send_message(msg, max_doc_size)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 438, in send_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The write operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:03:26 | ERROR    | agriketha.backend:global_exception_handler:92 - Unhandled exception for POST /api/v1/farmer/vision/analyze: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The write operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 435, in send_message
+    sendall(self.conn.get_conn, message)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 240, in sendall
+    sock.sendall(buf)
+    ~~~~~~~~~~~~^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1263, in sendall
+    v = self.send(byte_view[count:])
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1232, in send
+    return self._sslobj.write(data)
+           ~~~~~~~~~~~~~~~~~~^^^^^^
+TimeoutError: The write operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 44, in dispatch
+    raise exc
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 23, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\api\v1\farmer.py", line 636, in analyze_crop_image
+    insert_res = await db.crop_diagnostics.insert_one(record)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 875, in insert_one
+    self._insert_one(
+    ~~~~~~~~~~~~~~~~^
+        document,
+        ^^^^^^^^^
+    ...<5 lines>...
+        comment=comment,
+        ^^^^^^^^^^^^^^^^
+    ),
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 815, in _insert_one
+    self._database.client._retryable_write(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        acknowledged, _insert_command, session, operation=_Op.INSERT
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2099, in _retryable_write
+    return self._retry_with_session(retryable, func, s, bulk, operation, operation_id)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1969, in _retry_with_session
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func=func,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        operation_id=operation_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+                                             ~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3103, in _write
+    return self._func(self._session, conn, self._retryable)  # type: ignore
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 803, in _insert_command
+    result = conn.command(
+        self._database.name,
+    ...<5 lines>...
+        retryable_write=retryable_write,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 190, in _run_command
+    conn.send_message(msg, max_doc_size)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 438, in send_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The write operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:08:21 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 586, in _configured_socket_interface
+    ssl_sock = ssl_context.wrap_socket(sock, server_hostname=host, session=session)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+TimeoutError: _ssl.c:1059: The handshake operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 869, in connect
+    networking_interface = _configured_socket_interface(
+        self.address, self.opts, self._ssl_session_cache
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 600, in _configured_socket_interface
+    _raise_connection_failure(address, exc, "SSL handshake failed: ", timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: SSL handshake failed: ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: _ssl.c:1059: The handshake operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:08:42 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 586, in _configured_socket_interface
+    ssl_sock = ssl_context.wrap_socket(sock, server_hostname=host, session=session)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+TimeoutError: _ssl.c:1059: The handshake operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 869, in connect
+    networking_interface = _configured_socket_interface(
+        self.address, self.opts, self._ssl_session_cache
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 600, in _configured_socket_interface
+    _raise_connection_failure(address, exc, "SSL handshake failed: ", timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: SSL handshake failed: ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: _ssl.c:1059: The handshake operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:18:07 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 586, in _configured_socket_interface
+    ssl_sock = ssl_context.wrap_socket(sock, server_hostname=host, session=session)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+TimeoutError: _ssl.c:1059: The handshake operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 869, in connect
+    networking_interface = _configured_socket_interface(
+        self.address, self.opts, self._ssl_session_cache
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 600, in _configured_socket_interface
+    _raise_connection_failure(address, exc, "SSL handshake failed: ", timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: SSL handshake failed: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: _ssl.c:1059: The handshake operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:21:38 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 382, in receive_data
+    raise OSError("connection closed")
+OSError: connection closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 898, in connect
+    conn.hello()
+    ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 237, in hello
+    return self._hello(None, None)
+           ~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 280, in _hello
+    doc = self.command("admin", cmd, publish_events=False, exhaust_allowed=awaitable)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: connection closed (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:43:10 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 344, in receive_data
+    wait_for_read(conn, deadline)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 323, in wait_for_read
+    raise socket.timeout("timed out")
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 904, in connect
+    conn.authenticate()
+    ~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 473, in authenticate
+    auth.authenticate(creds, self, reauthenticate=reauthenticate)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 447, in authenticate
+    auth_func(credentials, conn)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 354, in _authenticate_default
+    return _authenticate_scram(credentials, conn, "SCRAM-SHA-1")
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 96, in _authenticate_scram
+    res = conn.command(source, cmd)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:43:35 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 898, in connect
+    conn.hello()
+    ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 237, in hello
+    return self._hello(None, None)
+           ~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 280, in _hello
+    doc = self.command("admin", cmd, publish_events=False, exhaust_allowed=awaitable)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:47:38 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 586, in _configured_socket_interface
+    ssl_sock = ssl_context.wrap_socket(sock, server_hostname=host, session=session)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+TimeoutError: _ssl.c:1059: The handshake operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 869, in connect
+    networking_interface = _configured_socket_interface(
+        self.address, self.opts, self._ssl_session_cache
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 600, in _configured_socket_interface
+    _raise_connection_failure(address, exc, "SSL handshake failed: ", timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: SSL handshake failed: ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: _ssl.c:1059: The handshake operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 09:48:16 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 344, in receive_data
+    wait_for_read(conn, deadline)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 323, in wait_for_read
+    raise socket.timeout("timed out")
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 904, in connect
+    conn.authenticate()
+    ~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 473, in authenticate
+    auth.authenticate(creds, self, reauthenticate=reauthenticate)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 447, in authenticate
+    auth_func(credentials, conn)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 354, in _authenticate_default
+    return _authenticate_scram(credentials, conn, "SCRAM-SHA-1")
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 135, in _authenticate_scram
+    res = conn.command(source, cmd)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:00:17 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 904, in connect
+    conn.authenticate()
+    ~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 473, in authenticate
+    auth.authenticate(creds, self, reauthenticate=reauthenticate)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 447, in authenticate
+    auth_func(credentials, conn)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 354, in _authenticate_default
+    return _authenticate_scram(credentials, conn, "SCRAM-SHA-1")
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 96, in _authenticate_scram
+    res = conn.command(source, cmd)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:16:56 | ERROR    | agriketha.backend:connect_to_mongo:49 - Failed to connect to MongoDB: The resolution lifetime expired after 10.000 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.; Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 111, in _resolve_uri
+    results = _resolve(
+        "_" + self.__srv + "._tcp." + self.__fqdn, "SRV", lifetime=self.__connect_timeout
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 46, in _resolve
+    return resolver.resolve(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\dns\resolver.py", line 1572, in resolve
+    return get_default_resolver().resolve(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        qname,
+        ^^^^^^
+    ...<7 lines>...
+        search,
+        ^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\dns\resolver.py", line 1328, in resolve
+    timeout = self._compute_timeout(start, lifetime, resolution.errors)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\dns\resolver.py", line 1084, in _compute_timeout
+    raise LifetimeTimeout(timeout=duration, errors=errors)
+dns.resolver.LifetimeTimeout: The resolution lifetime expired after 10.000 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.; Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\backend\app\core\database.py", line 43, in connect_to_mongo
+    await db_state.client.admin.command('ping')
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 946, in command
+    return self._client._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        inner, read_preference, session, command_name, None, False, is_run_command=True
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._server_selector,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        operation_id=self._operation_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1849, in _select_server
+    topology = self._get_topology()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1816, in _get_topology
+    self._resolve_srv()
+    ~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 950, in _resolve_srv
+    res = uri_parser._parse_srv(
+        entity,
+    ...<7 lines>...
+        srv_allowed_hosts_suffix=srv_allowed_hosts_suffix,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\uri_parser.py", line 175, in _parse_srv
+    nodes = dns_resolver.get_hosts()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 155, in get_hosts
+    _, nodes = self._get_srv_response_and_hosts(True)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 125, in _get_srv_response_and_hosts
+    results = self._resolve_uri(encapsulate_errors)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 119, in _resolve_uri
+    raise ConfigurationError(str(exc)) from exc
+pymongo.errors.ConfigurationError: The resolution lifetime expired after 10.000 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.; Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.
+2026-09-20 10:26:14 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 898, in connect
+    conn.hello()
+    ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 237, in hello
+    return self._hello(None, None)
+           ~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 280, in _hello
+    doc = self.command("admin", cmd, publish_events=False, exhaust_allowed=awaitable)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:26:29 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 586, in _configured_socket_interface
+    ssl_sock = ssl_context.wrap_socket(sock, server_hostname=host, session=session)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+TimeoutError: _ssl.c:1059: The handshake operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 869, in connect
+    networking_interface = _configured_socket_interface(
+        self.address, self.opts, self._ssl_session_cache
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 600, in _configured_socket_interface
+    _raise_connection_failure(address, exc, "SSL handshake failed: ", timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: SSL handshake failed: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: _ssl.c:1059: The handshake operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:31:01 | ERROR    | agriketha.backend:dispatch:40 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Exception: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The read operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms) | 202605.65ms
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 809, in receive_message
+    data = receive_data(conn, length - 16, deadline)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 23, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\api\v1\farmer.py", line 694, in get_vision_diagnostics_history
+    async for d in cursor:
+    ...<2 lines>...
+        diagnostics.append(d)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\motor\core.py", line 1425, in next
+    if self.alive and (self._buffer_size() or await self._get_more()):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~^
+        _cmd,
+        ^^^^^
+    ...<4 lines>...
+        operation=operation.name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3130, in _read
+    return self._func(self._session, self._server, conn, read_pref)  # type: ignore
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1937, in _cmd
+    return run_with_conn(conn, operation, read_preference)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor_base.py", line 122, in _run_with_conn
+    docs, reply, duration = run_cursor_command(
+                            ~~~~~~~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<14 lines>...
+        cursor_id=operation.cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 329, in run_cursor_command
+    docs, reply, duration_s = _run_command(
+                              ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        cursor_id=cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The read operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:31:01 | ERROR    | agriketha.backend:global_exception_handler:92 - Unhandled exception for GET /api/v1/farmer/vision/history: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The read operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 809, in receive_message
+    data = receive_data(conn, length - 16, deadline)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 44, in dispatch
+    raise exc
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 23, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\api\v1\farmer.py", line 694, in get_vision_diagnostics_history
+    async for d in cursor:
+    ...<2 lines>...
+        diagnostics.append(d)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\motor\core.py", line 1425, in next
+    if self.alive and (self._buffer_size() or await self._get_more()):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~^
+        _cmd,
+        ^^^^^
+    ...<4 lines>...
+        operation=operation.name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3130, in _read
+    return self._func(self._session, self._server, conn, read_pref)  # type: ignore
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1937, in _cmd
+    return run_with_conn(conn, operation, read_preference)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor_base.py", line 122, in _run_with_conn
+    docs, reply, duration = run_cursor_command(
+                            ~~~~~~~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<14 lines>...
+        cursor_id=operation.cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 329, in run_cursor_command
+    docs, reply, duration_s = _run_command(
+                              ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        cursor_id=cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The read operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:32:20 | ERROR    | agriketha.backend:dispatch:40 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Exception: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The read operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms) | 219590.85ms
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 809, in receive_message
+    data = receive_data(conn, length - 16, deadline)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 23, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\api\v1\farmer.py", line 694, in get_vision_diagnostics_history
+    async for d in cursor:
+    ...<2 lines>...
+        diagnostics.append(d)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\motor\core.py", line 1425, in next
+    if self.alive and (self._buffer_size() or await self._get_more()):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~^
+        _cmd,
+        ^^^^^
+    ...<4 lines>...
+        operation=operation.name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3130, in _read
+    return self._func(self._session, self._server, conn, read_pref)  # type: ignore
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1937, in _cmd
+    return run_with_conn(conn, operation, read_preference)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor_base.py", line 122, in _run_with_conn
+    docs, reply, duration = run_cursor_command(
+                            ~~~~~~~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<14 lines>...
+        cursor_id=operation.cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 329, in run_cursor_command
+    docs, reply, duration_s = _run_command(
+                              ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        cursor_id=cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The read operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:32:20 | ERROR    | agriketha.backend:global_exception_handler:92 - Unhandled exception for GET /api/v1/farmer/vision/history: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The read operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 809, in receive_message
+    data = receive_data(conn, length - 16, deadline)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 44, in dispatch
+    raise exc
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 23, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\api\v1\farmer.py", line 694, in get_vision_diagnostics_history
+    async for d in cursor:
+    ...<2 lines>...
+        diagnostics.append(d)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\motor\core.py", line 1425, in next
+    if self.alive and (self._buffer_size() or await self._get_more()):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~^
+        _cmd,
+        ^^^^^
+    ...<4 lines>...
+        operation=operation.name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3130, in _read
+    return self._func(self._session, self._server, conn, read_pref)  # type: ignore
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1937, in _cmd
+    return run_with_conn(conn, operation, read_preference)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor_base.py", line 122, in _run_with_conn
+    docs, reply, duration = run_cursor_command(
+                            ~~~~~~~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<14 lines>...
+        cursor_id=operation.cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 329, in run_cursor_command
+    docs, reply, duration_s = _run_command(
+                              ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        cursor_id=cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 166, in _raise_connection_failure
+    raise NetworkTimeout(msg) from error
+pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: The read operation timed out (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:32:25 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 904, in connect
+    conn.authenticate()
+    ~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 473, in authenticate
+    auth.authenticate(creds, self, reauthenticate=reauthenticate)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 447, in authenticate
+    auth_func(credentials, conn)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 354, in _authenticate_default
+    return _authenticate_scram(credentials, conn, "SCRAM-SHA-1")
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\auth.py", line 96, in _authenticate_scram
+    res = conn.command(source, cmd)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:32:25 | ERROR    | agriketha.backend:dispatch:40 - 127.0.0.1 | GET /api/v1/farmer/vision/history | Exception: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms) | 272675.73ms
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 809, in receive_message
+    data = receive_data(conn, length - 16, deadline)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 23, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\api\v1\farmer.py", line 694, in get_vision_diagnostics_history
+    async for d in cursor:
+    ...<2 lines>...
+        diagnostics.append(d)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\motor\core.py", line 1425, in next
+    if self.alive and (self._buffer_size() or await self._get_more()):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~^
+        _cmd,
+        ^^^^^
+    ...<4 lines>...
+        operation=operation.name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3130, in _read
+    return self._func(self._session, self._server, conn, read_pref)  # type: ignore
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1937, in _cmd
+    return run_with_conn(conn, operation, read_preference)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor_base.py", line 122, in _run_with_conn
+    docs, reply, duration = run_cursor_command(
+                            ~~~~~~~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<14 lines>...
+        cursor_id=operation.cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 329, in run_cursor_command
+    docs, reply, duration_s = _run_command(
+                              ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        cursor_id=cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 10:32:26 | ERROR    | agriketha.backend:global_exception_handler:92 - Unhandled exception for GET /api/v1/farmer/vision/history: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 809, in receive_message
+    data = receive_data(conn, length - 16, deadline)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 44, in dispatch
+    raise exc
+  File "D:\AgriKetha-AI\backend\app\core\middleware.py", line 23, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\backend\app\api\v1\farmer.py", line 694, in get_vision_diagnostics_history
+    async for d in cursor:
+    ...<2 lines>...
+        diagnostics.append(d)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\motor\core.py", line 1425, in next
+    if self.alive and (self._buffer_size() or await self._get_more()):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+    ~~~~~~~~~~~~~~~~~~^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ~~~~~~~~~~~~~~~~~~~~^
+        _cmd,
+        ^^^^^
+    ...<4 lines>...
+        operation=operation.name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func,
+        ^^^^^
+    ...<9 lines>...
+        is_aggregate_write=is_aggregate_write,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3130, in _read
+    return self._func(self._session, self._server, conn, read_pref)  # type: ignore
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1937, in _cmd
+    return run_with_conn(conn, operation, read_preference)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor_base.py", line 122, in _run_with_conn
+    docs, reply, duration = run_cursor_command(
+                            ~~~~~~~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<14 lines>...
+        cursor_id=operation.cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 329, in run_cursor_command
+    docs, reply, duration_s = _run_command(
+                              ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        cursor_id=cursor_id,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 12:11:04 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 354, in receive_data
+    chunk_length = conn.conn.recv_into(mv[bytes_read:])
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 472, in recv_into
+    return self.conn.recv_into(buffer)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 898, in connect
+    conn.hello()
+    ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 237, in hello
+    return self._hello(None, None)
+           ~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 280, in _hello
+    doc = self.command("admin", cmd, publish_events=False, exhaust_allowed=awaitable)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 565, in _raise_connection_failure
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [WinError 10054] An existing connection was forcibly closed by the remote host (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 12:11:08 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 869, in connect
+    networking_interface = _configured_socket_interface(
+        self.address, self.opts, self._ssl_session_cache
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 573, in _configured_socket_interface
+    sock = _create_connection(address, options)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 505, in _create_connection
+    raise err
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 498, in _create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 882, in connect
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [WinError 10053] An established connection was aborted by the software in your host machine (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 12:12:06 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 869, in connect
+    networking_interface = _configured_socket_interface(
+        self.address, self.opts, self._ssl_session_cache
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 573, in _configured_socket_interface
+    sock = _create_connection(address, options)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 474, in _create_connection
+    for res in socket.getaddrinfo(host, port, family=family, type=socket.SOCK_STREAM):  # type: ignore[attr-defined, unused-ignore]
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 882, in connect
+    _raise_connection_failure(self.address, error, timeout_details=details)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 168, in _raise_connection_failure
+    raise AutoReconnect(msg) from error
+pymongo.errors.AutoReconnect: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 10000.0ms)
+2026-09-20 12:14:41 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 898, in connect
+    conn.hello()
+    ~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 237, in hello
+    return self._hello(None, None)
+           ~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 280, in _hello
+    doc = self.command("admin", cmd, publish_events=False, exhaust_allowed=awaitable)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 421, in command
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 396, in command
+    return run_command(
+        self,
+    ...<17 lines>...
+        write_concern=write_concern,
+    )
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ~~~~~~~~~~~~^
+        conn,
+        ^^^^^
+    ...<16 lines>...
+        set_conn_more_to_come=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\command_runner.py", line 192, in _run_command
+    reply = conn.receive_message(request_id)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 449, in receive_message
+    self._raise_connection_failure(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 567, in _raise_connection_failure
+    raise error
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 446, in receive_message
+    return receive_message(self, request_id, self.max_message_size)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 777, in receive_message
+    length, _, response_to, op_code = _UNPACK_HEADER(receive_data(conn, 16, deadline))
+                                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 344, in receive_data
+    wait_for_read(conn, deadline)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\pymongo\network_layer.py", line 319, in wait_for_read
+    raise _OperationCancelled("operation cancelled")
+pymongo.errors._OperationCancelled: operation cancelled
