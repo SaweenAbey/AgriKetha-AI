@@ -25,7 +25,8 @@ import {
   FileImage,
   Crosshair,
   Radio,
-  Sliders
+  Sliders,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -319,10 +320,28 @@ export const CropDiagnosticsAssistant = () => {
       }
 
       const res = await visionService.analyzeImage(formData);
-      if (res?.quota_status) {
-        updateQuotaFromResponse(res.quota_status);
-      }
-      setResult(res);
+
+    if (res?.quota_status) {
+      updateQuotaFromResponse(res.quota_status);
+    }
+
+    // Handle backend validation errors such as:
+    // - Blurry image
+    // - Dark image
+    // - Bright image
+    // - Unsupported / unrelated image
+    if (res?.status === "error") {
+      setResult(null);
+
+      setError({
+        message: res.message || "The image could not be analyzed.",
+        isQuotaExceeded: false,
+      });
+
+      return;
+    }
+
+    setResult(res);
 
       // Refresh history
       try {
