@@ -322,63 +322,70 @@
     "topic": "general"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 1. BACTERIAL SPOT",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 1. BACTERIAL SPOT Scientific cause: Xanthomonas spp. (X. euvesicatoria, X. vesicatoria, X. perforans). Identification / symptoms: - Small, dark, water-soaked spots on leaves that turn brown to black with a yellow halo. - Spots may merge and cause leaf tearing or drop. - Raised, scabby, rough spots appear on green fruit. Effects: - Heavy leaf loss reduces plant vigor and sunscald risk on fruit. - Blemished fruit lowers market quality even when yield is not badly affected. Management: 1. Use certified disease-free seed and transplants. 2. Avoid overhead irrigation and working in wet foliage. 3. Rotate away from tomato and pepper for at least one season. 4. Apply copper-based bactericides preventively where locally approved. 5. Remove and destroy crop debris after harvest. Recovery: - Spotted leaves will not clear up; focus on protecting new growth. - Improve airflow and reduce leaf wetness duration. - Severe, spreading outbreaks should be confirmed by an extension officer.",
     "source": "Disease_Bacterial_Spot.txt",
     "page": 1,
     "crop": "tomato",
     "topic": "disease"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 2. EARLY BLIGHT",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 2. EARLY BLIGHT Scientific cause: Alternaria solani. Identification / symptoms: - Dark brown spots with concentric rings forming a target/bullseye pattern, usually on older, lower leaves first. - Yellow tissue often surrounds each spot. - Sunken, dark lesions can also appear on stems and near the fruit stem end. Effects: - Progressive loss of lower leaves reduces photosynthesis and can expose fruit to sunscald. - Stem lesions can weaken young plants. Management: 1. Rotate crops away from tomato and potato for 2-3 years. 2. Mulch to reduce soil splash onto leaves. 3. Remove infected lower leaves promptly. 4. Ensure adequate plant spacing for airflow. 5. Apply labelled fungicides such as chlorothalonil or mancozeb where locally approved once symptoms appear. Recovery: - Existing lesions do not heal, so protect healthy new foliage. - Correct crowding, mulch coverage, and irrigation practices that keep leaves wet.",
     "source": "Disease_Early_Blight.txt",
     "page": 1,
     "crop": "tomato",
     "topic": "disease"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 3. HEALTHY TOMATO",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 3. HEALTHY TOMATO Identification: - Leaves are uniformly green with no spots, mold, curling, mottling, or wilting. - No visible pest damage, webbing, or scabby lesions on fruit or stems. - Growth is even and vigorous for the plant's stage. Notes: - This class is the baseline reference used to confirm that a plant shows no signs of the diseases or pests covered in this knowledge base. - A healthy classification does not rule out early-stage or symptomless problems, so continue routine monitoring of leaf undersides and new growth. Recommended care: 1. Maintain consistent watering and avoid prolonged leaf wetness. 2. Keep balanced fertilization based on plant stage. 3. Continue regular visual inspection, especially after wet or humid weather.",
     "source": "Disease_Healthy.txt",
     "page": 1,
     "crop": "tomato",
     "topic": "disease"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 4. LATE BLIGHT",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 4. LATE BLIGHT Scientific cause: Phytophthora infestans. Identification / symptoms: - Irregular, dark, water-soaked, greasy-looking lesions on leaves, often starting at leaf edges or tips. - A pale green-to-yellow halo may surround lesions. - White, fuzzy fungal growth can appear on the underside of leaves in humid conditions. - Dark, firm, greasy blotches can develop on fruit. Effects: - One of the most destructive tomato diseases; it can defoliate and kill plants within days under cool, wet, humid conditions. - Infected fruit is unmarketable and infection can continue to spread after harvest. Management: 1. Act quickly at first sign of symptoms; this disease spreads fast. 2. Remove and destroy infected plants or plant parts away from the field. 3. Avoid overhead irrigation and working in wet foliage. 4. Apply labelled protectant fungicides (e.g. chlorothalonil, mancozeb, or copper products) where locally approved, especially before forecast cool wet weather. 5. Use resistant or tolerant varieties where available. Recovery: - Badly affected plants rarely recover; prioritize protecting unaffected plants and neighboring fields. - Report widespread or",
     "source": "Disease_Late_Blight.txt",
     "page": 1,
     "crop": "tomato",
     "topic": "disease"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 5. LEAF MOLD",
+    "text": "forecast cool wet weather. 5. Use resistant or tolerant varieties where available. Recovery: - Badly affected plants rarely recover; prioritize protecting unaffected plants and neighboring fields. - Report widespread or rapidly spreading outbreaks to an agricultural extension officer.",
+    "source": "Disease_Late_Blight.txt",
+    "page": 1,
+    "crop": "tomato",
+    "topic": "disease"
+  },
+  {
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 5. LEAF MOLD Scientific cause: Passalora fulva (syn. Fulvia fulva / Cladosporium fulvum). Identification / symptoms: - Pale green to yellow spots on the upper leaf surface. - Olive-green to grayish-purple velvety mold growth on the corresponding underside of the leaf. - Most common in greenhouses or areas with high humidity and poor air circulation. Effects: - Reduced photosynthesis from leaf yellowing and early leaf drop, which can lower yield in enclosed or densely planted conditions. Management: 1. Improve ventilation and reduce humidity around plants. 2. Increase plant spacing and prune for better airflow. 3. Avoid overhead watering, especially late in the day. 4. Use resistant varieties where available. 5. Apply labelled fungicides if the disease is severe or persistent. Recovery: - Improving airflow and humidity control usually stops further spread. - Remove heavily affected leaves to reduce spore load.",
     "source": "Disease_Leaf_Mold.txt",
     "page": 1,
     "crop": "tomato",
     "topic": "disease"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 6. SEPTORIA LEAF SPOT",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 6. SEPTORIA LEAF SPOT Scientific cause: Septoria lycopersici. Identification / symptoms: - Small, circular spots with dark brown margins and light gray or tan centers, usually starting on older, lower leaves. - Tiny black specks (pycnidia) are often visible in the center of spots. - Spots can be numerous and merge, causing yellowing and leaf drop. Effects: - Progressive lower-leaf loss reduces plant vigor and can expose fruit to sunscald if defoliation is severe. Management: 1. Remove and destroy infected lower leaves as symptoms appear. 2. Mulch around plants to reduce soil splash. 3. Rotate crops away from tomato for at least one season. 4. Avoid overhead irrigation and working with wet foliage. 5. Apply labelled fungicides where locally approved for persistent outbreaks. Recovery: - Existing spots will not clear; protect new upper growth by controlling humidity and leaf wetness.",
     "source": "Disease_Septoria_Leaf_Spot.txt",
     "page": 1,
     "crop": "tomato",
     "topic": "disease"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 8. TARGET SPOT",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 8. TARGET SPOT Scientific cause: Corynespora cassiicola. Identification / symptoms: - Brown lesions with faint concentric rings, similar to early blight but often larger and less defined. - Spots can appear on leaves, stems, and fruit. - Lesions may have a slightly sunken center and can merge to form large necrotic patches. Effects: - Significant leaf loss under warm, humid conditions can reduce yield and expose fruit to sun damage. - Fruit lesions reduce marketability. Management: 1. Rotate crops and avoid continuous tomato planting. 2. Remove and destroy crop debris after harvest. 3. Improve airflow through spacing and pruning. 4. Avoid prolonged leaf wetness from overhead irrigation. 5. Apply labelled fungicides in rotation where the disease is severe or persistent. Recovery: - Focus on protecting healthy foliage; existing lesions will not heal. - Reduce humidity and leaf wetness where practical.",
     "source": "Disease_Target_Spot.txt",
     "page": 1,
     "crop": "tomato",
     "topic": "disease"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 9. TOMATO MOSAIC VIRUS",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 9. TOMATO MOSAIC VIRUS Scientific cause: Tomato mosaic virus (ToMV). Identification / symptoms: - Light and dark green mottled (mosaic) pattern on leaves. - Leaf distortion, curling, or fern-like narrowing in severe cases. - Stunted growth and reduced fruit set or quality. Effects: - No direct cure exists; yield and fruit quality losses depend on infection timing and severity. - The virus is very stable and can persist in plant debris, soil, and on tools or hands for a long time. Management: 1. Remove and destroy infected plants; there is no chemical cure. 2. Disinfect tools and wash hands between handling plants, especially after contact with tobacco products, which can carry the virus. 3. Use certified virus-free seed and resistant varieties where available. 4. Avoid working in the crop when plants are wet. Recovery: - Infected plants do not recover; focus on preventing spread to healthy plants. - Practice strict sanitation for future plantings.",
     "source": "Disease_Tomato_Mosaic_Virus.txt",
     "page": 1,
     "crop": "tomato",
     "topic": "disease"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 10. TOMATO YELLOW LEAF CURL VIRUS (TYLCV)",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Disease 10. TOMATO YELLOW LEAF CURL VIRUS (TYLCV) Scientific cause: Tomato yellow leaf curl virus, transmitted by the whitefly Bemisia tabaci. Identification / symptoms: - Upward curling and yellowing of leaflet margins. - Stunted, bushy growth with small, pale leaves. - Flower drop and greatly reduced fruit set on infected plants. Effects: - Yield loss can be severe, especially when plants are infected young. - The virus spreads rapidly wherever whitefly populations are high. Management: 1. Control whitefly populations using recommended insecticides or biological controls. 2. Use resistant or tolerant varieties where available. 3. Remove and destroy infected plants early to reduce virus source. 4. Use reflective mulches or fine exclusion netting to deter whiteflies. 5. Avoid planting new seedlings next to heavily infected fields. Recovery: - Infected plants do not recover; prevention through whitefly control is the main defense. - Monitor new growth closely after transplanting.",
     "source": "Disease_Tomato_Yellow_Leaf_Curl_Virus.txt",
     "page": 1,
     "crop": "tomato",
@@ -392,7 +399,7 @@
     "topic": "general"
   },
   {
-    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Pest 7. SPIDER MITES (TWO-SPOTTED SPIDER MITE)",
+    "text": "AgriKetha-AI Knowledge Base Crop: Tomato Category: Pest 7. SPIDER MITES (TWO-SPOTTED SPIDER MITE) Scientific cause: Tetranychus urticae. Identification / symptoms: - Fine yellow or white stippling/speckling on leaves, often starting on the underside. - Leaves can turn bronze or yellow and dry out under heavy infestation. - Fine webbing may be visible on the underside of leaves or between stems in severe cases. - Mites are tiny and often easier to detect with a hand lens than with the naked eye. Effects: - Reduced photosynthesis and leaf drop under heavy infestation, lowering yield and plant vigor. - Populations build up fastest in hot, dry, dusty conditions. Management: 1. Increase humidity and reduce plant dust where practical. 2. Use insecticidal soap or labelled miticides for heavy infestations. 3. Encourage natural predators such as predatory mites. 4. Remove heavily infested leaves. 5. Avoid broad-spectrum insecticides that kill natural mite predators. Recovery: - Damaged leaves will not regreen; focus on stopping further spread and protecting new growth. - Recheck leaf undersides regularly after treatment.",
     "source": "Pest_Spider_Mites_Two_Spotted.txt",
     "page": 1,
     "crop": "tomato",
