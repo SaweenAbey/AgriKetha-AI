@@ -3253,3 +3253,901 @@ Traceback (most recent call last):
         f"{self._error_message(selector)}, Timeout: {timeout}s, Topology Description: {self.description!r}"
     )
 pymongo.errors.ServerSelectionTimeoutError: No replica set members found yet, Timeout: 10.0s, Topology Description: <TopologyDescription id: 6aaff8f97bc8c8ebe993b506, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2026-09-21 13:59:00 | ERROR    | agriketha.backend:connect_to_mongo:49 - Failed to connect to MongoDB: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms),ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms),ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms), Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0eac1afd8ed1dc13fcf65, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>]>
+Traceback (most recent call last):
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\database.py", line 43, in connect_to_mongo
+    await db_state.client.admin.command('ping')
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\database.py", line 946, in command
+    return self._client._retryable_read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    server = topology.select_server(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    server = self._select_server(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    servers = self.select_servers(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    server_descriptions = self._select_servers_loop(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms),ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms),ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms), Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0eac1afd8ed1dc13fcf65, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>]>
+2026-09-21 15:03:35 | ERROR    | agriketha.backend:connect_to_mongo:49 - Failed to connect to MongoDB: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms),ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms),ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms), Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0f9e38294fdbfa7df37a1, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>]>
+Traceback (most recent call last):
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\database.py", line 43, in connect_to_mongo
+    await db_state.client.admin.command('ping')
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 946, in command
+    return self._client._retryable_read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    server = topology.select_server(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    server = self._select_server(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    servers = self.select_servers(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    server_descriptions = self._select_servers_loop(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms),ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms),ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms), Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0f9e38294fdbfa7df37a1, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017: [Errno 11001] getaddrinfo failed (configured timeouts: socketTimeoutMS: 10000.0ms, connectTimeoutMS: 10000.0ms)')>]>
+2026-09-21 16:13:11 | ERROR    | pymongo.client:_log_client_error:108 - MongoClient background task encountered an error:
+Traceback (most recent call last):
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\database.py", line 26, in _resilient_getaddrinfo
+    return _original_getaddrinfo(host, port, family, type, proto, flags)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2262, in _process_periodic_tasks
+    self._topology.update_pool()
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 600, in update_pool
+    server.pool.remove_stale_sockets(generation)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 812, in remove_stale_sockets
+    conn = self.connect()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\pool.py", line 869, in connect
+    networking_interface = _configured_socket_interface(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 573, in _configured_socket_interface
+    sock = _create_connection(address, options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\pool_shared.py", line 474, in _create_connection
+    for res in socket.getaddrinfo(host, port, family=family, type=socket.SOCK_STREAM):  # type: ignore[attr-defined, unused-ignore]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\database.py", line 31, in _resilient_getaddrinfo
+    answer = resolver.resolve(host, 'A')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\dns\resolver.py", line 1328, in resolve
+    timeout = self._compute_timeout(start, lifetime, resolution.errors)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\dns\resolver.py", line 1084, in _compute_timeout
+    raise LifetimeTimeout(timeout=duration, errors=errors)
+dns.resolver.LifetimeTimeout: The resolution lifetime expired after 5.115 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.
+2026-09-21 16:52:35 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id 6ab0fd892a4f64041507b95e: The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 10.113 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 10.099 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 10.099 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 10.113 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:35 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id 6ab0fd892a4f64041507b95e: The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 10.099 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 10.099 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:35 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id 6ab0fd892a4f64041507b95e: The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 10.099 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 10.099 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:35 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id 6ab0fd892a4f64041507b95e: The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 10.099 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 10.099 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 1038.743 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:47 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id 6ab0fd892a4f64041507b95e: The resolution lifetime expired after 5.106 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.105 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.106 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.106 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.106 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.105 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:47 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id 6ab0fd892a4f64041507b95e: The resolution lifetime expired after 5.106 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.105 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.106 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.106 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.106 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.105 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:58 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id 6ab0fd892a4f64041507b95e: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:58 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id 6ab0fd892a4f64041507b95e: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:58 | ERROR    | agriketha.backend:dispatch:42 - 127.0.0.1 | POST /api/v1/auth/refresh | Exception: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]> | 10186.14ms
+Traceback (most recent call last):
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 25, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\api\v1\auth.py", line 184, in refresh_access_token
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 1728, in find_one
+    for result in cursor.limit(-1):
+                  ^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1139, in __next__
+    return self.next()
+           ^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1118, in next
+    if len(self._data) or self._refresh():
+                          ^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    server = topology.select_server(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    server = self._select_server(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    servers = self.select_servers(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    server_descriptions = self._select_servers_loop(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:58 | ERROR    | agriketha.backend:dispatch:42 - 127.0.0.1 | POST /api/v1/auth/refresh | Exception: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]> | 10208.80ms
+Traceback (most recent call last):
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 25, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\api\v1\auth.py", line 184, in refresh_access_token
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 1728, in find_one
+    for result in cursor.limit(-1):
+                  ^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1139, in __next__
+    return self.next()
+           ^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1118, in next
+    if len(self._data) or self._refresh():
+                          ^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    server = topology.select_server(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    server = self._select_server(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    servers = self.select_servers(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    server_descriptions = self._select_servers_loop(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:58 | ERROR    | agriketha.backend:global_exception_handler:99 - Unhandled exception for POST /api/v1/auth/refresh: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+  + Exception Group Traceback (most recent call last):
+  |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_utils.py", line 85, in create_collapsing_task_group
+  |     async with anyio.create_task_group() as tg:
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    |     await self.simple_response(scope, receive, send, request_headers=headers)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    |     await self.app(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 93, in dispatch
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 46, in dispatch
+    |     raise exc
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 25, in dispatch
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    |     await self.original_router.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    |     await included_router._handle_selected(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    |     await route.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    |     await self.original_router.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    |     await included_router._handle_selected(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    |     await original_route.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    |     await app(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    |     response = await f(request)
+    |                ^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    |     raw_response = await run_endpoint_function(
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    |     return await dependant.call(**values)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\api\v1\auth.py", line 184, in refresh_access_token
+    |     user = await db.users.find_one({"_id": ObjectId(user_id)})
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    |     result = self.fn(*self.args, **self.kwargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 1728, in find_one
+    |     for result in cursor.limit(-1):
+    |                   ^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1139, in __next__
+    |     return self.next()
+    |            ^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1118, in next
+    |     if len(self._data) or self._refresh():
+    |                           ^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    |     self._send_message(q)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    |     response = client._run_operation(operation, self._run_with_conn, address=self._address)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    |     return func(self, *args, **kwargs)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    |     return self._retryable_read(
+    |            ^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    |     return self._retry_internal(
+    |            ^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    |     return func(self, *args, **kwargs)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    |     ).run()
+    |       ^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    |     res = self._read() if self._is_read else self._write()
+    |           ^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    |     self._server = self._get_server()
+    |                    ^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    |     return self._client._select_server(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    |     server = topology.select_server(
+    |              ^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    |     server = self._select_server(
+    |              ^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    |     servers = self.select_servers(
+    |               ^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    |     server_descriptions = self._select_servers_loop(
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    |     raise ServerSelectionTimeoutError(
+    | pymongo.errors.ServerSelectionTimeoutError: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+    +------------------------------------
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 93, in dispatch
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 46, in dispatch
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 25, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\api\v1\auth.py", line 184, in refresh_access_token
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 1728, in find_one
+    for result in cursor.limit(-1):
+                  ^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1139, in __next__
+    return self.next()
+           ^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1118, in next
+    if len(self._data) or self._refresh():
+                          ^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    server = topology.select_server(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    server = self._select_server(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    servers = self.select_servers(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    server_descriptions = self._select_servers_loop(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+2026-09-21 16:52:58 | ERROR    | agriketha.backend:global_exception_handler:99 - Unhandled exception for POST /api/v1/auth/refresh: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+  + Exception Group Traceback (most recent call last):
+  |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_utils.py", line 85, in create_collapsing_task_group
+  |     async with anyio.create_task_group() as tg:
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    |     await self.simple_response(scope, receive, send, request_headers=headers)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    |     await self.app(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 93, in dispatch
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 46, in dispatch
+    |     raise exc
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 25, in dispatch
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    |     await self.original_router.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    |     await included_router._handle_selected(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    |     await route.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    |     await self.original_router.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    |     await included_router._handle_selected(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    |     await original_route.handle(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    |     await app(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    |     response = await f(request)
+    |                ^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    |     raw_response = await run_endpoint_function(
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    |     return await dependant.call(**values)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\api\v1\auth.py", line 184, in refresh_access_token
+    |     user = await db.users.find_one({"_id": ObjectId(user_id)})
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    |     result = self.fn(*self.args, **self.kwargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 1728, in find_one
+    |     for result in cursor.limit(-1):
+    |                   ^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1139, in __next__
+    |     return self.next()
+    |            ^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1118, in next
+    |     if len(self._data) or self._refresh():
+    |                           ^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    |     self._send_message(q)
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    |     response = client._run_operation(operation, self._run_with_conn, address=self._address)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    |     return func(self, *args, **kwargs)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    |     return self._retryable_read(
+    |            ^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    |     return self._retry_internal(
+    |            ^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    |     return func(self, *args, **kwargs)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    |     ).run()
+    |       ^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    |     res = self._read() if self._is_read else self._write()
+    |           ^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    |     self._server = self._get_server()
+    |                    ^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    |     return self._client._select_server(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    |     server = topology.select_server(
+    |              ^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    |     server = self._select_server(
+    |              ^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    |     servers = self.select_servers(
+    |               ^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    |     server_descriptions = self._select_servers_loop(
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    |     raise ServerSelectionTimeoutError(
+    | pymongo.errors.ServerSelectionTimeoutError: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
+    +------------------------------------
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 93, in dispatch
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 46, in dispatch
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\core\middleware.py", line 25, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1791, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\fastapi\routing.py", line 352, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\backend\app\api\v1\auth.py", line 184, in refresh_access_token
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 1728, in find_one
+    for result in cursor.limit(-1):
+                  ^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1139, in __next__
+    return self.next()
+           ^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1118, in next
+    if len(self._data) or self._refresh():
+                          ^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 1069, in _refresh
+    self._send_message(q)
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\cursor.py", line 972, in _send_message
+    response = client._run_operation(operation, self._run_with_conn, address=self._address)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1939, in _run_operation
+    return self._retryable_read(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2061, in _retryable_read
+    return self._retry_internal(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+          ^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3118, in _read
+    self._server = self._get_server()
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 3063, in _get_server
+    return self._client._select_server(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1862, in _select_server
+    server = topology.select_server(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 357, in select_server
+    server = self._select_server(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 331, in _select_server
+    servers = self.select_servers(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 249, in select_servers
+    server_descriptions = self._select_servers_loop(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DTC\Desktop\IRWA\AgriKetha-AI\.venv\Lib\site-packages\pymongo\synchronous\topology.py", line 297, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.,The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out., Timeout: 10.0s, Topology Description: <TopologyDescription id: 6ab0fcff2a4f64041507b95d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-jucsbd3-shard-00-00.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-01.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.111 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>, <ServerDescription ('ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net', 27017) server_type: Unknown, rtt: None, error=LifetimeTimeout('The resolution lifetime expired after 5.112 seconds: Server Do53:8.8.8.8@53 answered The DNS operation timed out.; Server Do53:1.1.1.1@53 answered The DNS operation timed out.; Server Do53:8.8.4.4@53 answered The DNS operation timed out.')>]>
