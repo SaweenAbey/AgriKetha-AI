@@ -26,6 +26,11 @@ import {
   Layers,
   Award,
   Zap,
+  Printer,
+  Languages,
+  RefreshCw,
+  FileCheck,
+  Stethoscope,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -35,6 +40,7 @@ import { orchestratorService } from "@/services/api";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuota } from "@/context/QuotaContext";
 import { QuotaWidget } from "@/components/QuotaWidget";
+import { AdvisoryMarkdownViewer } from "@/components/AdvisoryMarkdownViewer";
 
 const PRESET_QUESTIONS = [
   {
@@ -64,7 +70,7 @@ const PRESET_QUESTIONS = [
 ];
 
 export const UnifiedOrchestratorAssistant = () => {
-  const { language, t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const { updateQuotaFromResponse, fetchQuota, setShowUpgradeModal } = useQuota();
   const [question, setQuestion] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -76,6 +82,9 @@ export const UnifiedOrchestratorAssistant = () => {
   const [lastInputMode, setLastInputMode] = useState("text");
   const [history, setHistory] = useState([]);
   const [copied, setCopied] = useState(false);
+
+  // Response / Output Language (Defaults to current language, user can change anytime)
+  const [outputLanguage, setOutputLanguage] = useState(language || "en");
 
   // Agent connectivity status
   const [agentStatuses, setAgentStatuses] = useState({
@@ -205,7 +214,8 @@ export const UnifiedOrchestratorAssistant = () => {
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.rate = 0.95;
-    utterance.lang = language === "si" ? "si-LK" : "en-US";
+    const currentLang = result?.detected_language || outputLanguage || language;
+    utterance.lang = currentLang === "si" ? "si-LK" : currentLang === "ta" ? "ta-LK" : "en-US";
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
     synthRef.current.speak(utterance);
@@ -219,8 +229,17 @@ export const UnifiedOrchestratorAssistant = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
+  const handlePrintReport = () => {
+    window.print();
+  };
+
+  const handleRegenerateWithLanguage = async (targetLang) => {
+    if (loading) return;
+    setOutputLanguage(targetLang);
+    await executeOrchestration(targetLang);
+  };
+
+  const executeOrchestration = async (targetLangOverride) => {
     if (!question.trim()) {
       setError(language === "si" ? "කරුණාකර ඔබගේ වගා ගැටලුව ලියන්න හෝ හඬින් පවසන්න." : "Please enter or speak your farming question.");
       return;
@@ -233,9 +252,10 @@ export const UnifiedOrchestratorAssistant = () => {
     setIsSpeaking(false);
 
     try {
+      const activeLang = targetLangOverride || outputLanguage || language || "en";
       const formData = new FormData();
       formData.append("question", question.trim());
-      formData.append("language", language);
+      formData.append("language", activeLang);
       formData.append("is_voice", lastInputMode === "voice" ? "true" : "false");
       formData.append("input_mode", lastInputMode);
       if (selectedFile) {
@@ -269,10 +289,15 @@ export const UnifiedOrchestratorAssistant = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    await executeOrchestration();
+  };
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header Banner with Agent Architecture */}
-      <Card className="border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-background to-teal-950/20 backdrop-blur-xl shadow-xl overflow-hidden">
+      <Card className="border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-background to-teal-950/20 backdrop-blur-xl shadow-xl overflow-hidden print:hidden">
         <CardHeader className="pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
@@ -331,9 +356,54 @@ export const UnifiedOrchestratorAssistant = () => {
       </Card>
 
       {/* Main Input Workspace */}
-      <Card className="glass-card shadow-lg border-border">
+      <Card className="glass-card shadow-lg border-border print:hidden">
         <CardContent className="p-5 sm:p-6 space-y-5">
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Output Language Selector */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-2xl bg-muted/40 border border-border">
+              <div className="flex items-center gap-2">
+                <Languages className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-xs font-bold text-foreground">
+                  {t("outputLanguageLabel") || "Response Language"}:
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => setOutputLanguage("en")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    outputLanguage === "en"
+                      ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
+                      : "bg-background/80 hover:bg-muted text-muted-foreground hover:text-foreground border border-border"
+                  }`}
+                >
+                  🇬🇧 English (Default)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOutputLanguage("si")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    outputLanguage === "si"
+                      ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
+                      : "bg-background/80 hover:bg-muted text-muted-foreground hover:text-foreground border border-border"
+                  }`}
+                >
+                  🇱🇰 සිංහල (Sinhala)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOutputLanguage("ta")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    outputLanguage === "ta"
+                      ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
+                      : "bg-background/80 hover:bg-muted text-muted-foreground hover:text-foreground border border-border"
+                  }`}
+                >
+                  🇱🇰 தமிழ் (Tamil)
+                </button>
+              </div>
+            </div>
+
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
                 {t("step1Label")}
@@ -469,7 +539,7 @@ export const UnifiedOrchestratorAssistant = () => {
                   </>
                 ) : (
                   <>
-                    <Zap className="w-4 h-4" />
+                    <Sparkles className="w-4 h-4" />
                     <span>{t("runAnalysisBtn")}</span>
                   </>
                 )}
@@ -483,20 +553,24 @@ export const UnifiedOrchestratorAssistant = () => {
       {result && (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {/* Agent Workflow Execution Status Strip */}
-          <Card className="border-border bg-muted/20">
+          <Card className="border-border bg-card/60 backdrop-blur shadow-sm print:hidden">
+            <CardHeader className="py-3 px-5 border-b border-border/60">
+              <div className="flex items-center gap-2">
+                <Activity className="w-4 h-4 text-emerald-600" />
+                <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  {t("workflowChainTitle")}
+                </h4>
+              </div>
+            </CardHeader>
             <CardContent className="p-4">
-              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
-                <Activity className="w-3.5 h-3.5 text-emerald-500" />
-                {t("workflowChainTitle")}
-              </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                 {result.agent_activity?.map((act, i) => (
                   <div
                     key={i}
-                    className="p-3 rounded-xl bg-background border border-border flex flex-col justify-between gap-1 shadow-sm"
+                    className="p-3 rounded-xl bg-muted/40 border border-border/80 space-y-1.5"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-foreground capitalize">
+                      <span className="text-xs font-bold capitalize text-foreground">
                         {act.agent.replace("-", " ")}
                       </span>
                       <Badge
@@ -520,33 +594,98 @@ export const UnifiedOrchestratorAssistant = () => {
           </Card>
 
           {/* Primary Grounded Advisory Card */}
-          <Card className="border-emerald-500/40 bg-card shadow-xl overflow-hidden">
-            <CardHeader className="border-b border-border bg-emerald-500/5 pb-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <Badge className="bg-emerald-600 text-white text-xs">
-                      {result.crop ? `Crop: ${result.crop.toUpperCase()}` : "Crop: General"}
+          <Card className="border-emerald-500/40 bg-card shadow-2xl overflow-hidden rounded-3xl">
+            <CardHeader className="border-b border-border bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent pb-4">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge className="bg-emerald-600 text-white text-xs px-2.5 py-0.5 shadow-sm">
+                      {result.crop ? `🌾 Crop: ${result.crop.toUpperCase()}` : "🌾 Crop: General"}
                     </Badge>
+
                     {result.detected_language && (
-                      <Badge variant="outline" className="text-xs">
-                        Lang: {result.detected_language}
+                      <Badge variant="outline" className="text-xs border-emerald-500/40 font-bold bg-background/80">
+                        {result.detected_language === "si"
+                          ? "🇱🇰 සිංහල (Sinhala)"
+                          : result.detected_language === "ta"
+                          ? "🇱🇰 தமிழ் (Tamil)"
+                          : "🇬🇧 English"}
                       </Badge>
                     )}
+
+                    <Badge variant="secondary" className="text-[11px] bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-medium">
+                      ✓ Verified with RAG Evidence
+                    </Badge>
                   </div>
-                  <CardTitle className="text-xl font-extrabold text-foreground">
+
+                  <CardTitle className="text-xl sm:text-2xl font-black text-foreground tracking-tight flex items-center gap-2 pt-1">
+                    <FileCheck className="w-6 h-6 text-emerald-600 shrink-0" />
                     {t("advisoryHeading")}
                   </CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground">
+                    {t("advisoryReportSub") || "Executive agronomic assessment generated by 4-in-1 multi-agent AI engine."}
+                  </CardDescription>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Language switcher pills on result card */}
+                  <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-muted/60 border border-border">
+                    <span className="text-[10px] font-bold text-muted-foreground px-1.5 flex items-center gap-1">
+                      <Languages className="w-3 h-3 text-emerald-600" />
+                      {t("translateTo") || "Lang"}:
+                    </span>
+                    <button
+                      type="button"
+                      disabled={loading}
+                      onClick={() => handleRegenerateWithLanguage("en")}
+                      className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                        result.detected_language === "en" || outputLanguage === "en"
+                          ? "bg-emerald-600 text-white shadow-sm"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      }`}
+                      title="Translate or regenerate in English"
+                    >
+                      EN
+                    </button>
+                    <button
+                      type="button"
+                      disabled={loading}
+                      onClick={() => handleRegenerateWithLanguage("si")}
+                      className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                        result.detected_language === "si" || outputLanguage === "si"
+                          ? "bg-emerald-600 text-white shadow-sm"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      }`}
+                      title="Translate or regenerate in Sinhala"
+                    >
+                      සිං
+                    </button>
+                    <button
+                      type="button"
+                      disabled={loading}
+                      onClick={() => handleRegenerateWithLanguage("ta")}
+                      className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                        result.detected_language === "ta" || outputLanguage === "ta"
+                          ? "bg-emerald-600 text-white shadow-sm"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      }`}
+                      title="Translate or regenerate in Tamil"
+                    >
+                      தமி
+                    </button>
+                  </div>
+
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => toggleTextToSpeech(result.advisory)}
-                    className="rounded-xl text-xs gap-1.5"
+                    className="rounded-xl text-xs gap-1.5 border-border"
                   >
-                    {isSpeaking ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                    {isSpeaking ? (
+                      <VolumeX className="w-3.5 h-3.5 text-red-500 animate-pulse" />
+                    ) : (
+                      <Volume2 className="w-3.5 h-3.5 text-emerald-600" />
+                    )}
                     <span>{isSpeaking ? t("stopAudio") : t("listenAudio")}</span>
                   </Button>
 
@@ -554,20 +693,29 @@ export const UnifiedOrchestratorAssistant = () => {
                     variant="outline"
                     size="sm"
                     onClick={handleCopyAdvisory}
-                    className="rounded-xl text-xs gap-1.5"
+                    className="rounded-xl text-xs gap-1.5 border-border"
                   >
                     {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copied ? t("copiedText") : t("copyText")}</span>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handlePrintReport}
+                    className="rounded-xl text-xs gap-1.5 border-border print:hidden"
+                    title="Print or save as PDF"
+                  >
+                    <Printer className="w-3.5 h-3.5 text-muted-foreground" />
+                    <span>{t("printReport") || "Print"}</span>
                   </Button>
                 </div>
               </div>
             </CardHeader>
 
-            <CardContent className="p-6 space-y-6">
+            <CardContent className="p-6 sm:p-8 space-y-6">
               {/* Formatted Markdown Advisory Content */}
-              <div className="prose prose-sm dark:prose-invert max-w-none text-foreground leading-relaxed whitespace-pre-wrap">
-                {result.advisory}
-              </div>
+              <AdvisoryMarkdownViewer content={result.advisory} />
 
               {/* Safety Note Alert */}
               {result.safety_note && (

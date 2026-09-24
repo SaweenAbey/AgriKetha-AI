@@ -44,10 +44,10 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     LOG_DIR: str = str(Path(__file__).resolve().parent.parent.parent / "logs")
 
-    # AI Microservice integrationn
+    # AI Microservice integration
     QUERY_AGENT_URL: str = "http://127.0.0.1:8001"
     VISION_AGENT_URL: str = "http://127.0.0.1:8002"
-    RESEARCH_AGENT_URL: str = "http://127.0.0.1:8003"
+    RESEARCH_AGENT_URL: str = "http://127.0.0.1:8004"
 
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"

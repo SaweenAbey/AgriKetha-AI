@@ -30,13 +30,22 @@ def health() -> dict[str, str | bool]:
 
 @app.post("/agent/retrieve", response_model=RetrievalResponse)
 def retrieve(request: RetrievalRequest) -> RetrievalResponse:
-    results = (
-        retriever.retrieve(request.query, request.crop, request.topic, request.top_k)
-        if retriever
-        else []
-    )
+    if retriever is None:
+        return RetrievalResponse(
+            status="no_relevant_evidence",
+            query=request.query,
+            results=[],
+            message="The research agent has not finished starting up yet.",
+            requested_crop=request.crop,
+            available_crops=[],
+        )
+
+    outcome = retriever.retrieve(request.query, request.crop, request.topic, request.top_k)
     return RetrievalResponse(
-        status="success" if results else "no_relevant_evidence",
+        status=outcome.status,
         query=request.query,
-        results=results,
+        results=outcome.results,
+        message=outcome.message,
+        requested_crop=outcome.requested_crop,
+        available_crops=outcome.available_crops,
     )

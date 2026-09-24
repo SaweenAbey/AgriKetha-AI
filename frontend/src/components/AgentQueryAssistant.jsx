@@ -84,7 +84,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
   const [interimTranscript, setInterimTranscript] = useState("");
   const [autoTriggerOnVoice, setAutoTriggerOnVoice] = useState(true);
   const [voiceSupported, setVoiceSupported] = useState(true);
-  const [language, setLanguage] = useState("en-US");
+  const [language, setLanguage] = useState("si-LK");
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [voiceNetworkBlocked, setVoiceNetworkBlocked] = useState(false);
   
@@ -109,7 +109,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
         const recognition = new SpeechRecognition();
         recognition.continuous = false;
         recognition.interimResults = true;
-        recognition.lang = language || "en-US";
+        recognition.lang = language || "si-LK";
 
         recognition.onstart = () => {
           setIsListening(true);
@@ -181,6 +181,26 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
     };
   }, [language, autoTriggerOnVoice]);
 
+  const changeVoiceLanguage = (newLang) => {
+    setLanguage(newLang);
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+      } catch (e) {}
+      setTimeout(() => {
+        try {
+          if (recognitionRef.current) {
+            recognitionRef.current.lang = newLang;
+            recognitionRef.current.start();
+            setIsListening(true);
+          }
+        } catch (err) {
+          console.warn("Restart recognition notice:", err);
+        }
+      }, 100);
+    }
+  };
+
   const loadHistory = async () => {
     try {
       const data = await agentService.getQueryHistory(10);
@@ -216,7 +236,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
     if (voiceSupported && recognitionRef.current) {
       try {
-        recognitionRef.current.lang = language || "en-US";
+        recognitionRef.current.lang = language || "si-LK";
         recognitionRef.current.start();
       } catch (err) {
         console.warn("Recognition start notice:", err);
@@ -539,8 +559,45 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
             </div>
 
             <CardContent className="p-6 space-y-5 text-center">
+              {/* Language Selection Tabs */}
+              <div className="flex items-center justify-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-emerald-500/30">
+                <button
+                  type="button"
+                  onClick={() => changeVoiceLanguage("si-LK")}
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
+                    language === "si-LK"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800"
+                  }`}
+                >
+                  🇱🇰 සිංහල (Sinhala)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeVoiceLanguage("en-US")}
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
+                    language === "en-US"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800"
+                  }`}
+                >
+                  🇬🇧 English
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeVoiceLanguage("ta-LK")}
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
+                    language === "ta-LK"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800"
+                  }`}
+                >
+                  🇱🇰 தமிழ் (Tamil)
+                </button>
+              </div>
+
               {/* Sound Wave Animation */}
-              <div className="flex items-center justify-center gap-1.5 py-4">
+              <div className="flex items-center justify-center gap-1.5 py-3">
                 <span className="w-1.5 h-6 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                 <span className="w-1.5 h-12 bg-emerald-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                 <span className="w-1.5 h-16 bg-emerald-300 rounded-full animate-bounce"></span>
@@ -556,7 +613,13 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
                   </p>
                 ) : (
                   <p className="text-xs text-muted-foreground">
-                    {isListening ? "Listening... Speak your crop symptoms or question now." : "Microphone active. Ready for your voice."}
+                    {isListening
+                      ? language === "si-LK"
+                        ? "🎙️ සවන් දෙමින්... කරුණාකර ඔබගේ ගැටළුව සිංහලෙන් පවසන්න."
+                        : language === "ta-LK"
+                        ? "🎙️ கேட்கிறது... உங்கள் கேள்வியை தமிழில் பேசுங்கள்."
+                        : "🎙️ Listening... Speak your crop symptoms or question now."
+                      : "Microphone active. Ready for your voice."}
                   </p>
                 )}
               </div>

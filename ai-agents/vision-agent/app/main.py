@@ -1,4 +1,4 @@
-print("🔥 main.py is executing!")
+print("[Vision Agent] main.py is executing!")
 
 import base64
 import io
@@ -14,7 +14,7 @@ from app.preprocess import validate_image, preprocess_image
 from app.model_ensemble import EnsembledVisionModel
 from app.crop_classifier import CropClassifier
 
-print("✅ All imports loaded!")
+print("[Vision Agent] All imports loaded!")
 
 
 # ============================================================
@@ -52,15 +52,15 @@ async def load_model():
     global vision_model
     global crop_classifier
 
-    print("🖼️ Loading Vision Models...")
+    print("[Vision Agent] Loading Vision Models...")
 
     # Existing disease/pest/nutrition/tomato models
     vision_model = EnsembledVisionModel()
 
-    # New automatic Rice/Tomato classifier
+    # Automatic Rice/Tomato classifier
     crop_classifier = CropClassifier()
 
-    print("✅ Vision Agent ready!")
+    print("[Vision Agent] Vision Agent ready!")
 
 
 # ============================================================
@@ -170,20 +170,20 @@ async def analyze_image(
     """
     Analyze a crop leaf image.
 
-    The crop type is automatically detected using
-    the CropClassifier.
+    Processing pipeline:
 
-    Supported automatically detected crops:
+    1. Validate file type
+    2. Validate image quality
+    3. Validate crop domain using OOD detection
+    4. Automatically detect Rice/Tomato
+    5. Run crop-specific disease model
+    6. Generate Grad-CAM
+    7. Estimate severity
+    8. Return analysis
+
+    Supported crops:
     - rice
     - tomato
-
-    After crop detection:
-
-    Rice:
-        -> Rice Disease/Nutrition/Pest Specialist Ensemble
-
-    Tomato:
-        -> Dedicated Tomato Disease Model
     """
 
     # ========================================================
@@ -218,7 +218,7 @@ async def analyze_image(
             detail="File must be an image.",
         )
 
-    # Crop is unknown until the classifier analyzes the image.
+    # Crop is unknown until validation/classification
     crop = "unknown"
 
     try:
@@ -247,14 +247,66 @@ async def analyze_image(
 
         if not is_valid:
 
+            print(
+                f"❌ Image quality validation failed: "
+                f"{validation_message}"
+            )
+
             return VisionResponse(
                 status="error",
                 crop=crop,
+                prediction=None,
+                confidence=None,
+                severity_percentage=None,
+                severity_level=None,
+                gradcam_base64=None,
+                alternatives=[],
                 message=validation_message,
             )
 
         # ====================================================
-        # 5. AUTOMATIC CROP DETECTION
+        # 5. CROP DOMAIN / OOD VALIDATION
+        # ====================================================
+
+        print("🔍 Validating crop domain...")
+
+        (
+            domain_valid,
+            domain_crop,
+            domain_similarity,
+            domain_message,
+        ) = crop_classifier.validate_crop_domain(
+            image_pil
+        )
+
+        if not domain_valid:
+
+            print(
+                f"❌ OOD rejection | "
+                f"Closest crop: {domain_crop} | "
+                f"Similarity: {domain_similarity:.4f}"
+            )
+
+            return VisionResponse(
+                status="error",
+                crop="unknown",
+                prediction=None,
+                confidence=None,
+                severity_percentage=None,
+                severity_level=None,
+                gradcam_base64=None,
+                alternatives=[],
+                message=domain_message,
+            )
+
+        print(
+            f"✅ Crop domain accepted | "
+            f"Detected domain: {domain_crop} | "
+            f"Similarity: {domain_similarity:.4f}"
+        )
+
+        # ====================================================
+        # 6. AUTOMATIC CROP DETECTION
         # ====================================================
 
         print("🔍 Detecting crop type...")
@@ -275,10 +327,14 @@ async def analyze_image(
         )
 
         # ====================================================
-        # 6. VERIFY DETECTED CROP
+        # 7. VERIFY DETECTED CROP
         # ====================================================
 
         if crop not in SUPPORTED_CROPS:
+
+            print(
+                f"❌ Unsupported crop detected: {crop}"
+            )
 
             raise HTTPException(
                 status_code=400,
@@ -290,7 +346,7 @@ async def analyze_image(
             )
 
         # ====================================================
-        # 7. PREPROCESS IMAGE
+        # 8. PREPROCESS IMAGE
         # ====================================================
 
         image_tensor = preprocess_image(
@@ -298,12 +354,14 @@ async def analyze_image(
         )
 
         # ====================================================
-        # 8. RUN CROP-SPECIFIC MODEL
+        # 9. RUN CROP-SPECIFIC MODEL
         # ====================================================
 
         if crop == "tomato":
 
-            print("🍅 Using Tomato Disease Model")
+            print(
+                "🍅 Using Tomato Disease Model"
+            )
 
             prediction, confidence, alternatives = (
                 vision_model.predict_tomato(
@@ -338,7 +396,7 @@ async def analyze_image(
         )
 
         # ====================================================
-        # 9. FIND CLASS INDEX
+        # 10. FIND CLASS INDEX
         # ====================================================
 
         class_idx = _find_class_index(
@@ -350,7 +408,7 @@ async def analyze_image(
         )
 
         # ====================================================
-        # 10. GENERATE GRAD-CAM
+        # 11. GENERATE GRAD-CAM
         #
         # A Grad-CAM failure must not break prediction.
         # ====================================================
@@ -403,7 +461,7 @@ async def analyze_image(
             )
 
         # ====================================================
-        # 11. SEVERITY ESTIMATION
+        # 12. SEVERITY ESTIMATION
         # ====================================================
 
         severity_pct = None
@@ -424,7 +482,7 @@ async def analyze_image(
             )
 
         # ====================================================
-        # 12. FORMAT ALTERNATIVES
+        # 13. FORMAT ALTERNATIVES
         # ====================================================
 
         alternatives_list = [
@@ -436,7 +494,7 @@ async def analyze_image(
         ]
 
         # ====================================================
-        # 13. RETURN RESPONSE
+        # 14. RETURN RESPONSE
         # ====================================================
 
         return VisionResponse(
@@ -481,6 +539,12 @@ async def analyze_image(
         return VisionResponse(
             status="error",
             crop=crop,
+            prediction=None,
+            confidence=None,
+            severity_percentage=None,
+            severity_level=None,
+            gradcam_base64=None,
+            alternatives=[],
             message=(
                 f"Processing error: {str(e)}"
             ),
@@ -501,12 +565,14 @@ async def root():
 
         "automatic_crop_detection": True,
 
+        "ood_crop_validation": True,
+
         "supported_crops": SUPPORTED_CROPS,
 
         "endpoints": {
             "health": "/agent/health",
             "analyze": "/agent/image/analyze (POST)",
-        },
+        }
     }
 
 
