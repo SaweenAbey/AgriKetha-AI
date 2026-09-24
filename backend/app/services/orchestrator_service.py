@@ -9,6 +9,8 @@ from app.services.agent_clients import (
     call_vision_agent,
 )
 from app.services.llm_service import LLMService, LLMServiceError
+from app.core.middleware import record_audit_log
+
 
 
 def _fallback_crop_nlp(question: str) -> dict[str, Any]:
@@ -97,7 +99,7 @@ class OrchestratorService:
         query_result: Optional[dict[str, Any]] = None
         crop: Optional[str] = None
         intent: Optional[str] = None
-        detected_language: Optional[str] = preferred_language
+        detected_input_language: Optional[str] = None
         translated_question: Optional[str] = None
 
         try:
@@ -122,7 +124,7 @@ class OrchestratorService:
             fallback_nlp = _fallback_crop_nlp(question)
             crop = fallback_nlp.get("crop")
             intent = fallback_nlp.get("intent")
-            detected_language = preferred_language or fallback_nlp.get("detected_language")
+            detected_input_language = fallback_nlp.get("detected_language")
 
             agent_activity.append(
                 {
@@ -134,12 +136,15 @@ class OrchestratorService:
 
         # Extract NLP information if Agent 2 succeeded
         if query_result:
-            detected_language = query_result.get("detected_language") or detected_language
+            detected_input_language = query_result.get("detected_language") or detected_input_language
             translated_question = query_result.get("translated_question")
 
             nlp_result = query_result.get("agent_1_result") or {}
             crop = nlp_result.get("crop") or crop
             intent = nlp_result.get("intent") or intent
+
+        # Target response language: user's preferred language takes top priority, default to English
+        target_language = preferred_language or detected_input_language or "en"
 
         # ---------------------------------------------------------
         # STEP 2: Call Agent 1 - Vision Agent
@@ -206,47 +211,97 @@ class OrchestratorService:
                 research_query = f"{research_query}. Vision analysis indicates: {prediction}."
 
         # ---------------------------------------------------------
-        # STEP 4: Call Agent 3 - Research/RAG Agent
+        # STEP 4: Dynamic Routing to Agent 3 - Research/RAG Agent
         # ---------------------------------------------------------
 
         research_result: Optional[dict[str, Any]] = None
 
-        try:
-            research_result = await call_research_agent(
-                query=research_query,
-                crop=crop,
-                topic=intent,
-                top_k=5,
-            )
+        intent_lower = (intent or "").strip().lower()
 
-            result_count = len(research_result.get("results", []))
+        # Intents that do not require agricultural knowledge retrieval
+        skip_research_intents = {
+            "greeting",
+            "hello",
+            "small talk",
+            "chitchat",
+            "unknown",
+        }
+
+        # Agent 4 dynamically decides whether Agent 3 is required
+        should_call_research = intent_lower not in skip_research_intents
+
+        # If an image was uploaded, research is required to provide
+        # evidence-based agricultural information for the vision result.
+        if image_bytes is not None:
+            should_call_research = True
+
+        if should_call_research:
+
             agent_activity.append(
                 {
                     "agent": "research-agent",
-                    "status": "success",
-                    "details": f"Retrieved {result_count} relevant agricultural evidence chunks from knowledge base.",
+                    "status": "routed",
+                    "details": (
+                        f"Dynamic routing selected Research Agent "
+                        f"for intent: {intent or 'general agricultural query'}"
+                    ),
                 }
             )
-            logger.info(
-                "Agent 3 completed | session_id=%s | count=%d",
-                session_id,
-                result_count,
-            )
 
-        except AgentClientError as exc:
-            logger.warning(
-                "Agent 3 failed | session_id=%s | error=%s",
-                session_id,
-                exc,
-            )
+            try:
+                research_result = await call_research_agent(
+                    query=research_query,
+                    crop=crop,
+                    topic=None,
+                    top_k=5,
+                )
+
+                result_count = len(research_result.get("results", []))
+
+                agent_activity.append(
+                    {
+                        "agent": "research-agent",
+                        "status": "success",
+                        "details": (
+                            f"Retrieved {result_count} relevant agricultural "
+                            f"evidence chunks from knowledge base."
+                        ),
+                    }
+                )
+
+                logger.info(
+                    "Agent 3 completed | session_id=%s | count=%d",
+                    session_id,
+                    result_count,
+                )
+
+            except AgentClientError as exc:
+                logger.warning(
+                    "Agent 3 failed | session_id=%s | error=%s",
+                    session_id,
+                    exc,
+                )
+
+                agent_activity.append(
+                    {
+                        "agent": "research-agent",
+                        "status": "warning",
+                        "details": f"Research knowledge base notice: {exc}",
+                    }
+                )
+
+        else:
+
             agent_activity.append(
                 {
                     "agent": "research-agent",
-                    "status": "warning",
-                    "details": f"Research knowledge base notice: {exc}",
+                    "status": "skipped",
+                    "details": (
+                        f"Dynamic routing skipped Research Agent "
+                        f"for intent: {intent or 'unknown'}"
+                    ),
                 }
             )
-
         # ---------------------------------------------------------
         # STEP 5: Extract Evidence & Sources
         # ---------------------------------------------------------
@@ -287,14 +342,14 @@ class OrchestratorService:
                 intent=intent,
                 vision_result=vision_result,
                 evidence=evidence,
-                detected_language=detected_language,
+                detected_language=target_language,
             )
 
             agent_activity.append(
                 {
                     "agent": "gemini-llm",
                     "status": "success",
-                    "details": "Final agricultural advisory generated with grounded citations.",
+                    "details": f"Final agricultural advisory generated with grounded citations ({target_language.upper()}).",
                 }
             )
 
@@ -316,13 +371,37 @@ class OrchestratorService:
                 "Please consult a qualified agricultural extension officer or expert before taking action."
             )
 
-        logger.info("Agent 4 request completed | session_id=%s", session_id)
+        # ---------------------------------------------------------
+        # STEP 7: Activity Log
+        # ---------------------------------------------------------
+
+        await record_audit_log(
+            action="AGENT4_ORCHESTRATION",
+            status="SUCCESS",
+            details={
+                "session_id": session_id,
+                "question": question,
+                "crop": crop,
+                "intent": intent,
+                "detected_language": target_language,
+                "input_language": detected_input_language,
+                "agents": [
+                    activity.get("agent")
+                    for activity in agent_activity
+                ],
+                "agent_activity": agent_activity,
+                "evidence_count": len(evidence),
+                "vision_used": vision_result is not None,
+            },
+        )
+
+        logger.info("Agent 4 request completed | session_id=%s | lang=%s", session_id, target_language)
 
         return {
             "success": True,
             "session_id": session_id,
             "question": question,
-            "detected_language": detected_language,
+            "detected_language": target_language,
             "crop": crop,
             "intent": intent,
             "advisory": advisory,

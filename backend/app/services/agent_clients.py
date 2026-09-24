@@ -67,7 +67,7 @@ async def call_vision_agent(
     for base_url in urls:
         url = f"{base_url.rstrip('/')}/agent/image/analyze"
         try:
-            async with httpx.AsyncClient(timeout=httpx.Timeout(connect=0.4, read=15.0, write=10.0, pool=1.0)) as client:
+            async with httpx.AsyncClient(timeout=httpx.Timeout(connect=0.5, read=15.0, write=10.0, pool=1.0)) as client:
                 response = await client.post(
                     url,
                     files=files,
@@ -109,10 +109,10 @@ def _generate_fallback_research_chunks(query: str, crop: Optional[str] = None, t
     crop_clean = (crop or "").capitalize() or "Paddy / Rice"
     q_lower = (query or "").lower()
 
-    if "brown spot" in q_lower or "bipolaris" in q_lower:
+    if "brown spot" in q_lower or "bipolaris" in q_lower or "spot" in q_lower or "කහ" in q_lower:
         chunks = [
             {
-                "content": "Rice Brown Spot (Bipolaris oryzae) is a major fungal disease in Sri Lanka paddy cultivation, particularly in ill-drained soils and potassium-deficient fields. DOA recommends seed treatment with Pseudomonas fluorescens (10g/kg) and foliar application of Mancozeb 75% WP or Azoxystrobin + Difenoconazole.",
+                "content": "Rice Brown Spot (Bipolaris oryzae) and Leaf Chlorosis in Sri Lanka paddy: Caused by fungal infection or potassium/nitrogen deficiencies. DOA recommends seed treatment with Pseudomonas fluorescens (10g/kg), foliar application of Mancozeb 75% WP or Azoxystrobin + Difenoconazole, and balanced MOP (Muriate of Potash) fertilizer application at tillering and panicle initiation.",
                 "source": "DOA Sri Lanka - Rice Disease Management Manual (Paddy Research Institute)",
                 "page": 12,
                 "crop": "Rice",
@@ -120,7 +120,7 @@ def _generate_fallback_research_chunks(query: str, crop: Optional[str] = None, t
                 "similarity_score": 0.96
             },
             {
-                "content": "Soil nutrient management for brown spot suppression: Ensure balanced N:P:K fertilization. Avoid excess urea application and apply MOP (Muriate of Potash) at panicle initiation to strengthen leaf epidermal silica layers against fungal hyphae penetration.",
+                "content": "Soil nutrient and chlorosis management for rice: Ensure balanced N:P:K fertilization. Avoid excessive urea standing water conditions, ensure field drainage, and apply MOP (Muriate of Potash) at panicle initiation to strengthen leaf epidermal silica layers against fungal hyphae penetration.",
                 "source": "DOA Sri Lanka - Paddy Fertilizer Guide Book",
                 "page": 5,
                 "crop": "Rice",
@@ -161,7 +161,7 @@ def _generate_fallback_research_chunks(query: str, crop: Optional[str] = None, t
     else:
         chunks = [
             {
-                "content": f"Department of Agriculture Sri Lanka standard crop management protocol for {crop_clean}: Follow recommended crop spacing, certified seed selection from DOA seed stations, balanced basal and top-dressing fertilizer schedules, and integrated pest management (IPM) practices.",
+                "content": f"Department of Agriculture Sri Lanka standard crop advisory for {crop_clean}: Follow recommended crop spacing, certified seed selection from DOA seed stations, balanced basal and top-dressing fertilizer schedules, and integrated pest management (IPM) practices.",
                 "source": "DOA Sri Lanka - Agricultural Extension Technical Reference",
                 "page": 1,
                 "crop": crop_clean,
@@ -203,7 +203,7 @@ async def call_research_agent(
     for base_url in urls:
         url = f"{base_url.rstrip('/')}/agent/retrieve"
         try:
-            async with httpx.AsyncClient(timeout=httpx.Timeout(connect=0.4, read=15.0, write=10.0, pool=1.0)) as client:
+            async with httpx.AsyncClient(timeout=httpx.Timeout(connect=0.5, read=15.0, write=10.0, pool=1.0)) as client:
                 response = await client.post(
                     url,
                     json=payload,

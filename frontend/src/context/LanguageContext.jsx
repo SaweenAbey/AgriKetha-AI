@@ -4,9 +4,9 @@ import { translations } from "@/constants/translations";
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  // Default to Sinhala ('si') for Sri Lankan farmers, or fallback to saved preference
+  // Default to English ('en'), or fallback to saved preference
   const [language, setLanguageState] = useState(() => {
-    return localStorage.getItem("agriketha_language") || "si";
+    return localStorage.getItem("agriketha_language") || "en";
   });
 
   const setLanguage = (lang) => {
