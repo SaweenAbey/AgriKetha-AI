@@ -6,6 +6,8 @@ from starlette.requests import Request
 from starlette.responses import Response
 from app.core.logging_config import logger
 from app.core.database import db_state
+from collections import defaultdict
+from threading import Lock
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
@@ -43,6 +45,52 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
             )
             raise exc
 
+class RateLimitMiddleware(BaseHTTPMiddleware):
+    """
+    Simple in-memory rate limiter for the orchestrator endpoint.
+
+    Limits each client IP to 10 requests per 60 seconds.
+    """
+
+    def __init__(self, app, max_requests: int = 10, window_seconds: int = 60):
+        super().__init__(app)
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.requests = defaultdict(list)
+        self.lock = Lock()
+
+    async def dispatch(self, request: Request, call_next) -> Response:
+        # Apply rate limiting only to the Agent 4 orchestrator endpoint
+        if request.url.path.endswith("/orchestrator/query"):
+            client_ip = request.client.host if request.client else "unknown"
+            current_time = time.time()
+
+            with self.lock:
+                request_times = self.requests[client_ip]
+
+                # Remove requests outside the current time window
+                request_times[:] = [
+                    request_time
+                    for request_time in request_times
+                    if current_time - request_time < self.window_seconds
+                ]
+
+                if len(request_times) >= self.max_requests:
+                    logger.warning(
+                        "Rate limit exceeded | IP: %s | Path: %s",
+                        client_ip,
+                        request.url.path,
+                    )
+
+                    return Response(
+                        content='{"detail":"Rate limit exceeded. Please try again later."}',
+                        status_code=429,
+                        media_type="application/json",
+                    )
+
+                request_times.append(current_time)
+
+        return await call_next(request)
 
 async def record_audit_log(
     action: str,

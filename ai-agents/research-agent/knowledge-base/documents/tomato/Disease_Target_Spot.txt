@@ -4,3 +4,23 @@ Category: Disease
 
 8. TARGET
 SPOT
+
+Scientific cause: Corynespora cassiicola.
+
+Identification / symptoms: - Brown lesions with faint concentric rings,
+similar to early blight but often larger and less defined. - Spots can
+appear on leaves, stems, and fruit. - Lesions may have a slightly sunken
+center and can merge to form large necrotic patches.
+
+Effects: - Significant leaf loss under warm, humid conditions can reduce
+yield and expose fruit to sun damage. - Fruit lesions reduce
+marketability.
+
+Management: 1. Rotate crops and avoid continuous tomato planting.
+2. Remove and destroy crop debris after harvest. 3. Improve airflow
+through spacing and pruning. 4. Avoid prolonged leaf wetness from
+overhead irrigation. 5. Apply labelled fungicides in rotation where the
+disease is severe or persistent.
+
+Recovery: - Focus on protecting healthy foliage; existing lesions will
+not heal. - Reduce humidity and leaf wetness where practical.

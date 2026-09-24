@@ -22,13 +22,6 @@ ai-agents/vision-agent-backup/
 .vscode/
 .idea/
 
-<<<<<<< HEAD
-# Environment variables (secrets)
-.env###
-#.envvenv/ 
-venv/
-.env 
-=======
 # Environment variables / secrets
 .env
 .env.*
@@ -39,4 +32,5 @@ Thumbs.db
 
 # Frontend dependencies
 frontend/node_modules/
->>>>>>> vision-agent
+backend/logs/*.log
+logs/*.log

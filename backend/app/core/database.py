@@ -1,3 +1,5 @@
+import socket
+
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from typing import Optional
 import certifi
@@ -11,6 +13,29 @@ try:
     dns.resolver.default_resolver.nameservers = ['8.8.8.8', '1.1.1.1', '8.8.4.4']
 except Exception as _e:
     pass
+
+# Some Windows/ISP resolvers fail to resolve individual MongoDB Atlas shard
+# hostnames (SRV lookup succeeds, but the per-host A record lookup used by
+# socket.getaddrinfo does not). Fall back to a public DNS resolver in that
+# case instead of requiring the machine's system DNS settings to change.
+_original_getaddrinfo = socket.getaddrinfo
+
+
+def _resilient_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
+    try:
+        return _original_getaddrinfo(host, port, family, type, proto, flags)
+    except socket.gaierror:
+        try:
+            resolver = dns.resolver.Resolver(configure=False)
+            resolver.nameservers = ['8.8.8.8', '1.1.1.1', '8.8.4.4']
+            answer = resolver.resolve(host, 'A')
+            ip = str(answer[0])
+        except Exception:
+            raise
+        return _original_getaddrinfo(ip, port, family, type, proto, flags)
+
+
+socket.getaddrinfo = _resilient_getaddrinfo
 
 
 class Database:

@@ -24,6 +24,9 @@ class EvidenceResult(BaseModel):
 
 
 class RetrievalResponse(BaseModel):
-    status: Literal["success", "no_relevant_evidence"]
+    status: Literal["success", "no_relevant_evidence", "unsupported_crop"]
     query: str
     results: list[EvidenceResult]
+    message: str | None = None
+    requested_crop: str | None = None
+    available_crops: list[str] = Field(default_factory=list)
