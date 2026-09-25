@@ -1,0 +1,6 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     Started server process [36284]
+INFO:     Waiting for application startup.
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     Started server process [20124]
+INFO:     Waiting for application startup.

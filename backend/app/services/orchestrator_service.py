@@ -85,6 +85,7 @@ class OrchestratorService:
         image_filename: Optional[str] = None,
         image_content_type: Optional[str] = None,
         preferred_language: Optional[str] = None,
+        user_id: Optional[str] = None,
     ) -> dict[str, Any]:
 
         session_id = str(uuid.uuid4())
@@ -160,6 +161,11 @@ class OrchestratorService:
                     content_type=image_content_type,
                 )
 
+                if vision_result.get("status") != "success":
+                    raise AgentClientError(
+                        vision_result.get("message") or "The image could not be analyzed."
+                    )
+
                 agent_activity.append(
                     {
                         "agent": "vision-agent",
@@ -174,7 +180,10 @@ class OrchestratorService:
 
                 # If crop was not identified from the question, infer it from the prediction
                 if not crop:
-                    crop = _infer_crop_from_prediction(vision_result.get("prediction"))
+                    detected = (vision_result.get("crop") or "").lower()
+                    crop = detected if detected in {"rice", "tomato"} else _infer_crop_from_prediction(
+                        vision_result.get("prediction")
+                    )
 
             except AgentClientError as exc:
                 logger.warning(
@@ -257,14 +266,18 @@ class OrchestratorService:
                 )
 
                 result_count = len(research_result.get("results", []))
+                research_status = research_result.get("status")
 
                 agent_activity.append(
                     {
                         "agent": "research-agent",
-                        "status": "success",
+                        "status": "success" if result_count else "warning",
                         "details": (
                             f"Retrieved {result_count} relevant agricultural "
                             f"evidence chunks from knowledge base."
+                            if result_count
+                            else research_result.get("message")
+                            or f"No evidence retrieved (status: {research_status})."
                         ),
                     }
                 )
@@ -377,6 +390,7 @@ class OrchestratorService:
 
         await record_audit_log(
             action="AGENT4_ORCHESTRATION",
+            user_id=user_id,
             status="SUCCESS",
             details={
                 "session_id": session_id,

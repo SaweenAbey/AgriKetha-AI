@@ -63,105 +63,66 @@ async def call_vision_agent(
         )
     }
 
-    # 1. Try microservice if running
+    # 1. Try the Vision Agent microservice. A rejection (status "error" or
+    #    HTTP 400: fruit photo, blurry image, unsupported crop) is a valid
+    #    answer and must not be replaced by the fallback.
     for base_url in urls:
         url = f"{base_url.rstrip('/')}/agent/image/analyze"
         try:
-            async with httpx.AsyncClient(timeout=httpx.Timeout(connect=0.5, read=15.0, write=10.0, pool=1.0)) as client:
+            async with httpx.AsyncClient(timeout=httpx.Timeout(connect=0.5, read=30.0, write=10.0, pool=1.0)) as client:
                 response = await client.post(
                     url,
                     files=files,
                 )
             if response.status_code == 200:
                 return response.json()
+            if response.status_code == 400:
+                return {
+                    "status": "error",
+                    "message": response.json().get("detail", "Image rejected by the Vision Agent."),
+                }
         except Exception:
             continue
 
-    # 2. Seamlessly execute Integrated Vision Engine directly in backend
+    # 2. Agent unreachable: run the same trained models in-process
     try:
         from app.services.vision_engine import vision_engine
-        ve_res = vision_engine.analyze_crop_image(
+        return vision_engine.analyze_crop_image(
             image_bytes=image_bytes,
             filename=filename,
         )
-        return {
-            "status": ve_res.get("status", "success"),
-            "crop": ve_res.get("crop", "Rice"),
-            "prediction": ve_res.get("prediction", "Crop Leaf Analyzed"),
-            "confidence": float(ve_res.get("confidence", 0.94)),
-            "severity_level": ve_res.get("severity_level", "Moderate"),
-            "severity_percentage": float(ve_res.get("severity_percentage", 35.0)),
-            "gradcam_base64": ve_res.get("gradcam_base64"),
-            "alternatives": ve_res.get("alternatives", []),
-            "treatment_advisory": ve_res.get("treatment_advisory", {}),
-            "message": "Processed via Integrated Vision Engine"
-        }
     except Exception as fallback_exc:
         logger.warning("Integrated vision engine execution error: %s", fallback_exc)
         raise AgentClientError(f"Vision Agent execution failed: {fallback_exc}")
 
 
-def _generate_fallback_research_chunks(query: str, crop: Optional[str] = None, topic: Optional[str] = None) -> list[dict[str, Any]]:
-    """
-    Generates grounded Sri Lanka Department of Agriculture (DOA) knowledge chunks
-    when the standalone RAG microservice is offline.
-    """
-    crop_clean = (crop or "").capitalize() or "Paddy / Rice"
-    q_lower = (query or "").lower()
+RESEARCH_RESULT_FIELDS = ("content", "source", "page", "crop", "topic", "similarity_score")
+RESEARCH_STATUSES = {"success", "no_relevant_evidence", "unsupported_crop"}
 
-    if "brown spot" in q_lower or "bipolaris" in q_lower or "spot" in q_lower or "කහ" in q_lower:
-        chunks = [
-            {
-                "content": "Rice Brown Spot (Bipolaris oryzae) and Leaf Chlorosis in Sri Lanka paddy: Caused by fungal infection or potassium/nitrogen deficiencies. DOA recommends seed treatment with Pseudomonas fluorescens (10g/kg), foliar application of Mancozeb 75% WP or Azoxystrobin + Difenoconazole, and balanced MOP (Muriate of Potash) fertilizer application at tillering and panicle initiation.",
-                "source": "DOA Sri Lanka - Rice Disease Management Manual (Paddy Research Institute)",
-                "page": 12,
-                "crop": "Rice",
-                "topic": "Disease Management",
-                "similarity_score": 0.96
-            },
-            {
-                "content": "Leaf yellowing and chlorosis management: Apply balanced N:P:K according to DOA recommended growth stages. Avoid excessive urea standing water conditions, ensure field drainage, and incorporate organic matter to enhance root silica absorption.",
-                "source": "DOA Sri Lanka - Paddy Fertilizer Guide Book",
-                "page": 5,
-                "crop": "Rice",
-                "topic": "Agronomy & Nutrition",
-                "similarity_score": 0.92
-            }
-        ]
-    elif "blast" in q_lower or "magnaporthe" in q_lower:
-        chunks = [
-            {
-                "content": "Rice Blast (Magnaporthe oryzae) control: Apply Tricyclazole 75% WP (6g/10L water) or Isoprothiolane 40% EC during cool, humid weather in hill country or Maha season.",
-                "source": "DOA Sri Lanka - Rice Blast Control Guidelines",
-                "page": 8,
-                "crop": "Rice",
-                "topic": "Disease Management",
-                "similarity_score": 0.95
-            }
-        ]
-    elif "potato" in q_lower or "scab" in q_lower or "blight" in q_lower:
-        chunks = [
-            {
-                "content": "Potato Early Blight (Alternaria solani) and Late Blight (Phytophthora infestans) in Nuwara Eliya and Badulla districts: For Early Blight, apply Mancozeb 75% WP (20g/10L) or Chlorothalonil. For Late Blight, apply systemic Metalaxyl-M + Mancozeb (Ridomil Gold). Maintain wide ridge spacing and ensure proper hilling up.",
-                "source": "DOA Sri Lanka - Potato Production & Pathology Manual",
-                "page": 19,
-                "crop": "Potato",
-                "topic": "Disease Management",
-                "similarity_score": 0.95
-            }
-        ]
-    else:
-        chunks = [
-            {
-                "content": f"Department of Agriculture Sri Lanka standard crop advisory for {crop_clean}: Follow recommended crop spacing, certified seed selection from DOA seed stations, balanced basal and top-dressing fertilizer schedules, and integrated pest management (IPM) practices.",
-                "source": "DOA Sri Lanka - Agricultural Extension Technical Reference",
-                "page": 1,
-                "crop": crop_clean,
-                "topic": "Crop Management",
-                "similarity_score": 0.88
-            }
-        ]
-    return chunks
+
+def validate_research_response(data: Any) -> dict[str, Any]:
+    """
+    Accept only well-formed evidence from Agent 3.
+
+    Anything answering on the research port is untrusted until its payload
+    matches the retrieval contract: malformed items, out-of-range similarity
+    scores and unknown statuses are dropped instead of reaching the LLM.
+    """
+    if not isinstance(data, dict) or data.get("status") not in RESEARCH_STATUSES:
+        raise AgentClientError("Research Agent returned an invalid response.")
+
+    results = []
+    for item in data.get("results") or []:
+        if not isinstance(item, dict) or any(field not in item for field in RESEARCH_RESULT_FIELDS):
+            continue
+        score = item.get("similarity_score")
+        if not isinstance(score, (int, float)) or not 0.0 <= score <= 1.0:
+            continue
+        if not isinstance(item.get("content"), str) or not item["content"].strip():
+            continue
+        results.append({field: item[field] for field in RESEARCH_RESULT_FIELDS})
+
+    return {**data, "results": results}
 
 
 async def call_research_agent(
@@ -172,26 +133,28 @@ async def call_research_agent(
 ) -> dict[str, Any]:
     """
     Call Agent 3 (Agricultural Research/RAG Agent).
-    Probes external RAG microservice, or retrieves grounded Sri Lanka DOA knowledge chunks.
+
+    Only the configured research agent port is contacted, and the call is
+    authenticated with the internal agent key. When Agent 3 is offline no
+    evidence is returned, so the advisory states that evidence is unavailable
+    rather than citing sources that were never retrieved.
     """
     candidate_urls = [
         settings.RESEARCH_AGENT_URL,
         "http://127.0.0.1:8004",
         "http://localhost:8004",
-        "http://127.0.0.1:8003",
-        "http://localhost:8003",
     ]
     seen = set()
     urls = [u for u in candidate_urls if not (u in seen or seen.add(u))]
 
     payload = {
-        "query": query,
+        "query": query[:1000],
         "crop": crop,
         "topic": topic,
         "top_k": top_k,
     }
+    headers = {"X-Internal-Agent-Key": settings.internal_agent_key}
 
-    # 1. Try microservice if running
     for base_url in urls:
         url = f"{base_url.rstrip('/')}/agent/retrieve"
         try:
@@ -199,21 +162,21 @@ async def call_research_agent(
                 response = await client.post(
                     url,
                     json=payload,
+                    headers=headers,
                 )
             if response.status_code == 200:
-                return response.json()
+                return validate_research_response(response.json())
+            logger.warning("Research Agent at %s returned HTTP %d", base_url, response.status_code)
+        except AgentClientError as exc:
+            logger.warning("Rejected Research Agent response from %s: %s", base_url, exc)
         except Exception:
             continue
 
-    # 2. Grounded Sri Lanka DOA knowledge repository fallback
-    chunks = _generate_fallback_research_chunks(query, crop=crop, topic=topic)
     return {
-        "status": "success",
+        "status": "agent_unavailable",
         "query": query,
         "crop": crop,
         "topic": topic,
-        "results": chunks,
-        "count": len(chunks),
-        "source": "Integrated DOA Agricultural Knowledge Base"
+        "results": [],
+        "message": "The agricultural knowledge base is currently unavailable; no evidence was retrieved.",
     }
-

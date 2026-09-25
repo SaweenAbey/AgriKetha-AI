@@ -1,0 +1,345 @@
+[Vision Agent] main.py is executing!
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\__main__.py", line 4, in <module>
+    uvicorn.main()
+    ~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1490, in main
+    rv = self.invoke(ctx)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 440, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<48 lines>...
+        reset_contextvars=reset_contextvars,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 609, in run
+    config.load_app()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\config.py", line 428, in load_app
+    return import_from_string(self.app)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1398, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\main.py", line 11, in <module>
+    from app.model_ensemble import EnsembledVisionModel
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\model_ensemble.py", line 5, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'
+[Vision Agent] main.py is executing!
+[Vision Agent] All imports loaded!
+INFO:     Started server process [28648]
+INFO:     Waiting for application startup.
+[Vision Agent] Loading Vision Models...
+[Vision Model] Using device: cpu
+✅ Loaded best_disease_model.pth: 4 classes
+✅ Loaded best_nutrition_model.pth: 3 classes
+✅ Loaded best_pest_model.pth: 6 classes
+✅ Loaded best_rice_balanced_model.pth: 13 classes
+✅ Loaded best_tomato_model.pth: 10 classes
+✅ Vision Models Ready! Loaded models: disease, nutrition, pest, balanced, tomato
+✅ Rice specialist classes: 13
+🍅 Tomato model ready with 10 classes
+[Crop Classifier] Using device: cpu
+[Crop Classifier] Classes: ['rice', 'tomato']
+[Crop Classifier] Model loaded successfully: best_crop_classifier.pth
+[Crop Classifier] Feature references loaded successfully
+[Crop Classifier] OOD threshold: 0.56
+[Vision Agent] Vision Agent ready!
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:62809 - "GET /agent/health HTTP/1.1" 200 OK
+[Vision Agent] error | crop=unknown | prediction=None
+INFO:     127.0.0.1:62810 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+[Vision Agent] main.py is executing!
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\__main__.py", line 4, in <module>
+    uvicorn.main()
+    ~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1490, in main
+    rv = self.invoke(ctx)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 440, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<48 lines>...
+        reset_contextvars=reset_contextvars,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 609, in run
+    config.load_app()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\config.py", line 428, in load_app
+    return import_from_string(self.app)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1398, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\main.py", line 11, in <module>
+    from app.model_ensemble import EnsembledVisionModel
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\model_ensemble.py", line 5, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'
+[Vision Agent] main.py is executing!
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\__main__.py", line 4, in <module>
+    uvicorn.main()
+    ~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1490, in main
+    rv = self.invoke(ctx)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 440, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<48 lines>...
+        reset_contextvars=reset_contextvars,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 609, in run
+    config.load_app()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\config.py", line 428, in load_app
+    return import_from_string(self.app)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1398, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\main.py", line 11, in <module>
+    from app.model_ensemble import EnsembledVisionModel
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\model_ensemble.py", line 5, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'
+[Vision Agent] main.py is executing!
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\__main__.py", line 4, in <module>
+    uvicorn.main()
+    ~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1490, in main
+    rv = self.invoke(ctx)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 440, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<48 lines>...
+        reset_contextvars=reset_contextvars,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 609, in run
+    config.load_app()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\config.py", line 428, in load_app
+    return import_from_string(self.app)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1398, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\main.py", line 11, in <module>
+    from app.model_ensemble import EnsembledVisionModel
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\model_ensemble.py", line 5, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'
+[Vision Agent] main.py is executing!
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\__main__.py", line 4, in <module>
+    uvicorn.main()
+    ~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1490, in main
+    rv = self.invoke(ctx)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 440, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<48 lines>...
+        reset_contextvars=reset_contextvars,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 609, in run
+    config.load_app()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\config.py", line 428, in load_app
+    return import_from_string(self.app)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1398, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\main.py", line 11, in <module>
+    from app.model_ensemble import EnsembledVisionModel
+  File "D:\AgriKetha-AI\ai-agents\vision-agent\app\model_ensemble.py", line 5, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'
+[Vision Agent] main.py is executing!
+[Vision Agent] All imports loaded!
+INFO:     Started server process [12280]
+INFO:     Waiting for application startup.
+[Vision Agent] Loading Vision Models...
+[Vision Model] Using device: cpu
+✅ Loaded best_disease_model.pth: 4 classes
+✅ Loaded best_nutrition_model.pth: 3 classes
+✅ Loaded best_pest_model.pth: 6 classes
+✅ Loaded best_rice_balanced_model.pth: 13 classes
+✅ Loaded best_tomato_model.pth: 10 classes
+✅ Vision Models Ready! Loaded models: disease, nutrition, pest, balanced, tomato
+✅ Rice specialist classes: 13
+🍅 Tomato model ready with 10 classes
+[Crop Classifier] Using device: cpu
+[Crop Classifier] Classes: ['rice', 'tomato']
+[Crop Classifier] Model loaded successfully: best_crop_classifier.pth
+[Crop Classifier] Feature references loaded successfully
+[Crop Classifier] OOD threshold: 0.56
+[Vision Agent] Vision Agent ready!
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+[Vision Agent] main.py is executing!
+[Vision Agent] All imports loaded!
+INFO:     Started server process [13948]
+INFO:     Waiting for application startup.
+[Vision Agent] Loading Vision Models...
+[Vision Model] Using device: cpu
+✅ Loaded best_disease_model.pth: 4 classes
+✅ Loaded best_nutrition_model.pth: 3 classes
+✅ Loaded best_pest_model.pth: 6 classes
+✅ Loaded best_rice_balanced_model.pth: 13 classes
+✅ Loaded best_tomato_model.pth: 10 classes
+✅ Vision Models Ready! Loaded models: disease, nutrition, pest, balanced, tomato
+✅ Rice specialist classes: 13
+🍅 Tomato model ready with 10 classes
+[Crop Classifier] Using device: cpu
+[Crop Classifier] Classes: ['rice', 'tomato']
+[Crop Classifier] Model loaded successfully: best_crop_classifier.pth
+[Crop Classifier] Feature references loaded successfully
+[Crop Classifier] OOD threshold: 0.56
+[Vision Agent] Vision Agent ready!
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54394 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62407 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62838 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56303 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60648 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52173 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52216 - "POST /analyze HTTP/1.1" 404 Not Found
+[Vision Agent] error | crop=unknown | prediction=None
+INFO:     127.0.0.1:52217 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63407 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50803 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59201 - "POST /analyze HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54729 - "POST /analyze HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65216 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65217 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62062 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55827 - "GET /agent/health HTTP/1.1" 200 OK
+[Crop Classifier] OOD check | Rice=0.7050 | Tomato=0.1535 | Highest=0.7050
+[Crop Classifier] Image accepted as rice.
+[Crop Classifier] Prediction: rice | Confidence: 1.0000
+[Vision Agent] success | crop=rice | prediction=Rice Brown Spot (Bipolaris oryzae)
+INFO:     127.0.0.1:56313 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59569 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62318 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59902 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54815 - "GET /agent/health HTTP/1.1" 200 OK

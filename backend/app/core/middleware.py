@@ -45,6 +45,23 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
             )
             raise exc
 
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Adds standard defensive HTTP response headers to every API response."""
+
+    HEADERS = {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "no-referrer",
+        "Cache-Control": "no-store",
+    }
+
+    async def dispatch(self, request: Request, call_next) -> Response:
+        response = await call_next(request)
+        for name, value in self.HEADERS.items():
+            response.headers.setdefault(name, value)
+        return response
+
+
 class RateLimitMiddleware(BaseHTTPMiddleware):
     """
     Simple in-memory rate limiter for the orchestrator endpoint.

@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.logging_config import setup_logging, logger
 from app.core.database import connect_to_mongo, close_mongo_connection
-from app.core.middleware import RequestLoggingMiddleware, RateLimitMiddleware
+from app.core.middleware import RequestLoggingMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
 from app.api.v1.api_router import api_router
 from app.services.agent_manager import start_all_agents, stop_all_agents
 
@@ -52,6 +52,9 @@ app = FastAPI(
 
 # Request Logging & Timing Middleware
 app.add_middleware(RequestLoggingMiddleware)
+
+# Defensive HTTP response headers
+app.add_middleware(SecurityHeadersMiddleware)
 
 # Rate Limiting Middleware
 app.add_middleware(

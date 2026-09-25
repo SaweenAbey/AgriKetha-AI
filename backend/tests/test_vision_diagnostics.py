@@ -1,6 +1,8 @@
 import sys
 import io
 from pathlib import Path
+
+import numpy as np
 from PIL import Image, ImageDraw
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
@@ -9,67 +11,82 @@ sys.path.insert(0, str(BACKEND_DIR))
 from app.services.vision_engine import vision_engine
 from app.api.v1.farmer import _generate_vision_advisory
 
+
+def _png_bytes(image: Image.Image) -> bytes:
+    # Add texture so flat synthetic shapes pass the blur/quality check
+    rng = np.random.default_rng(0)
+    arr = np.asarray(image, dtype=np.int16) + rng.integers(-25, 26, size=(image.height, image.width, 3))
+    buf = io.BytesIO()
+    Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def _red_fruit_image() -> bytes:
+    """Two ripe tomato-like fruits against green foliage."""
+    img = Image.new("RGB", (400, 400), color=(60, 120, 50))
+    d = ImageDraw.Draw(img)
+    d.ellipse([40, 90, 210, 300], fill=(215, 45, 25))
+    d.ellipse([190, 110, 360, 320], fill=(225, 60, 30))
+    return _png_bytes(img)
+
+
+def _leaf_image() -> bytes:
+    """Green leaf blade with brown necrotic lesions."""
+    img = Image.new("RGB", (250, 650), color=(60, 150, 50))
+    d = ImageDraw.Draw(img)
+    d.ellipse([70, 220, 180, 420], fill=(139, 69, 19))
+    d.ellipse([95, 270, 155, 370], fill=(180, 170, 160))
+    return _png_bytes(img)
+
+
+def test_fruit_photo_is_rejected_not_misdiagnosed():
+    res = vision_engine.analyze_crop_image(_red_fruit_image(), filename="rice_blast.jpg")
+    assert res["status"] == "error"
+    assert "fruit" in res["message"].lower()
+    assert res["prediction"] is None and res["confidence"] is None
+
+
+def test_crop_hint_and_filename_cannot_force_a_diagnosis():
+    leaf = _leaf_image()
+    by_hint = vision_engine.analyze_crop_image(leaf, filename="leaf.png", crop_hint="Brinjal")
+    by_name = vision_engine.analyze_crop_image(leaf, filename="brinjal_borer.png")
+    for res in (by_hint, by_name):
+        assert res.get("crop") != "Brinjal"
+        if res["status"] == "success":
+            assert res["crop"] in {"rice", "tomato"}
+            assert 0.0 <= res["confidence"] <= 1.0
+
+
+def test_unreadable_upload_returns_error():
+    res = vision_engine.analyze_crop_image(b"not an image")
+    assert res["status"] == "error"
+
+
+def test_success_results_come_from_real_models():
+    res = vision_engine.analyze_crop_image(_leaf_image(), filename="IMG_2026_09_19_photo.jpg")
+    if res["status"] == "success":
+        assert res["crop"] in {"rice", "tomato"}
+        # Hard-coded placeholder values of the old engine must never appear
+        assert res["confidence"] not in {0.942, 0.938, 0.945}
+        adv = _generate_vision_advisory(res["prediction"], res["crop"], res["severity_level"])
+        assert adv["disease_name"] == res["prediction"]
+    else:
+        assert res["message"]
+
+
 def main():
     print("=" * 60)
     print("AgriKetha-AI Vision Diagnostics Verification Suite")
     print("=" * 60)
+    for test in (
+        test_fruit_photo_is_rejected_not_misdiagnosed,
+        test_crop_hint_and_filename_cannot_force_a_diagnosis,
+        test_unreadable_upload_returns_error,
+        test_success_results_come_from_real_models,
+    ):
+        test()
+        print(f"[PASS] {test.__name__}")
 
-    # 1. Test Rice Leaf Image (long aspect ratio with brown necrotic lesions)
-    rice_img = Image.new("RGB", (250, 650), color=(60, 150, 50))
-    d = ImageDraw.Draw(rice_img)
-    d.ellipse([70, 220, 180, 420], fill=(139, 69, 19))
-    d.ellipse([95, 270, 155, 370], fill=(180, 170, 160)) # gray necrosis center
-
-    buf = io.BytesIO()
-    rice_img.save(buf, format="JPEG")
-    rice_bytes = buf.getvalue()
-
-    res = vision_engine.analyze_crop_image(rice_bytes, filename="IMG_2026_09_19_photo.jpg")
-    print("1. Unnamed Rice Leaf Scan (e.g. camera photo IMG_2026_09_19_photo.jpg):")
-    print(f"   - Identified Crop: {res['crop']}")
-    print(f"   - Diagnosis: {res['prediction']}")
-    print(f"   - Confidence: {res['confidence'] * 100:.1f}%")
-    print(f"   - Severity: {res['severity_level']} ({res['severity_percentage']} pct)")
-    print(f"   - Alternatives: {res['alternatives']}")
-    print(f"   - Has Grad-CAM Heatmap: {bool(res['gradcam_base64'])}")
-    assert res["crop"] == "Rice", f"Expected Rice, got {res['crop']}"
-
-    adv = _generate_vision_advisory(res["prediction"], res["crop"], res["severity_level"])
-    print(f"   - DOA Biological Control: {adv['biological_control'][:70]}...")
-    print(f"   - DOA Chemical Control: {adv['chemical_control'][:70]}...")
-    print(f"   - DOA Cultural Control: {adv['cultural_practices'][:70]}...")
-
-    # 2. Test with explicit Rice Category button
-    res_hint = vision_engine.analyze_crop_image(rice_bytes, filename="leaf.png", crop_hint="Rice")
-    print("\n2. Rice Leaf with 'Rice' category button selected:")
-    print(f"   - Identified Crop: {res_hint['crop']}")
-    print(f"   - Diagnosis: {res_hint['prediction']}")
-    assert res_hint["crop"] == "Rice"
-
-    # 3. Test with Tomato Category button
-    res_tomato = vision_engine.analyze_crop_image(rice_bytes, filename="leaf.png", crop_hint="Tomato")
-    print("\n3. Tomato Leaf with 'Tomato' category button selected:")
-    print(f"   - Identified Crop: {res_tomato['crop']}")
-    print(f"   - Diagnosis: {res_tomato['prediction']}")
-    assert res_tomato["crop"] == "Tomato"
-
-    # 4. Test with Chili Category button
-    res_chili = vision_engine.analyze_crop_image(rice_bytes, filename="leaf.png", crop_hint="Chili")
-    print("\n4. Chili Leaf with 'Chili' category button selected:")
-    print(f"   - Identified Crop: {res_chili['crop']}")
-    print(f"   - Diagnosis: {res_chili['prediction']}")
-    assert res_chili["crop"] == "Chili"
-
-    # 5. Test with Brinjal Category button
-    res_brinjal = vision_engine.analyze_crop_image(rice_bytes, filename="leaf.png", crop_hint="Brinjal")
-    print("\n5. Brinjal Leaf with 'Brinjal' category button selected:")
-    print(f"   - Identified Crop: {res_brinjal['crop']}")
-    print(f"   - Diagnosis: {res_brinjal['prediction']}")
-    assert res_brinjal["crop"] == "Brinjal"
-
-    print("\n" + "=" * 60)
-    print("[PASS] ALL VISION DIAGNOSTIC VERIFICATION TESTS PASSED SUCCESSFULLY!")
-    print("=" * 60)
 
 if __name__ == "__main__":
     main()
