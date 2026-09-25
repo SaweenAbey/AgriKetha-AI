@@ -111,3 +111,16 @@ INFO:     127.0.0.1:63406 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50802 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:59901 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:54814 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49755 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49758 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62312 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     Started server process [39580]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     Started server process [41792]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54840 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54844 - "GET / HTTP/1.1" 200 OK

@@ -42,7 +42,7 @@ export const translations = {
     visionSub: "PyTorch Ensemble",
 
     marketTitle: "Market Price Advisory",
-    marketDesc: "Real-time market wholesale prices across Dambulla, Meegoda, and Manning Dedicated Economic Centers.",
+    marketDesc: "Daily wholesale & retail prices from Dambulla, Pettah (Manning) and Narahenpita markets, sourced from the Central Bank of Sri Lanka.",
     marketSub: "Live Price Feeds",
 
     // Active Module Tabs
@@ -54,8 +54,31 @@ export const translations = {
 
     // Market Section
     marketCenterTitle: "Economic Center Price Feeds",
-    marketCenterDesc: "Real-time price feeds for Dambulla, Meegoda, and Manning Dedicated Economic Centers. You can also ask Agent 1 directly via voice: \"What is the cabbage wholesale price in Dambulla?\"",
+    marketCenterDesc: "Today's wholesale and retail prices from the CBSL Daily Price Report for Dambulla, Pettah (Manning), Marandagahamula and Narahenpita markets.",
     askPricesBtn: "Ask Multi-Agent Hub for Prices",
+    marketReportDate: "Report date",
+    marketSource: "Source",
+    marketRefresh: "Refresh",
+    marketSearch: "Search crop or item...",
+    marketAll: "All",
+    marketWholesale: "Wholesale",
+    marketRetail: "Retail",
+    marketItem: "Item",
+    marketYesterday: "Yesterday",
+    marketToday: "Today",
+    marketChange: "Change",
+    marketTopRisers: "Biggest price rises",
+    marketTopFallers: "Biggest price drops",
+    marketLoading: "Loading today's market prices...",
+    marketError: "Could not load market prices. Please try again shortly.",
+    marketNoResults: "No items match your search.",
+    marketNotToday: "Today's report is not published yet — showing the latest available report.",
+    marketNa: "n.a.",
+    marketCatVegetables: "Vegetables",
+    marketCatOther: "Other",
+    marketCatFruits: "Fruits",
+    marketCatRice: "Rice",
+    marketCatFish: "Fish",
 
     // Unified Orchestrator Assistant
     orchestratorTag: "Agent 4: Unified Multi-Agent Agricultural Orchestrator",
@@ -216,7 +239,7 @@ export const translations = {
     visionSub: "PyTorch එන්සෙම්බල්",
 
     marketTitle: "තොග වෙළඳපල මිල ගණන්",
-    marketDesc: "දඹුල්ල, මීගොඩ සහ මැනිං වෙළඳපල ඇතුළු ආර්ථික මධ්‍යස්ථානවල සජීවී එළවළු තොග මිල තොරතුරු.",
+    marketDesc: "ශ්‍රී ලංකා මහ බැංකුවේ දෛනික මිල වාර්තාවෙන් දඹුල්ල, පිටකොටුව (මැනිං) සහ නාරාහේන්පිට වෙළඳපලවල තොග සහ සිල්ලර මිල.",
     marketSub: "සජීවී මිල ගණන්",
 
     // Active Module Tabs
@@ -228,8 +251,31 @@ export const translations = {
 
     // Market Section
     marketCenterTitle: "ආර්ථික මධ්‍යස්ථාන තොග මිල විස්තර",
-    marketCenterDesc: "දඹුල්ල, මීගොඩ සහ මැනිං ආර්ථික මධ්‍යස්ථානවල සජීවී එළවළු තොග මිල. ඔබට හඬ මඟින්ද විමසිය හැක: \"දඹුල්ල ආර්ථික මධ්‍යස්ථානයේ ගෝවා තොග මිල කීයද?\"",
+    marketCenterDesc: "දඹුල්ල, පිටකොටුව (මැනිං), මරඳගහමුල සහ නාරාහේන්පිට වෙළඳපලවල අද දින තොග සහ සිල්ලර මිල (මහ බැංකු දෛනික මිල වාර්තාව).",
     askPricesBtn: "මිල ගණන් විමසන්න",
+    marketReportDate: "වාර්තා දිනය",
+    marketSource: "මූලාශ්‍රය",
+    marketRefresh: "යාවත්කාලීන කරන්න",
+    marketSearch: "බෝගය හෝ භාණ්ඩය සොයන්න...",
+    marketAll: "සියල්ල",
+    marketWholesale: "තොග",
+    marketRetail: "සිල්ලර",
+    marketItem: "භාණ්ඩය",
+    marketYesterday: "ඊයේ",
+    marketToday: "අද",
+    marketChange: "වෙනස",
+    marketTopRisers: "වැඩිම මිල ඉහළ යාම්",
+    marketTopFallers: "වැඩිම මිල පහත වැටීම්",
+    marketLoading: "අද වෙළඳපල මිල ගණන් ලබා ගනිමින්...",
+    marketError: "වෙළඳපල මිල ගණන් ලබා ගත නොහැකි විය. කරුණාකර නැවත උත්සාහ කරන්න.",
+    marketNoResults: "ඔබගේ සෙවුමට ගැළපෙන භාණ්ඩ නැත.",
+    marketNotToday: "අද වාර්තාව තවම නිකුත් කර නැත — නවතම වාර්තාව පෙන්වයි.",
+    marketNa: "නැත",
+    marketCatVegetables: "එළවළු",
+    marketCatOther: "වෙනත්",
+    marketCatFruits: "පළතුරු",
+    marketCatRice: "සහල්",
+    marketCatFish: "මාළු",
 
     // Unified Orchestrator Assistant
     orchestratorTag: "Agent 4: කෘෂිකාර්මික බහු-නියෝජිත ප්‍රධාන පද්ධතිය",
