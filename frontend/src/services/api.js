@@ -145,6 +145,16 @@ export const userService = {
   },
 };
 
+export const marketService = {
+  getPrices: async (reportDate) => {
+    const response = await api.get("/market/prices", {
+      params: reportDate ? { report_date: reportDate } : undefined,
+      timeout: 45000,
+    });
+    return response.data;
+  },
+};
+
 export const paymentService = {
   getConfig: async () => {
     const response = await api.get("/payments/config");
