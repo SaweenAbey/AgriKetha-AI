@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Dict, Optional
 
+from app.core.config import settings
 from app.core.logging_config import logger
 
 # Root of the AgriKetha project
@@ -21,6 +22,7 @@ AGENT_CONFIGS = [
         "dir": AI_AGENTS_DIR / "query-agent",
         "entry": "app.main:app",
         "custom_venv": AI_AGENTS_DIR / "query-agent" / "venv",
+        "requires": ["fastapi", "uvicorn", "spacy", "langdetect", "speech_recognition"],
     },
     {
         "name": "vision-agent",
@@ -28,6 +30,7 @@ AGENT_CONFIGS = [
         "dir": AI_AGENTS_DIR / "vision-agent",
         "entry": "app.main:app",
         "custom_venv": AI_AGENTS_DIR / "vision-agent" / "venv",
+        "requires": ["fastapi", "uvicorn", "torch", "torchvision", "cv2", "pytorch_grad_cam"],
     },
     {
         "name": "research-agent",
@@ -35,6 +38,7 @@ AGENT_CONFIGS = [
         "dir": AI_AGENTS_DIR / "research-agent",
         "entry": "app.main:app",
         "custom_venv": AI_AGENTS_DIR / "research-agent" / "venv",
+        "requires": ["fastapi", "uvicorn", "faiss", "sentence_transformers", "fitz"],
     },
 ]
 
@@ -48,28 +52,54 @@ def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
         return s.connect_ex((host, port)) == 0
 
 
+def _venv_python(venv_dir: Optional[Path]) -> Optional[Path]:
+    if not venv_dir or not venv_dir.exists():
+        return None
+    exe = venv_dir / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
+    return exe if exe.exists() else None
+
+
+def _has_modules(python_exe: str, modules: list) -> bool:
+    """True when ``python_exe`` can import every module the agent needs."""
+    if not modules:
+        return True
+    probe = "import importlib.util, sys; sys.exit(0 if all(importlib.util.find_spec(m) for m in sys.argv[1:]) else 1)"
+    try:
+        creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+        return subprocess.run(
+            [python_exe, "-c", probe, *modules],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=30,
+            creationflags=creationflags,
+        ).returncode == 0
+    except Exception:
+        return False
+
+
 def get_python_executable_for_agent(config: dict) -> str:
-    """Find the best Python executable for a given agent microservice."""
-    custom_venv = config.get("custom_venv")
-    if custom_venv and custom_venv.exists():
-        if sys.platform == "win32":
-            exe = custom_venv / "Scripts" / "python.exe"
-        else:
-            exe = custom_venv / "bin" / "python"
-        if exe.exists():
+    """
+    Pick the first interpreter (agent venv, project .venv, current Python)
+    that can actually import the agent's dependencies. Previously the project
+    .venv was chosen even without PyTorch, so the Vision Agent crashed on
+    start-up and every image fell back to a fake engine.
+    """
+    candidates = [
+        _venv_python(config.get("custom_venv")),
+        _venv_python(PROJECT_ROOT / ".venv"),
+        Path(sys.executable),
+    ]
+    required = config.get("requires", [])
+    for exe in candidates:
+        if exe is not None and _has_modules(str(exe), required):
             return str(exe)
 
-    # Check root .venv
-    root_venv = PROJECT_ROOT / ".venv"
-    if root_venv.exists():
-        if sys.platform == "win32":
-            exe = root_venv / "Scripts" / "python.exe"
-        else:
-            exe = root_venv / "bin" / "python"
-        if exe.exists():
-            return str(exe)
-
-    # Fallback to current running Python interpreter
+    logger.warning(
+        "No interpreter has all dependencies for [%s] (%s); falling back to %s.",
+        config["name"],
+        ", ".join(required),
+        sys.executable,
+    )
     return sys.executable
 
 
@@ -106,18 +136,24 @@ def start_agent_process(config: dict) -> Optional[subprocess.Popen]:
         env["PYTHONUNBUFFERED"] = "1"
         env["PYTHONIOENCODING"] = "utf-8"
         env["PYTHONUTF8"] = "1"
+        env["AGRIKETHA_INTERNAL_AGENT_KEY"] = settings.internal_agent_key
 
         # On Windows, spawn without popping up new CMD windows
         creationflags = 0
         if sys.platform == "win32":
             creationflags = subprocess.CREATE_NO_WINDOW
 
+        # Keep agent output so start-up crashes are diagnosable
+        log_dir = Path(settings.LOG_DIR)
+        log_dir.mkdir(parents=True, exist_ok=True)
+        log_file = open(log_dir / f"{name}.log", "a", encoding="utf-8")
+
         proc = subprocess.Popen(
             cmd,
             cwd=str(agent_dir),
             env=env,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            stdout=log_file,
+            stderr=subprocess.STDOUT,
             creationflags=creationflags,
         )
 

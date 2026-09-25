@@ -1,8 +1,9 @@
 from datetime import datetime, timezone
 from typing import Any, List, Optional
 import httpx
-from fastapi import APIRouter, Depends, File, Form, UploadFile, HTTPException
+from fastapi import APIRouter, Depends, File, Form, Query, UploadFile, HTTPException
 from app.api.deps import require_farmer_or_admin
+from app.models.user import UserRole
 from app.core.config import settings
 from app.core.database import get_db
 from app.core.logging_config import logger
@@ -57,7 +58,7 @@ async def get_orchestrator_status():
         return "offline"
 
     async def check_research():
-        for url in [settings.RESEARCH_AGENT_URL, "http://127.0.0.1:8004", "http://127.0.0.1:8003"]:
+        for url in [settings.RESEARCH_AGENT_URL, "http://127.0.0.1:8004"]:
             try:
                 async with httpx.AsyncClient(timeout=0.6) as client:
                     res = await client.get(f"{url.rstrip('/')}/agent/health")
@@ -80,7 +81,7 @@ async def get_orchestrator_status():
 
 @router.get("/history")
 async def get_orchestrator_history(
-    limit: int = 15,
+    limit: int = Query(15, ge=1, le=50),
     current_user: dict = Depends(require_farmer_or_admin),
     db = Depends(get_db),
 ):
@@ -102,6 +103,7 @@ async def get_activity_logs(
 ):
     """
     Returns recent Agent 4 orchestration activity logs.
+    Farmers only see their own sessions; admins see all.
     """
 
     if db_state.db is None:
@@ -111,9 +113,13 @@ async def get_activity_logs(
             "message": "Database is not available.",
         }
 
+    log_filter: dict[str, Any] = {"action": "AGENT4_ORCHESTRATION"}
+    if current_user.get("role") != UserRole.ADMIN.value:
+        log_filter["user_id"] = current_user["id"]
+
     logs = await (
         db_state.db.audit_logs
-        .find({"action": "AGENT4_ORCHESTRATION"})
+        .find(log_filter)
         .sort("created_at", -1)
         .limit(20)
         .to_list(length=20)
@@ -217,6 +223,7 @@ async def orchestrate_query(
         image_filename=image_filename,
         image_content_type=image_content_type,
         preferred_language=language,
+        user_id=current_user["id"],
     )
 
     result["quota_status"] = quota_status

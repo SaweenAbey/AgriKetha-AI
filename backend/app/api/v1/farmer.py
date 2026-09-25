@@ -564,52 +564,43 @@ async def analyze_crop_image(
     vision_response = None
     engine_status = "offline"
 
-    # 1. Forward image to Vision Agent microservice if available
+    # 1. Forward image to Vision Agent microservice if available.
+    #    A rejection from the agent (status "error": blurry photo, fruit
+    #    instead of leaf, unsupported crop) is a valid answer and is returned
+    #    as-is; the fallback only runs when the agent cannot be reached.
     try:
-        async with httpx.AsyncClient(timeout=8.0) as client:
+        async with httpx.AsyncClient(timeout=30.0) as client:
             files = {"file": (image.filename or "leaf.jpg", file_bytes, content_type)}
             res = await client.post(f"{settings.VISION_AGENT_URL}/agent/image/analyze", files=files)
             if res.status_code == 200:
-                body = res.json()
-                if body.get("status") == "success":
-                    vision_response = body
-                    engine_status = "microservice_connected"
+                vision_response = res.json()
+                engine_status = "microservice_connected"
+            elif res.status_code == 400:
+                vision_response = {"status": "error", "message": res.json().get("detail", "Image rejected by the Vision Agent.")}
+                engine_status = "microservice_connected"
     except Exception as e:
         logger.info("Vision Agent microservice on %s unavailable (%s). Running Integrated Vision Engine.", settings.VISION_AGENT_URL, e)
 
-    # 2. Execute Integrated Vision Engine (PyTorch MobileNetV3 deep learning + morphology classifier)
-    if not vision_response or vision_response.get("status") != "success":
-        try:
-            vision_response = vision_engine.analyze_crop_image(
-                image_bytes=file_bytes,
-                filename=image.filename or "leaf.jpg",
-                crop_hint=crop,
-                notes=notes
-            )
-            engine_status = "integrated_vision_engine"
-        except Exception as ve_err:
-            logger.error("Integrated Vision Engine error: %s", ve_err)
-            detected_crop = crop or "Rice"
-            vision_response = {
-                "status": "success",
-                "crop": detected_crop,
-                "prediction": "Rice Brown Spot (Bipolaris oryzae)" if detected_crop == "Rice" else f"{detected_crop} Leaf Disease",
-                "confidence": 0.942,
-                "severity_percentage": 38.5,
-                "severity_level": "Moderate",
-                "gradcam_base64": None,
-                "alternatives": [
-                    {"disease": "Rice Blast (Magnaporthe oryzae)", "confidence": 0.038},
-                    {"disease": "Rice Bacterial Leaf Blight", "confidence": 0.018}
-                ],
-                "message": "Processed via Vision Engine"
-            }
-            engine_status = "integrated_vision_engine"
+    # 2. Agent unreachable: run the same trained models in-process
+    if vision_response is None:
+        vision_response = vision_engine.analyze_crop_image(
+            image_bytes=file_bytes,
+            filename=image.filename or "leaf.jpg",
+        )
+        engine_status = "integrated_vision_engine"
+
+    if vision_response.get("status") != "success":
+        return {
+            "status": "error",
+            "message": vision_response.get("message") or "The image could not be analyzed.",
+            "engine_status": engine_status,
+            "quota_status": quota_status,
+        }
 
     # 3. Generate actionable treatment advisory
-    pred_name = vision_response.get("prediction", "Unknown Condition")
-    detected_crop_name = vision_response.get("crop", crop or "Crop")
-    severity_level = vision_response.get("severity_level", "Moderate")
+    pred_name = vision_response.get("prediction") or "Unknown Condition"
+    detected_crop_name = (vision_response.get("crop") or "crop").capitalize()
+    severity_level = vision_response.get("severity_level") or "Unknown"
 
     advisory = _generate_vision_advisory(pred_name, detected_crop_name, severity_level)
 
@@ -620,8 +611,8 @@ async def analyze_crop_image(
         "filename": image.filename,
         "crop": detected_crop_name,
         "prediction": pred_name,
-        "confidence": float(vision_response.get("confidence", 0.9)),
-        "severity_percentage": float(vision_response.get("severity_percentage", 25.0)),
+        "confidence": float(vision_response["confidence"]),
+        "severity_percentage": vision_response.get("severity_percentage"),
         "severity_level": severity_level,
         "gradcam_base64": vision_response.get("gradcam_base64"),
         "alternatives": vision_response.get("alternatives", []),

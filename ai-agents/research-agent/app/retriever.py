@@ -3,6 +3,7 @@
 from .config import EMBEDDING_MODEL_NAME, RELEVANCE_THRESHOLD, VECTOR_STORE_DIR
 from .embeddings import EmbeddingModel
 from .schemas import EvidenceResult
+from .security import find_injection_markers, normalize_query
 from .vector_store import VectorStore
 
 
@@ -73,7 +74,7 @@ class AgriculturalRetriever:
                 available_crops=self.known_crops,
             )
 
-        query_vector = self.embedder.encode([query])
+        query_vector = self.embedder.encode([normalize_query(query)])
         candidates = self.store.search(query_vector, max(top_k * 5, 20))
         results = []
         for metadata, score in candidates:
@@ -82,6 +83,10 @@ class AgriculturalRetriever:
             if topic_filter and metadata["topic"].lower() != topic_filter:
                 continue
             if score < RELEVANCE_THRESHOLD:
+                continue
+            # Passages carrying instructions aimed at the LLM are never
+            # forwarded as evidence (indirect prompt injection).
+            if find_injection_markers(metadata["text"]):
                 continue
             results.append(
                 EvidenceResult(

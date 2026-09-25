@@ -1,8 +1,11 @@
 from typing import List, Union
 from pathlib import Path
-from pydantic import AnyHttpUrl, field_validator
+from pydantic import AnyHttpUrl, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import hashlib
+import hmac
 import os
+import secrets
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 ENV_FILE = BASE_DIR / ".env"
@@ -27,15 +30,15 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:8000",
-        "*"
     ]
 
-    # Database (MongoDB)
-    MONGODB_URL: str = "mongodb+srv://saween910_db_user:pLRnbXw5JLISQoTR@cluster0.dqyxqug.mongodb.net/?appName=Cluster0"
+    # Database (MongoDB) - credentials must come from .env, never from source
+    MONGODB_URL: str = "mongodb://localhost:27017"
     DATABASE_NAME: str = "agriketha_ai_db"
 
-    # Security / JWT
-    SECRET_KEY: str = "agriketha_super_secret_jwt_key_for_development_change_in_production_xyz123!"
+    # Security / JWT - a random fallback means a leaked repository default
+    # can never be used to forge tokens; set SECRET_KEY in .env to persist sessions.
+    SECRET_KEY: str = Field(default_factory=lambda: secrets.token_urlsafe(48))
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 Hours
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -48,6 +51,10 @@ class Settings(BaseSettings):
     QUERY_AGENT_URL: str = "http://127.0.0.1:8001"
     VISION_AGENT_URL: str = "http://127.0.0.1:8002"
     RESEARCH_AGENT_URL: str = "http://127.0.0.1:8004"
+
+    # Shared secret sent as X-Internal-Agent-Key to the agent microservices.
+    # Empty means "derive from SECRET_KEY" (see internal_agent_key).
+    INTERNAL_AGENT_KEY: str = ""
 
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
@@ -64,6 +71,13 @@ class Settings(BaseSettings):
         case_sensitive=True,
         extra="ignore"
     )
+
+    @property
+    def internal_agent_key(self) -> str:
+        """Stable inter-service key, derived from SECRET_KEY when not set explicitly."""
+        if self.INTERNAL_AGENT_KEY:
+            return self.INTERNAL_AGENT_KEY
+        return hmac.new(self.SECRET_KEY.encode(), b"agriketha-internal-agent", hashlib.sha256).hexdigest()
 
 
 settings = Settings()
