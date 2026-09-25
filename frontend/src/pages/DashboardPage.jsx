@@ -31,6 +31,7 @@ import { useQuota } from "@/context/QuotaContext";
 import { UnifiedOrchestratorAssistant } from "@/components/UnifiedOrchestratorAssistant";
 import { AgentQueryAssistant } from "@/components/AgentQueryAssistant";
 import { CropDiagnosticsAssistant } from "@/components/CropDiagnosticsAssistant";
+import { MarketPriceAdvisor } from "@/components/MarketPriceAdvisor";
 
 export const DashboardPage = () => {
   const { user, logout } = useAuth();
@@ -379,25 +380,7 @@ export const DashboardPage = () => {
           {activeTab === "orchestrator" && <UnifiedOrchestratorAssistant />}
           {activeTab === "agent1" && <AgentQueryAssistant />}
           {activeTab === "vision" && <CropDiagnosticsAssistant />}
-          {activeTab === "market" && (
-            <Card className="p-8 text-center space-y-3 border-amber-500/30 bg-amber-500/5">
-              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center mx-auto">
-                <TrendingUp className="w-7 h-7" />
-              </div>
-              <h3 className="text-lg font-bold text-foreground">{t("marketCenterTitle")}</h3>
-              <p className="text-xs text-muted-foreground max-w-md mx-auto">
-                {t("marketCenterDesc")}
-              </p>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setActiveTab("orchestrator")}
-                className="text-xs font-bold text-emerald-700 dark:text-emerald-300"
-              >
-                {t("askPricesBtn")}
-              </Button>
-            </Card>
-          )}
+          {activeTab === "market" && <MarketPriceAdvisor />}
         </section>
       </main>
     </div>
