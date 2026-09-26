@@ -327,3 +327,11 @@ INFO:     127.0.0.1:61117 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61121 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50411 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:51165 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64383 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58890 - "GET /agent/health HTTP/1.1" 200 OK
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     Started server process [4792]
+INFO:     Waiting for application startup.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 2568.31it/s]

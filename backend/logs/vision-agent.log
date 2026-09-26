@@ -514,3 +514,29 @@ INFO:     127.0.0.1:61116 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61120 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50410 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:51164 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64382 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58889 - "GET /agent/health HTTP/1.1" 200 OK
+[Vision Agent] main.py is executing!
+[Vision Agent] All imports loaded!
+INFO:     Started server process [29296]
+INFO:     Waiting for application startup.
+[Vision Agent] Loading Vision Models...
+[Vision Model] Using device: cpu
+✅ Loaded best_disease_model.pth: 4 classes
+✅ Loaded best_nutrition_model.pth: 3 classes
+✅ Loaded best_pest_model.pth: 6 classes
+✅ Loaded best_rice_balanced_model.pth: 13 classes
+✅ Loaded best_tomato_model.pth: 10 classes
+✅ Vision Models Ready! Loaded models: disease, nutrition, pest, balanced, tomato
+✅ Rice specialist classes: 13
+🍅 Tomato model ready with 10 classes
+[Crop Classifier] Using device: cpu
+[Crop Classifier] Classes: ['rice', 'tomato']
+[Crop Classifier] Model loaded successfully: best_crop_classifier.pth
+[Crop Classifier] Feature references loaded successfully
+[Crop Classifier] OOD threshold: 0.56
+[Vision Agent] Vision Agent ready!
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:57799 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57804 - "GET /agent/health HTTP/1.1" 200 OK
