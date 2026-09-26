@@ -1,0 +1,22 @@
+AgriKetha-AI Knowledge Base
+Crop: Tomato
+Category: Disease
+
+3. HEALTHY
+TOMATO
+
+Identification: - Leaves are uniformly green with no spots, mold,
+curling, mottling, or wilting. - No visible pest damage, webbing, or
+scabby lesions on fruit or stems. - Growth is even and vigorous for the
+plant's stage.
+
+Notes: - This class is the baseline reference used to confirm that a
+plant shows no signs of the diseases or pests covered in this knowledge
+base. - A healthy classification does not rule out early-stage or
+symptomless problems, so continue routine monitoring of leaf undersides
+and new growth.
+
+Recommended care: 1. Maintain consistent watering and avoid prolonged
+leaf wetness. 2. Keep balanced fertilization based on plant stage.
+3. Continue regular visual inspection, especially after wet or humid
+weather.

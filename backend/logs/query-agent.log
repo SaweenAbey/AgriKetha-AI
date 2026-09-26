@@ -1,0 +1,163 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\__main__.py", line 4, in <module>
+    uvicorn.main()
+    ~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1490, in main
+    rv = self.invoke(ctx)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 440, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<48 lines>...
+        reset_contextvars=reset_contextvars,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 609, in run
+    config.load_app()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\config.py", line 428, in load_app
+    return import_from_string(self.app)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1398, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "D:\AgriKetha-AI\ai-agents\query-agent\app\main.py", line 4, in <module>
+    import speech_recognition as sr
+ModuleNotFoundError: No module named 'speech_recognition'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\__main__.py", line 4, in <module>
+    uvicorn.main()
+    ~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1490, in main
+    rv = self.invoke(ctx)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\click\core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 440, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<48 lines>...
+        reset_contextvars=reset_contextvars,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\main.py", line 609, in run
+    config.load_app()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\config.py", line 428, in load_app
+    return import_from_string(self.app)
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "D:\AgriKetha-AI\.venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python314\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1398, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "D:\AgriKetha-AI\ai-agents\query-agent\app\main.py", line 4, in <module>
+    import speech_recognition as sr
+ModuleNotFoundError: No module named 'speech_recognition'
+INFO:     Started server process [32820]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     Started server process [13080]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54393 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62406 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62837 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56302 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60647 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52172 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52213 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63406 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50802 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59901 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54814 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49755 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49758 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62312 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     Started server process [39580]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     Started server process [41792]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54840 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54844 - "GET / HTTP/1.1" 200 OK
+INFO:     Started server process [31040]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55201 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55209 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54951 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60413 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53494 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56691 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61647 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64648 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50675 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50680 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53633 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53637 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50913 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49677 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61682 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64833 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62744 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63997 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59453 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52193 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52196 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61115 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61119 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50409 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51163 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64381 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58888 - "GET / HTTP/1.1" 200 OK
+INFO:     Started server process [33924]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:57798 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57803 - "GET / HTTP/1.1" 200 OK

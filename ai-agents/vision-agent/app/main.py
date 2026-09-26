@@ -1,133 +1,170 @@
-print("🔥 main.py is executing!")
+print("[Vision Agent] main.py is executing!")
 
-import base64
 import io
-import cv2
-import numpy as np
-from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import JSONResponse
-from PIL import Image
+
 import uvicorn
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from PIL import Image
 
-# Import your modules
+# Import application modules
 from app.schemas import VisionResponse, DiseasePrediction
-from app.preprocess import validate_image, preprocess_image
 from app.model_ensemble import EnsembledVisionModel
+from app.crop_classifier import CropClassifier
+from app.pipeline import SUPPORTED_CROPS, analyze_leaf_image
 
-print("✅ All imports loaded!")
+print("[Vision Agent] All imports loaded!")
 
-# Initialize FastAPI
+
+# ============================================================
+# FASTAPI APPLICATION
+# ============================================================
+
 app = FastAPI(
     title="Vision Agent - AgriKetha",
-    description="Crop Disease Image Analysis with Explainability",
-    version="1.0.0"
+    description="Crop Disease Image Analysis with Automatic Crop Detection",
+    version="1.0.0",
 )
 
-# Global model instance
+
+# ============================================================
+# GLOBAL MODEL INSTANCES
+# ============================================================
+
 vision_model = None
+crop_classifier = None
+
+
+
+# ============================================================
+# STARTUP
+# ============================================================
 
 @app.on_event("startup")
 async def load_model():
-    """Load the vision model on server startup"""
+    """
+    Load all vision models and the crop classifier
+    when the Vision Agent starts.
+    """
+
     global vision_model
-    print("🖼️ Loading Ensembled Vision Model (3 Specialists)...")
+    global crop_classifier
+
+    print("[Vision Agent] Loading Vision Models...")
+
+    # Existing disease/pest/nutrition/tomato models
     vision_model = EnsembledVisionModel()
-    print("✅ Vision Agent ready!")
+
+    # Automatic Rice/Tomato classifier
+    crop_classifier = CropClassifier()
+
+    print("[Vision Agent] Vision Agent ready!")
+
+
+# ============================================================
+# HEALTH CHECK
+# ============================================================
 
 @app.get("/agent/health")
 async def health_check():
-    """Health check endpoint"""
+    """
+    Check whether the Vision Agent and models are available.
+    """
+
     return {
-        "status": "healthy", 
+        "status": "healthy",
         "agent": "vision-agent",
-        "model_loaded": vision_model is not None
+        "model_loaded": vision_model is not None,
+        "crop_classifier_loaded": crop_classifier is not None,
     }
 
-@app.post("/agent/image/analyze", response_model=VisionResponse)
-async def analyze_image(file: UploadFile = File(...)):
+
+# ============================================================
+# IMAGE ANALYSIS
+# ============================================================
+
+@app.post(
+    "/agent/image/analyze",
+    response_model=VisionResponse,
+)
+async def analyze_image(
+    file: UploadFile = File(...),
+):
     """
-    Main endpoint for analyzing crop leaf images.
+    Analyze a crop leaf image.
+
+    The pipeline (quality check, fruit/leaf gate, OOD validation, rice/tomato
+    detection, crop-specific model, Grad-CAM, severity) lives in
+    app/pipeline.py so the backend fallback runs exactly the same logic.
     """
-    # 1. Validate file type
-    if not file.content_type.startswith("image/"):
-        raise HTTPException(status_code=400, detail="File must be an image")
-    
+
+    if vision_model is None or crop_classifier is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Vision models are not loaded.",
+        )
+
+    if not file.content_type or not file.content_type.startswith("image/"):
+        raise HTTPException(
+            status_code=400,
+            detail="File must be an image.",
+        )
+
     try:
-        # 2. Read image
         contents = await file.read()
         image_pil = Image.open(io.BytesIO(contents)).convert("RGB")
-        image_np = np.array(image_pil)
-        
-        # 3. Quality Validation (Responsible AI)
-        is_valid, message = validate_image(image_np)
-        if not is_valid:
-            return VisionResponse(
-                status="error",
-                message=message
-            )
-        
-        # 4. Preprocess for model
-        image_tensor = preprocess_image(image_pil)
-        
-        # 5. Run Prediction (Ensemble picks the best specialist!)
-        prediction, confidence, alternatives = vision_model.predict(image_tensor)
-        
-        # 6. Generate Grad-CAM (Explainability)
-        class_idx = None
-        for idx, name in vision_model.class_names.items():
-            if name == prediction:
-                class_idx = idx
-                break
-        
-        gradcam_base64 = None
-        if class_idx is not None:
-            gradcam_image = vision_model.generate_gradcam(image_tensor, class_idx)
-            gradcam_pil = Image.fromarray((gradcam_image * 255).astype(np.uint8))
-            buffered = io.BytesIO()
-            gradcam_pil.save(buffered, format="PNG")
-            gradcam_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
-        
-        # 7. Severity Estimation
-        severity_pct, severity_level = vision_model.estimate_severity(
-            gradcam_image if 'gradcam_image' in locals() else np.random.rand(224, 224, 3)
-        )
-        
-        # 8. Format alternatives
-        alternatives_list = [
-            DiseasePrediction(disease=alt["disease"], confidence=alt["confidence"])
-            for alt in alternatives
-        ]
-        
-        # 9. Return structured response
-        return VisionResponse(
-            status="success",
-            crop="unknown",
-            prediction=prediction,
-            confidence=confidence,
-            severity_percentage=severity_pct,
-            severity_level=severity_level,
-            gradcam_base64=gradcam_base64,
-            alternatives=alternatives_list,
-            message="Image analyzed successfully"
-        )
-    
+        result = analyze_leaf_image(image_pil, vision_model, crop_classifier)
     except Exception as e:
+        print(f"[Vision Agent] Processing error: {e}")
         return VisionResponse(
             status="error",
-            message=f"Processing error: {str(e)}"
+            crop="unknown",
+            alternatives=[],
+            message=f"Processing error: {e}",
         )
+
+    print(f"[Vision Agent] {result['status']} | crop={result['crop']} | prediction={result['prediction']}")
+    return VisionResponse(
+        **{**result, "alternatives": [DiseasePrediction(**alt) for alt in result["alternatives"]]}
+    )
+
+
+# ============================================================
+# ROOT ENDPOINT
+# ============================================================
 
 @app.get("/")
 async def root():
+
     return {
         "message": "AgriKetha Vision Agent",
+
         "version": "1.0.0",
+
+        "automatic_crop_detection": True,
+
+        "ood_crop_validation": True,
+
+        "supported_crops": SUPPORTED_CROPS,
+
         "endpoints": {
             "health": "/agent/health",
-            "analyze": "/agent/image/analyze (POST)"
+            "analyze": "/agent/image/analyze (POST)",
         }
     }
 
+
+# ============================================================
+# START SERVER
+# ============================================================
+
 if __name__ == "__main__":
-    print("🚀 Starting Vision Agent Server...")
-    uvicorn.run(app, host="0.0.0.0", port=8002)
+
+    print(
+        "🚀 Starting Vision Agent Server..."
+    )
+
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=8002,
+    )

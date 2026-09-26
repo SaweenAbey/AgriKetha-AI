@@ -28,6 +28,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { agentService } from "@/services/api";
+import { useQuota } from "@/context/QuotaContext";
+import { QuotaWidget } from "@/components/QuotaWidget";
 
 const QUICK_SUGGESTIONS = [
   {
@@ -70,6 +72,7 @@ const QUICK_SUGGESTIONS = [
 
 
 export const AgentQueryAssistant = ({ onCropDetected }) => {
+  const { updateQuotaFromResponse, openUpgradeModal, t } = useQuota();
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -81,7 +84,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
   const [interimTranscript, setInterimTranscript] = useState("");
   const [autoTriggerOnVoice, setAutoTriggerOnVoice] = useState(true);
   const [voiceSupported, setVoiceSupported] = useState(true);
-  const [language, setLanguage] = useState("en-US");
+  const [language, setLanguage] = useState("si-LK");
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [voiceNetworkBlocked, setVoiceNetworkBlocked] = useState(false);
   
@@ -106,7 +109,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
         const recognition = new SpeechRecognition();
         recognition.continuous = false;
         recognition.interimResults = true;
-        recognition.lang = language || "en-US";
+        recognition.lang = language || "si-LK";
 
         recognition.onstart = () => {
           setIsListening(true);
@@ -178,6 +181,26 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
     };
   }, [language, autoTriggerOnVoice]);
 
+  const changeVoiceLanguage = (newLang) => {
+    setLanguage(newLang);
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+      } catch (e) {}
+      setTimeout(() => {
+        try {
+          if (recognitionRef.current) {
+            recognitionRef.current.lang = newLang;
+            recognitionRef.current.start();
+            setIsListening(true);
+          }
+        } catch (err) {
+          console.warn("Restart recognition notice:", err);
+        }
+      }, 100);
+    }
+  };
+
   const loadHistory = async () => {
     try {
       const data = await agentService.getQueryHistory(10);
@@ -213,7 +236,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
     if (voiceSupported && recognitionRef.current) {
       try {
-        recognitionRef.current.lang = language || "en-US";
+        recognitionRef.current.lang = language || "si-LK";
         recognitionRef.current.start();
       } catch (err) {
         console.warn("Recognition start notice:", err);
@@ -264,6 +287,10 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
         language: language.split("-")[0]
       });
 
+      if (response?.quota_status) {
+        updateQuotaFromResponse(response.quota_status);
+      }
+
       setResult(response);
       loadHistory();
 
@@ -279,7 +306,12 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
       }
     } catch (err) {
       console.error("Agent 1 Query Error:", err);
-      setError(err.response?.data?.detail || "Failed to process query through Agent 1. Please try again.");
+      const isQuota429 = err.response?.status === 429;
+      const detailMsg = err.response?.data?.detail?.message || err.response?.data?.detail || "Failed to process query through Agent 1. Please try again.";
+      setError({
+        message: typeof detailMsg === "object" ? JSON.stringify(detailMsg) : detailMsg,
+        isQuotaExceeded: isQuota429
+      });
     } finally {
       setLoading(false);
     }
@@ -324,19 +356,19 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
   return (
     <div className="space-y-6">
       {/* Agent 1 Header Banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-teal-900 via-emerald-900 to-slate-900 text-white p-6 shadow-xl relative overflow-hidden">
-        <div className="absolute -right-8 -bottom-8 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-        
+      <div className="agentic-hero rounded-3xl text-white p-6 shadow-xl shadow-emerald-900/20 ring-1 ring-white/10 relative overflow-hidden">
+        <div className="absolute -right-8 -bottom-8 w-48 h-48 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none" />
+
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 shadow-inner">
+            <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-emerald-200 shadow-inner">
               <Bot className="w-6 h-6" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl font-bold">Agent 1: Smart NLP & Advisory Agent</h2>
-                <Badge variant="secondary" className="bg-emerald-500/20 text-emerald-300 border-emerald-400/30 text-[11px] gap-1">
-                  <Activity className="w-3 h-3 animate-pulse" />
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight">Agent 1: Smart NLP & Advisory Agent</h2>
+                <Badge variant="secondary" className="bg-white/10 backdrop-blur text-emerald-100 border-white/20 text-[11px] gap-1.5">
+                  <span className="agent-dot" />
                   {agentStatus.status === "online" ? "Active" : "Ready"}
                 </Badge>
               </div>
@@ -351,7 +383,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="text-xs rounded-lg bg-emerald-950/80 border border-emerald-700/50 text-emerald-100 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-400"
+              className="text-xs rounded-full bg-white/10 backdrop-blur border border-white/20 text-emerald-50 px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-300 [&>option]:text-slate-900"
             >
               <option value="en-US">English (US/UK)</option>
               <option value="si-LK">Sinhala (Sri Lanka)</option>
@@ -361,10 +393,10 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
             <button
               type="button"
               onClick={() => setAutoTriggerOnVoice(!autoTriggerOnVoice)}
-              className={`text-xs px-2.5 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 ${
-                autoTriggerOnVoice 
-                  ? "bg-emerald-500/20 border-emerald-400/40 text-emerald-200" 
-                  : "bg-slate-800/40 border-slate-700 text-slate-400"
+              className={`text-xs px-3 py-1.5 rounded-full border backdrop-blur transition-all flex items-center gap-1.5 ${
+                autoTriggerOnVoice
+                  ? "bg-emerald-400/20 border-emerald-300/40 text-emerald-100"
+                  : "bg-white/5 border-white/15 text-slate-300"
               }`}
               title="Automatically sends query to Agent 1 when you finish speaking"
             >
@@ -376,11 +408,14 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
       </div>
 
       {/* Main Interactive Query Box */}
-      <Card className="glass-card shadow-lg border-emerald-500/20">
+      <Card className="glass-card shadow-xl shadow-emerald-900/5 border-emerald-500/20 rounded-3xl overflow-hidden">
+        <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-teal-400 to-amber-400" />
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center justify-between">
-            <span className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-600" />
+            <span className="flex items-center gap-2.5">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/30">
+                <Sparkles className="w-4 h-4" />
+              </span>
               Ask Farming Question (Text or Voice)
             </span>
             <span className="text-xs text-muted-foreground font-normal">
@@ -394,10 +429,28 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
         <CardContent className="space-y-4">
           {error && (
-            <Alert variant="destructive" className="py-2.5 relative">
-              <AlertCircle className="w-4 h-4" />
-              <AlertTitle className="text-xs font-semibold">Query Notice</AlertTitle>
-              <AlertDescription className="text-xs">{error}</AlertDescription>
+            <Alert variant="destructive" className="py-3 relative border-rose-500/30 bg-rose-500/10">
+              <AlertCircle className="w-4 h-4 text-rose-500 mt-0.5" />
+              <div className="flex-1">
+                <AlertTitle className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                  {error.isQuotaExceeded ? (t?.quota_exceeded || "Daily Limit Exceeded") : "Query Notice"}
+                </AlertTitle>
+                <AlertDescription className="text-xs text-rose-700 dark:text-rose-300 mt-0.5">
+                  {typeof error === "string" ? error : error.message}
+                </AlertDescription>
+                {error.isQuotaExceeded && (
+                  <div className="mt-2.5 flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      onClick={openUpgradeModal}
+                      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold h-7 px-3 text-xs rounded-lg shadow-sm"
+                    >
+                      <Sparkles className="w-3 h-3 mr-1 text-slate-950" />
+                      {t?.upgrade_pro || "Upgrade to Unlimited Pro"}
+                    </Button>
+                  </div>
+                )}
+              </div>
               <button 
                 type="button" 
                 onClick={() => setError(null)}
@@ -425,7 +478,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
                 }}
                 placeholder="e.g. My tomato leaves are turning yellow with brown spots, what should I do?"
                 rows={3}
-                className="w-full rounded-xl border border-input bg-background/90 p-3.5 pr-28 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all resize-none"
+                className="w-full rounded-2xl border border-input bg-background/80 backdrop-blur p-4 pr-28 pb-14 text-sm focus:outline-none focus:border-emerald-500/60 focus:ring-4 focus:ring-emerald-500/15 focus:shadow-lg focus:shadow-emerald-500/10 transition-all resize-none"
               />
 
               {/* Action Buttons inside Textarea */}
@@ -448,7 +501,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
                   type="submit"
                   size="sm"
                   disabled={loading || !question.trim()}
-                  className="h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 gap-1.5"
+                  className="h-9 px-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-md shadow-emerald-600/30 gap-1.5"
                 >
                   {loading ? (
                     <RotateCcw className="w-3.5 h-3.5 animate-spin" />
@@ -475,7 +528,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
                   key={idx}
                   type="button"
                   onClick={() => selectSuggestion(item.text)}
-                  className="text-xs px-2.5 py-1 rounded-lg bg-secondary/70 hover:bg-emerald-500/15 hover:text-emerald-700 dark:hover:text-emerald-300 border border-border/70 transition-all text-left flex items-center gap-1.5"
+                  className="text-xs px-3 py-1.5 rounded-full bg-background/70 backdrop-blur hover:bg-emerald-500/10 hover:text-emerald-700 dark:hover:text-emerald-300 border border-border/70 hover:border-emerald-500/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-emerald-500/10 transition-all text-left flex items-center gap-1.5"
                 >
                   <span>{item.icon}</span>
                   <span className="font-medium text-[11px] truncate max-w-[220px] sm:max-w-none">{item.text}</span>
@@ -509,8 +562,45 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
             </div>
 
             <CardContent className="p-6 space-y-5 text-center">
+              {/* Language Selection Tabs */}
+              <div className="flex items-center justify-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-emerald-500/30">
+                <button
+                  type="button"
+                  onClick={() => changeVoiceLanguage("si-LK")}
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
+                    language === "si-LK"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800"
+                  }`}
+                >
+                  🇱🇰 සිංහල (Sinhala)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeVoiceLanguage("en-US")}
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
+                    language === "en-US"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800"
+                  }`}
+                >
+                  🇬🇧 English
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeVoiceLanguage("ta-LK")}
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
+                    language === "ta-LK"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800"
+                  }`}
+                >
+                  🇱🇰 தமிழ் (Tamil)
+                </button>
+              </div>
+
               {/* Sound Wave Animation */}
-              <div className="flex items-center justify-center gap-1.5 py-4">
+              <div className="flex items-center justify-center gap-1.5 py-3">
                 <span className="w-1.5 h-6 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                 <span className="w-1.5 h-12 bg-emerald-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                 <span className="w-1.5 h-16 bg-emerald-300 rounded-full animate-bounce"></span>
@@ -526,7 +616,13 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
                   </p>
                 ) : (
                   <p className="text-xs text-muted-foreground">
-                    {isListening ? "Listening... Speak your crop symptoms or question now." : "Microphone active. Ready for your voice."}
+                    {isListening
+                      ? language === "si-LK"
+                        ? "🎙️ සවන් දෙමින්... කරුණාකර ඔබගේ ගැටළුව සිංහලෙන් පවසන්න."
+                        : language === "ta-LK"
+                        ? "🎙️ கேட்கிறது... உங்கள் கேள்வியை தமிழில் பேசுங்கள்."
+                        : "🎙️ Listening... Speak your crop symptoms or question now."
+                      : "Microphone active. Ready for your voice."}
                   </p>
                 )}
               </div>
@@ -591,10 +687,13 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
       {/* Agent 1 Analysis & Advisory Results */}
       {result && (
-        <Card className="glass-card border-emerald-500/30 shadow-xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <div className="bg-gradient-to-r from-emerald-600/10 via-teal-500/10 to-transparent p-4 border-b border-border/80 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+        <Card className="glass-card border-emerald-500/30 shadow-xl shadow-emerald-900/10 rounded-3xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-teal-400 to-amber-400" />
+          <div className="bg-[radial-gradient(40rem_10rem_at_0%_0%,rgba(16,185,129,0.16),transparent_70%)] p-4 border-b border-border/60 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/30">
+                <CheckCircle2 className="w-4 h-4" />
+              </span>
               <h3 className="font-bold text-foreground text-base">Agent 1 NLP Analysis & Diagnostic Result</h3>
             </div>
             

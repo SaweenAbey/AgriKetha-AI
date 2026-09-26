@@ -1,0 +1,25 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Pest
+
+Pest: Brown Planthopper (BPH)
+
+Common name: Brown planthopper Scientific group: Nilaparvata lugens
+
+Damage / symptoms: - Nymphs and adults suck plant sap. - Heavy
+infestation causes hopper burn: leaves dry and plants turn brown. -
+Plants may lodge. - BPH can transmit grassy stunt and ragged stunt
+viruses.
+
+Management: 1. Monitor fields regularly. 2. Use locally recommended
+resistant varieties where available. 3. Avoid excessive nitrogen. 4.
+Avoid unnecessary early-season insecticide applications. 5. Protect
+natural enemies such as spiders. 6. Drain or manage water according to
+local recommendations when BPH pressure is high. 7. If insecticide is
+justified by monitoring and threshold information, use a locally
+registered selective product according to its label.
+
+Recovery: - Reduce pest pressure quickly when economic thresholds are
+exceeded. - Allow surviving plants to recover through good water and
+nutrient management. - Severely hopper-burned plants may not recover
+fully.

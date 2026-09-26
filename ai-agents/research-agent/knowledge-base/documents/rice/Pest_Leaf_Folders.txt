@@ -1,0 +1,21 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Pest
+
+Pest: Rice Leaffolder
+
+Scientific group: Cnaphalocrocis medinalis and related species
+
+Damage / symptoms: - Larvae fold or roll leaves and feed inside the
+folded leaf. - White or transparent feeding areas may appear. - Severe
+damage reduces photosynthetic leaf area.
+
+Management: 1. Inspect folded leaves and larval presence. 2. Early
+damage is often tolerated by rice because plants can compensate. 3.
+Avoid routine insecticide spraying during early crop stages unless
+monitoring indicates a real need. 4. Preserve parasitoids, predators,
+and other natural enemies. 5. Use insecticide only when economically
+justified and locally recommended.
+
+Recovery: - Healthy rice can produce new leaves after moderate early
+damage. - Maintain good crop nutrition and water management.

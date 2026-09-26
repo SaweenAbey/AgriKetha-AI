@@ -10,8 +10,10 @@ import {
   CheckCircle2, 
   Languages 
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const AuthLayout = ({ children, title, subtitle }) => {
+  const { language, toggleLanguage, t } = useLanguage();
   return (
     <div className="min-h-screen w-full flex bg-gradient-to-br from-emerald-50/70 via-background to-teal-50/40 dark:from-slate-950 dark:via-emerald-950/20 dark:to-slate-950 text-foreground overflow-hidden">
       {/* Decorative ambient gradients */}
@@ -36,14 +38,14 @@ export const AuthLayout = ({ children, title, subtitle }) => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-teal-100 to-white">
-                  AgriKetha-AI
+                  {t("appTitle")}
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   SL v1.0
                 </span>
               </div>
               <p className="text-xs text-emerald-200/70 font-medium">
-                අස්වැන්න සරු කරන බුද්ධිමත් ගොවි සහයකයා
+                {t("appSubtitle")}
               </p>
             </div>
           </Link>
@@ -57,10 +59,10 @@ export const AuthLayout = ({ children, title, subtitle }) => {
               Multi-Agent Agricultural Intelligence
             </div>
             <h1 className="text-3xl xl:text-4xl font-extrabold leading-tight text-white">
-              Empowering Sri Lankan Farming with Autonomous AI Agents
+              {language === "si" ? "ස්වාධීන AI නියෝජිතයින් සමඟින් ශ්‍රී ලාංකීය ගොවිතැන බලගන්වමු" : "Empowering Sri Lankan Farming with Autonomous AI Agents"}
             </h1>
             <p className="text-sm xl:text-base text-emerald-100/80 leading-relaxed">
-              Real-time crop disease diagnosis, regional market prices, and localized advice tailored for our soil and climate.
+              {language === "si" ? "තත්‍ය කාලීන පත්‍ර රෝග විනිශ්චය, දිස්ත්‍රික් තොග මිල ගණන් සහ අපගේ පසට හා දේශගුණයට ගැළපෙන නිල කෘෂි උපදෙස්." : "Real-time crop disease diagnosis, regional market prices, and localized advice tailored for our soil and climate."}
             </p>
           </div>
 
@@ -71,8 +73,8 @@ export const AuthLayout = ({ children, title, subtitle }) => {
                 <Leaf className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-emerald-100">AI Crop Disease Diagnostics</h4>
-                <p className="text-xs text-emerald-200/70">Instant leaf pathology, pest identification and eco-friendly remedy steps.</p>
+                <h4 className="text-sm font-semibold text-emerald-100">{t("visionTitle")}</h4>
+                <p className="text-xs text-emerald-200/70">{t("visionDesc")}</p>
               </div>
             </div>
 
@@ -81,8 +83,8 @@ export const AuthLayout = ({ children, title, subtitle }) => {
                 <TrendingUp className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-emerald-100">Daily Market & Pola Price Advisory</h4>
-                <p className="text-xs text-emerald-200/70">Live wholesale rates across Dambulla, Manning Market, and district economic centers.</p>
+                <h4 className="text-sm font-semibold text-emerald-100">{t("marketTitle")}</h4>
+                <p className="text-xs text-emerald-200/70">{t("marketDesc")}</p>
               </div>
             </div>
 
@@ -91,8 +93,8 @@ export const AuthLayout = ({ children, title, subtitle }) => {
                 <Bot className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-emerald-100">Sinhala & Tamil Smart RAG Agent</h4>
-                <p className="text-xs text-emerald-200/70">Ask queries in your mother tongue for localized Department of Agriculture recommendations.</p>
+                <h4 className="text-sm font-semibold text-emerald-100">{t("agent1Title")}</h4>
+                <p className="text-xs text-emerald-200/70">{t("agent1Desc")}</p>
               </div>
             </div>
           </div>
@@ -106,7 +108,7 @@ export const AuthLayout = ({ children, title, subtitle }) => {
           </div>
           <div className="flex items-center gap-1 text-emerald-200">
             <Languages className="w-4 h-4" />
-            <span>සිංහල | தமிழ் | English</span>
+            <span>සිංහල | English</span>
           </div>
         </div>
       </div>
@@ -114,19 +116,31 @@ export const AuthLayout = ({ children, title, subtitle }) => {
       {/* Right side: Form Area */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 sm:p-10 lg:p-12 overflow-y-auto">
         <div className="w-full max-w-md space-y-6">
-          {/* Mobile Logo & Title Bar */}
-          <div className="lg:hidden flex items-center justify-between pb-2">
-            <Link to="/" className="flex items-center gap-2.5">
+          {/* Top Switcher Bar */}
+          <div className="flex items-center justify-between">
+            <div className="lg:hidden flex items-center gap-2.5">
               <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/30">
                 <Sprout className="w-5 h-5" />
               </div>
               <div>
                 <span className="text-xl font-bold tracking-tight text-foreground">
-                  AgriKetha-AI
+                  {t("appTitle")}
                 </span>
-                <p className="text-[10px] text-muted-foreground">Smart Farming Assistant</p>
+                <p className="text-[10px] text-muted-foreground">{t("appSubtitle")}</p>
               </div>
-            </Link>
+            </div>
+
+            <div className="ml-auto">
+              <button
+                type="button"
+                onClick={toggleLanguage}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-semibold shadow-sm transition-all"
+                title="Change language / භාෂාව වෙනස් කරන්න"
+              >
+                <Languages className="w-3.5 h-3.5" />
+                <span>{t("langSwitch")}</span>
+              </button>
+            </div>
           </div>
 
           {/* Form Content */}

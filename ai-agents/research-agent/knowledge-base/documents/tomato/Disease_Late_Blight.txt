@@ -1,0 +1,29 @@
+AgriKetha-AI Knowledge Base
+Crop: Tomato
+Category: Disease
+
+4. LATE
+BLIGHT
+
+Scientific cause: Phytophthora infestans.
+
+Identification / symptoms: - Irregular, dark, water-soaked, greasy-looking
+lesions on leaves, often starting at leaf edges or tips. - A pale
+green-to-yellow halo may surround lesions. - White, fuzzy fungal growth
+can appear on the underside of leaves in humid conditions. - Dark, firm,
+greasy blotches can develop on fruit.
+
+Effects: - One of the most destructive tomato diseases; it can defoliate
+and kill plants within days under cool, wet, humid conditions. - Infected
+fruit is unmarketable and infection can continue to spread after harvest.
+
+Management: 1. Act quickly at first sign of symptoms; this disease
+spreads fast. 2. Remove and destroy infected plants or plant parts away
+from the field. 3. Avoid overhead irrigation and working in wet foliage.
+4. Apply labelled protectant fungicides (e.g. chlorothalonil, mancozeb,
+or copper products) where locally approved, especially before forecast
+cool wet weather. 5. Use resistant or tolerant varieties where available.
+
+Recovery: - Badly affected plants rarely recover; prioritize protecting
+unaffected plants and neighboring fields. - Report widespread or rapidly
+spreading outbreaks to an agricultural extension officer.

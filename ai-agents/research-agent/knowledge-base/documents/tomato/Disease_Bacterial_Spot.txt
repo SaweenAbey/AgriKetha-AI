@@ -1,0 +1,26 @@
+AgriKetha-AI Knowledge Base
+Crop: Tomato
+Category: Disease
+
+1.
+BACTERIAL SPOT
+
+Scientific cause: Xanthomonas spp. (X. euvesicatoria, X. vesicatoria, X. perforans).
+
+Identification / symptoms: - Small, dark, water-soaked spots on leaves that
+turn brown to black with a yellow halo. - Spots may merge and cause leaf
+tearing or drop. - Raised, scabby, rough spots appear on green fruit.
+
+Effects: - Heavy leaf loss reduces plant vigor and sunscald risk on fruit.
+- Blemished fruit lowers market quality even when yield is not badly
+affected.
+
+Management: 1. Use certified disease-free seed and transplants. 2. Avoid
+overhead irrigation and working in wet foliage. 3. Rotate away from
+tomato and pepper for at least one season. 4. Apply copper-based
+bactericides preventively where locally approved. 5. Remove and destroy
+crop debris after harvest.
+
+Recovery: - Spotted leaves will not clear up; focus on protecting new
+growth. - Improve airflow and reduce leaf wetness duration. - Severe,
+spreading outbreaks should be confirmed by an extension officer.

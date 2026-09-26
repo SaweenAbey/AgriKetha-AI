@@ -8,7 +8,7 @@ numpy
 pandas
 matplotlib
 scikit-learn
-pytorch-grad-cam
+grad-cam
 python-multipart
 python-dotenv
 requests

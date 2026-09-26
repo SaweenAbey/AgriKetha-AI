@@ -1,0 +1,26 @@
+AgriKetha-AI Knowledge Base
+Crop: Tomato
+Category: Disease
+
+6. SEPTORIA
+LEAF SPOT
+
+Scientific cause: Septoria lycopersici.
+
+Identification / symptoms: - Small, circular spots with dark brown
+margins and light gray or tan centers, usually starting on older, lower
+leaves. - Tiny black specks (pycnidia) are often visible in the center
+of spots. - Spots can be numerous and merge, causing yellowing and leaf
+drop.
+
+Effects: - Progressive lower-leaf loss reduces plant vigor and can
+expose fruit to sunscald if defoliation is severe.
+
+Management: 1. Remove and destroy infected lower leaves as symptoms
+appear. 2. Mulch around plants to reduce soil splash. 3. Rotate crops
+away from tomato for at least one season. 4. Avoid overhead irrigation
+and working with wet foliage. 5. Apply labelled fungicides where locally
+approved for persistent outbreaks.
+
+Recovery: - Existing spots will not clear; protect new upper growth by
+controlling humidity and leaf wetness.

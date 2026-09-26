@@ -1,0 +1,30 @@
+AgriKetha-AI Knowledge Base
+Crop: Rice
+Category: Disease
+
+Disease: Bacterial Blight
+
+Scientific cause: Xanthomonas oryzae pv. oryzae
+
+Identification / symptoms: - Water-soaked to yellowish lesions commonly
+begin near leaf margins or tips. - Lesions enlarge and may become pale
+yellow to whitish. - Severely affected leaves dry from the tip
+downward. - Young plants can wilt severely. - The disease is favored by
+stormy weather, strong winds, high humidity, and excessive nitrogen.
+
+Effects: - Reduces healthy leaf area and photosynthesis. - Severe
+infection can reduce grain filling and yield.
+
+Management: 1. Use resistant or locally recommended varieties where
+available. 2. Avoid excessive nitrogen fertilizer. 3. Maintain balanced
+plant nutrition. 4. Keep fields and irrigation channels clean and manage
+volunteer rice. 5. Avoid practices that unnecessarily injure plants. 6.
+Monitor fields regularly, especially after storms and during humid
+conditions. 7. Seek local extension advice before applying bactericides
+because chemical control can be limited and product registration varies
+by country.
+
+Recovery: - Remove or manage heavily infected plants when practical. -
+Maintain balanced nutrition and appropriate water management. - Protect
+remaining healthy plants from additional stress. - Affected leaf tissue
+cannot be restored; the goal is to protect new growth and reduce spread.

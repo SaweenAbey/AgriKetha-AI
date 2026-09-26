@@ -17,6 +17,8 @@ class UserInDB(BaseModel):
     phone_number: Optional[str] = None
     role: UserRole = UserRole.FARMER
     district: Optional[str] = None
+    plan: str = "free"
+    subscription_status: str = "none"
     is_active: bool = True
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

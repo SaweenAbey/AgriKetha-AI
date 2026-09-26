@@ -1,0 +1,26 @@
+AgriKetha-AI Knowledge Base
+Crop: Tomato
+Category: Disease
+
+2. EARLY
+BLIGHT
+
+Scientific cause: Alternaria solani.
+
+Identification / symptoms: - Dark brown spots with concentric rings
+forming a target/bullseye pattern, usually on older, lower leaves first.
+- Yellow tissue often surrounds each spot. - Sunken, dark lesions can
+also appear on stems and near the fruit stem end.
+
+Effects: - Progressive loss of lower leaves reduces photosynthesis and
+can expose fruit to sunscald. - Stem lesions can weaken young plants.
+
+Management: 1. Rotate crops away from tomato and potato for 2-3 years.
+2. Mulch to reduce soil splash onto leaves. 3. Remove infected lower
+leaves promptly. 4. Ensure adequate plant spacing for airflow. 5. Apply
+labelled fungicides such as chlorothalonil or mancozeb where locally
+approved once symptoms appear.
+
+Recovery: - Existing lesions do not heal, so protect healthy new foliage.
+- Correct crowding, mulch coverage, and irrigation practices that keep
+leaves wet.

@@ -1,0 +1,14 @@
+AgriKetha-AI Knowledge Base
+Crop: Tomato
+Category: AI Safety
+
+The research agent should: - Clearly distinguish diagnosis from
+suspicion. - Avoid saying that a viral disease can be cured when it
+cannot. - Avoid inventing pesticide names, rates, or application
+schedules. - Recommend label-compliant and locally registered products
+only. - Prefer IPM and cultural controls. - Explain uncertainty when
+symptoms overlap. - Avoid presenting a single symptom as proof of a
+disease. - Ask for crop stage, location, symptoms, photos, weather,
+irrigation, and fertilizer history when these details materially affect
+the recommendation. - Escalate uncertain or severe cases to agricultural
+professionals.

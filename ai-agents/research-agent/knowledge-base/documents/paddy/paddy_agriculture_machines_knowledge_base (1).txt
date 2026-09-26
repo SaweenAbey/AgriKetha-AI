@@ -1,0 +1,556 @@
+PADDY FIELD MACHINERY KNOWLEDGE BASE
+
+Purpose
+
+This knowledge base provides practical information about machines
+commonly used in paddy (rice) cultivation. It explains what each machine
+is used for, basic operating steps, suitable use cases, and important
+safety precautions.
+
+IMPORTANT SAFETY NOTE
+
+Machine operation should always follow the manufacturer’s manual and the
+machine’s safety labels. Farmers should receive proper training before
+operating powered machinery. Never bypass guards or safety switches.
+Stop the engine, isolate the power source, and wait for moving parts to
+stop before clearing blockages, adjusting attachments, or performing
+maintenance.
+
+1. TRACTOR
+
+What it is used for: - Pulling and operating agricultural implements. -
+Primary and secondary land preparation. - Ploughing, puddling,
+harrowing, leveling, and transporting materials. - Operating compatible
+pumps and other PTO-driven equipment.
+
+Common paddy uses: - Pulling a mouldboard/disc plough. - Pulling a
+rotavator. - Pulling a puddler. - Pulling a harrow. - Operating a
+trailer. - Operating a compatible land-leveling implement.
+
+How to use: 1. Inspect engine oil, coolant, fuel, tyres, brakes,
+steering, hydraulic system, PTO, and hitch. 2. Select an implement
+suitable for the field operation. 3. Attach the implement securely using
+the correct hitch and locking mechanism. 4. Keep bystanders away during
+attachment and operation. 5. Start the tractor according to the
+manufacturer’s procedure. 6. Select a suitable gear and engine speed for
+the implement and field condition. 7. Operate at a controlled speed. 8.
+Raise or disengage the implement before turning or transporting it when
+required. 9. Disengage the PTO before leaving the operator position. 10.
+Park on stable ground, lower implements, apply the parking brake, and
+stop the engine.
+
+Safety cautions: - Never allow untrained people or children to operate
+the tractor. - Use the seat belt where a ROPS (roll-over protective
+structure) is fitted. - Avoid steep slopes and unstable or excessively
+wet ground. - Never carry passengers unless the tractor is specifically
+designed for them. - Keep away from PTO shafts and rotating parts. -
+Never inspect or repair an attachment while it is running. - Use proper
+ballast and implement settings to maintain stability.
+
+2. POWER TILLER / WALK-BEHIND TILLER
+
+What it is used for: - Small and medium field land preparation. -
+Ploughing, puddling, harrowing, and soil mixing. - Useful where a
+full-size tractor is difficult to use.
+
+How to use: 1. Check engine oil, fuel, transmission oil, tyres/wheels,
+controls, and attachment. 2. Start the engine in a clear area. 3. Select
+the appropriate gear and operating depth. 4. Guide the machine steadily
+across the field. 5. Avoid excessive speed. 6. Stop the machine before
+changing attachments or making adjustments. 7. Park securely and shut
+down the engine after work.
+
+Safety cautions: - Keep feet away from rotary blades. - Never remove
+guards while the machine is running. - Do not reverse toward people. -
+Be especially careful in muddy fields and near field edges. - Stop the
+engine before clearing mud or plant material. - Wear suitable footwear
+and avoid loose clothing.
+
+3. MOULDBOARD / DISC PLOUGH
+
+What it is used for: - Initial soil turning and breaking. -
+Incorporating crop residues and weeds. - Preparing soil before puddling
+where appropriate.
+
+How to use: 1. Attach the plough to the tractor’s three-point linkage.
+2. Adjust working depth according to soil condition. 3. Start with a
+shallow test pass. 4. Adjust the implement for consistent soil turning.
+5. Maintain a controlled speed and overlap passes appropriately.
+
+Safety cautions: - Never stand behind or beside a suspended implement
+during attachment. - Lower the implement before inspection. - Do not
+make adjustments while the tractor or implement is moving. - Keep people
+away from the operating area.
+
+4. ROTAVATOR / ROTARY TILLER
+
+What it is used for: - Breaking and mixing soil. - Preparing the
+seedbed. - Mixing crop residues into soil. - In some systems, preparing
+soil before puddling.
+
+How to use: 1. Connect the rotavator to the tractor. 2. Check blades,
+guards, gearbox oil, PTO shaft, and safety shield. 3. Set the working
+depth. 4. Engage PTO at the recommended speed. 5. Operate at the
+manufacturer’s recommended forward speed. 6. Make overlapping passes as
+needed. 7. Disengage PTO before lifting, turning, stopping, or leaving
+the tractor when required.
+
+Safety cautions: - The rotary blades can cause severe injury. - Never
+approach the blades while they are rotating. - Never clear wrapped
+vegetation with hands while the PTO is engaged. - Stop the engine and
+isolate the PTO before clearing blockages. - Ensure the PTO shaft guard
+is installed.
+
+5. PUDDLER
+
+What it is used for: - Puddling flooded soil before transplanting
+rice. - Breaking soil clods. - Mixing soil and water to create a
+suitable puddled layer. - Reducing water movement through the soil when
+used appropriately.
+
+How to use: 1. Flood the field according to the local cultivation
+practice. 2. Operate the puddler at an appropriate soil and water
+condition. 3. Make passes across the field to obtain uniform puddling.
+4. Avoid unnecessary repeated passes that can damage soil structure or
+waste fuel. 5. Level the field after puddling when required.
+
+Safety cautions: - Mud can reduce tractor stability and traction. - Keep
+away from deep holes, bunds, drains, and unstable field edges. - Do not
+operate beyond the machine’s safe working conditions. - Use appropriate
+tractor ballast and tyres.
+
+6. HARROW
+
+What it is used for: - Breaking clods. - Smoothing and leveling the soil
+surface. - Preparing the seedbed after ploughing.
+
+How to use: 1. Attach the harrow securely. 2. Set the working depth and
+angle if adjustable. 3. Operate at a suitable speed. 4. Make systematic
+passes to obtain an even surface.
+
+Safety cautions: - Keep people away from the implement. - Lower the
+harrow before inspection. - Stop the tractor before making adjustments.
+
+7. LASER LAND LEVELER / LAND LEVELER
+
+What it is used for: - Producing a more uniform field surface. -
+Improving distribution of irrigation water. - Reducing areas of
+excessive or insufficient water depth. - Supporting more uniform crop
+establishment.
+
+How to use: 1. Survey or identify high and low areas. 2. Attach the
+leveling system correctly. 3. Set the laser transmitter and receiver
+according to the equipment manual when using a laser system. 4. Move
+soil from high areas toward low areas. 5. Make repeated passes until the
+desired level is achieved. 6. Check the field before cultivation.
+
+Safety cautions: - Never look directly into a laser beam. - Keep
+unauthorized people away from laser equipment. - Follow the laser
+equipment safety instructions. - Avoid operating heavy equipment close
+to unstable bunds or drains.
+
+8. RICE SEED DRILL / SEEDER
+
+What it is used for: - Mechanized sowing of rice seed. - Placing seed at
+relatively controlled spacing and depth depending on the machine.
+
+How to use: 1. Prepare and level the field appropriately for the seeding
+system. 2. Select clean, suitable seed. 3. Fill the seed hopper. 4.
+Calibrate the seed rate before field operation. 5. Set the desired row
+spacing and depth if adjustable. 6. Operate at the recommended speed. 7.
+Check seed placement periodically.
+
+Safety cautions: - Stop the machine before removing blocked seed
+tubes. - Keep hands away from moving metering mechanisms. - Do not enter
+the machine’s working path while operating. - Use only the recommended
+seed type and settings.
+
+9. RICE TRANSPLANTER
+
+What it is used for: - Mechanized transplanting of rice seedlings. -
+Produces relatively uniform row and plant spacing.
+
+How to use: 1. Raise healthy seedlings using the nursery method required
+by the transplanter. 2. Prepare seedling mats or trays according to the
+machine specification. 3. Prepare and level the paddy field. 4. Load
+seedling mats/trays correctly. 5. Adjust planting depth and row spacing
+according to the machine. 6. Start slowly and verify that seedlings are
+being planted correctly. 7. Refill seedlings when necessary. 8. Check
+planted rows periodically.
+
+Safety cautions: - Keep hands away from planting mechanisms while
+operating. - Stop the engine before servicing or clearing a jam. - Do
+not allow people to stand in the machine’s operating path. - Avoid
+excessively deep or uneven field conditions outside the machine’s
+operating range.
+
+10. DIRECT SEEDER / BROADCAST SEEDER
+
+What it is used for: - Direct seeding of rice into the field. - Reduces
+the need for manual transplanting when conditions and production systems
+are suitable.
+
+How to use: 1. Prepare the field according to the direct-seeding method.
+2. Use suitable seed and recommended seed rate. 3. Calibrate the
+machine. 4. Operate at a controlled speed. 5. Check seed distribution
+regularly. 6. Maintain appropriate water management after seeding.
+
+Safety cautions: - Stop the machine before clearing blocked seed
+outlets. - Keep hands away from rotating metering mechanisms. - Use the
+correct seed rate and machine settings.
+
+11. RICE REAPER
+
+What it is used for: - Cutting mature rice plants during harvesting. -
+Useful for reducing manual harvesting labor.
+
+How to use: 1. Harvest when the crop reaches the locally recommended
+maturity stage. 2. Check cutting blades, guards, belts, fuel, and
+controls. 3. Set the machine according to crop height and field
+condition. 4. Move through the crop in an organized pattern. 5. Collect
+or arrange the cut crop for threshing.
+
+Safety cautions: - Keep hands away from cutting blades. - Stop the
+engine before clearing wrapped straw. - Keep people away from the
+cutting area. - Do not operate in conditions where the machine becomes
+unstable.
+
+12. COMBINE HARVESTER
+
+What it is used for: - Cutting rice. - Feeding crop material into the
+machine. - Threshing. - Separating grain from straw. - Cleaning
+harvested grain. - Collecting grain, depending on machine design.
+
+How to use: 1. Check fuel, engine oil, coolant, belts, chains, cutting
+unit, guards, tyres/tracks, and grain tank. 2. Set the machine for the
+rice variety and field condition. 3. Enter the field only when the crop
+is at the appropriate harvesting stage. 4. Operate at the recommended
+speed. 5. Monitor grain loss and grain cleanliness. 6. Adjust machine
+settings according to the operator manual and crop condition. 7. Empty
+the grain tank at safe locations. 8. Clean the machine after harvesting.
+
+Safety cautions: - Never approach the header, auger, feeder, threshing
+unit, or other moving components while running. - Shut down the engine
+and isolate power before maintenance or blockage removal. - Never climb
+onto moving machinery. - Keep people away from unloading operations. -
+Take extra care around field edges, drains, bunds, and slopes. - Use
+lighting and visibility equipment when operating in low-light
+conditions.
+
+13. RICE THRESHER
+
+What it is used for: - Separating rice grain from harvested
+panicles/straw.
+
+How to use: 1. Position the thresher on stable, level ground. 2. Inspect
+belts, pulleys, guards, bearings, and feeding mechanism. 3. Start the
+machine according to the manufacturer’s instructions. 4. Feed harvested
+rice steadily without overloading. 5. Collect separated grain and remove
+straw safely. 6. Stop the machine and clean it after use.
+
+Safety cautions: - Never put hands into the feeding or threshing
+mechanism. - Keep all guards installed. - Do not wear loose clothing
+near rotating shafts. - Stop and isolate the machine before removing
+blocked material. - Keep children and bystanders away.
+
+14. WINNOWER / GRAIN CLEANER
+
+What it is used for: - Removing chaff, straw fragments, dust, and
+lighter impurities from harvested rice. - Improving grain cleanliness
+before storage or further processing.
+
+How to use: 1. Dry or condition the grain as required. 2. Adjust airflow
+or cleaning settings. 3. Feed grain at the recommended rate. 4. Check
+the cleaned grain regularly. 5. Clean the machine after use.
+
+Safety cautions: - Avoid inhaling dust. - Use appropriate respiratory
+protection where dust levels are high. - Keep hands away from fans and
+moving parts. - Disconnect power before cleaning.
+
+15. GRAIN DRYER
+
+What it is used for: - Reducing grain moisture after harvest. - Helping
+prevent deterioration during storage when properly operated.
+
+How to use: 1. Check the dryer, fuel/electrical system, fans,
+temperature controls, and airflow. 2. Load grain according to the
+machine capacity. 3. Set temperature and airflow according to the grain
+and dryer manufacturer’s instructions. 4. Monitor grain moisture and
+temperature. 5. Stop the system safely after the target moisture
+condition is reached.
+
+Safety cautions: - Excessive drying temperature can damage grain
+quality. - Keep combustible materials away from heat sources. - Ensure
+adequate ventilation. - Do not bypass temperature or safety controls. -
+Clean dust and grain residue regularly because grain dust can present a
+fire or explosion hazard.
+
+16. WATER PUMP
+
+What it is used for: - Irrigation. - Removing excess water from
+fields. - Moving water from canals, wells, tanks, or other water
+sources.
+
+Types: - Electric pump. - Petrol/diesel engine pump. - Tractor
+PTO-driven pump.
+
+How to use: 1. Place the pump on a stable surface. 2. Connect suction
+and discharge pipes correctly. 3. Ensure the intake is protected from
+large debris. 4. Prime the pump when required by the pump design. 5.
+Start the pump according to the manufacturer’s procedure. 6. Monitor
+water flow and engine/pump temperature. 7. Stop the pump before moving
+or servicing it.
+
+Safety cautions: - Never handle electrical equipment with wet hands or
+while standing in water. - Use proper electrical protection and
+grounding for electric pumps. - Keep fuel away from hot engine parts. -
+Never run a pump outside its specified operating conditions. - Stop the
+engine before clearing a blocked intake.
+
+17. KNAPSACK SPRAYER
+
+What it is used for: - Applying approved pesticides, fungicides,
+herbicides, or foliar products. - Applying products to weeds, pests, or
+crop foliage according to the product label.
+
+How to use: 1. Identify the problem correctly before selecting a
+chemical. 2. Read the product label. 3. Wear the required personal
+protective equipment (PPE). 4. Measure and mix only the recommended
+amount. 5. Calibrate the sprayer to apply the required volume. 6. Spray
+in suitable weather conditions. 7. Avoid spraying against strong wind.
+8. Clean the sprayer safely after use.
+
+Safety cautions: - Never mix chemicals without reading the label. -
+Never exceed the recommended dose. - Do not spray into strong wind or
+toward people, animals, houses, waterways, or food. - Do not eat, drink,
+or smoke while handling chemicals. - Wash hands and exposed skin after
+spraying. - Store chemicals securely in their original labeled
+containers. - Dispose of containers according to local regulations. - Do
+not use leaking sprayers.
+
+18. TRACTOR-MOUNTED / POWER SPRAYER
+
+What it is used for: - Spraying larger paddy fields. - Applying approved
+crop-protection products over larger areas.
+
+How to use: 1. Calibrate the sprayer. 2. Check nozzles, hoses, tank,
+pump, pressure, and guards. 3. Fill and mix products according to the
+label. 4. Operate at the calibrated speed and pressure. 5. Maintain
+appropriate nozzle height and coverage. 6. Clean the equipment safely
+after spraying.
+
+Safety cautions: - Follow all chemical PPE and label requirements. -
+Keep people and animals away from the spray area. - Never repair
+pressurized components while the pump is running. - Do not spray in
+unsuitable wind or weather conditions.
+
+19. FERTILIZER BROADCASTER / FERTILIZER SPREADER
+
+What it is used for: - Applying granular fertilizer uniformly across the
+field.
+
+How to use: 1. Identify the fertilizer and required application rate. 2.
+Calibrate the spreader. 3. Fill the hopper without overloading. 4.
+Operate at a consistent speed. 5. Maintain the correct spread width and
+overlap. 6. Check application uniformity.
+
+Safety cautions: - Wear gloves and appropriate protective equipment when
+handling fertilizer. - Avoid inhaling fertilizer dust. - Wash hands
+after handling. - Never enter or reach into a moving spreader. - Keep
+fertilizer away from water sources unless the product and application
+plan specifically allow it.
+
+20. MECHANICAL WEEDER / CONO WEEDER / ROTARY WEEDER
+
+What it is used for: - Controlling weeds between rice rows. - Aerating
+or disturbing the soil surface in suitable rice production systems.
+
+How to use: 1. Use when the crop and soil conditions are suitable for
+mechanical weeding. 2. Set the weeder according to row spacing. 3. Move
+carefully between rows. 4. Avoid damaging rice plants. 5. Clean the
+machine after use.
+
+Safety cautions: - Keep hands away from rotating parts. - Stop the
+machine before clearing weeds. - Do not use equipment in conditions
+where it causes excessive crop damage.
+
+21. TRACTOR TRAILER
+
+What it is used for: - Transporting seed, fertilizer, harvested rice,
+straw, tools, and other agricultural materials.
+
+How to use: 1. Check trailer tyres, brakes, hitch, lights, and load
+capacity. 2. Connect the trailer securely. 3. Distribute the load
+evenly. 4. Secure loose materials. 5. Drive slowly, especially on wet
+fields and roads. 6. Unload on stable ground.
+
+Safety cautions: - Never exceed the rated load capacity. - Do not
+transport people unless the trailer is specifically designed and
+approved for passengers. - Reduce speed when turning. - Ensure the hitch
+is locked correctly. - Keep the load stable.
+
+22. AGRICULTURAL DRONE
+
+What it is used for: - Field observation and crop monitoring. - Mapping
+and collecting aerial images. - In approved systems, applying certain
+agricultural products.
+
+How to use: 1. Check local aviation and agricultural regulations. 2.
+Inspect propellers, batteries, motors, tank, nozzles, and controls. 3.
+Plan the flight area. 4. Keep people and obstacles outside the operating
+area. 5. Calibrate the drone as required. 6. Fly according to the
+manufacturer’s limits. 7. For spraying, use only products and
+application methods permitted by the relevant label and regulations. 8.
+Clean and store the drone after use.
+
+Safety cautions: - Never fly near people without appropriate safety
+controls. - Keep clear of power lines and trees. - Do not fly in weather
+beyond the manufacturer’s limits. - Follow local drone regulations. -
+Never touch rotating propellers. - Handle batteries carefully and charge
+them using approved equipment. - For spraying, use appropriate PPE and
+avoid drift toward people, animals, homes, and water.
+
+23. RICE MILLING MACHINE
+
+What it is used for: - Removing husk from paddy. - Producing brown rice
+and/or milled white rice depending on the machine. - Some systems also
+polish and grade rice.
+
+How to use: 1. Clean and dry paddy to the required condition. 2. Inspect
+the machine and safety guards. 3. Set the machine according to the paddy
+and required output. 4. Feed grain at the recommended rate. 5. Monitor
+output quality. 6. Stop and clean the machine after processing.
+
+Safety cautions: - Keep hands away from rollers and moving parts. -
+Control dust accumulation. - Use suitable dust protection and
+ventilation. - Disconnect power before maintenance.
+
+24. GRAIN BAGGING / WEIGHING MACHINE
+
+What it is used for: - Measuring and packing harvested rice or grain
+into bags.
+
+How to use: 1. Set the target weight. 2. Calibrate the weighing system.
+3. Position the bag securely. 4. Fill to the target weight. 5. Seal and
+label the bag. 6. Store bags in a clean, dry location.
+
+Safety cautions: - Avoid lifting heavy bags manually when mechanical
+handling is available. - Keep fingers away from sealing and moving
+mechanisms. - Maintain a clean working area to reduce slipping and
+contamination.
+
+GENERAL MACHINE SAFETY FOR PADDY FARMERS
+
+Before operating: - Read the operator manual. - Check fuel, oil,
+coolant, tyres, belts, chains, guards, brakes, steering, and hydraulic
+systems. - Check that all safety guards are installed. - Inspect the
+field for people, animals, large stones, deep holes, drains, and other
+obstacles. - Wear suitable footwear and clothing. - Use the required
+PPE.
+
+During operation: - Operate only machines you are trained to use. - Keep
+children and bystanders away. - Never wear loose clothing around
+rotating machinery. - Never put hands into moving mechanisms. - Do not
+exceed the machine’s rated capacity. - Maintain a safe speed. - Watch
+field edges, bunds, drains, slopes, and muddy areas. - Stop immediately
+if an unusual noise, vibration, smell, leak, or overheating condition
+occurs.
+
+Before maintenance: - Park safely. - Lower raised implements to the
+ground. - Turn off the engine. - Remove the ignition key where
+applicable. - Disengage PTO and other power sources. - Relieve hydraulic
+pressure where required. - Wait for all moving parts to stop. - Use
+appropriate tools and PPE.
+
+Chemical application: - Correctly identify the crop problem. - Use only
+legally approved products. - Follow the product label exactly. - Use the
+recommended dose and application method. - Wear the specified PPE. -
+Avoid spraying people, animals, food, homes, and waterways. - Keep
+chemicals locked away from children and food. - Wash equipment and PPE
+according to the label instructions.
+
+Emergency response: - Know how to stop the machine quickly. - Keep a
+first-aid kit available. - Keep emergency contact information
+accessible. - For chemical exposure, follow the product label’s
+first-aid instructions and seek medical assistance when required. - For
+serious machinery injuries, stop the machine, provide first aid only
+when safe, and obtain emergency medical assistance.
+
+MACHINE SELECTION BY PADDY FARMING STAGE
+
+Land preparation: - Tractor - Power tiller - Plough - Rotavator -
+Puddler - Harrow - Land leveler
+
+Planting: - Seed drill/direct seeder - Rice transplanter
+
+Water management: - Water pump - Tractor/PTO pump
+
+Fertilizer application: - Fertilizer broadcaster/spreader - Knapsack
+sprayer for approved foliar products
+
+Weed management: - Mechanical weeder - Knapsack sprayer for approved
+herbicides
+
+Crop protection: - Knapsack sprayer - Tractor-mounted sprayer -
+Agricultural drone where legally permitted and appropriate
+
+Harvesting: - Rice reaper - Combine harvester
+
+Post-harvest: - Rice thresher - Winnower/grain cleaner - Grain dryer -
+Bagging/weighing machine - Rice milling machine
+
+Transport: - Tractor trailer
+
+QUICK MACHINE SELECTION GUIDE
+
+Question: “I need to prepare a flooded paddy field.” Use: - Puddler and
+suitable tractor/power tiller. Important: - Ensure safe water and soil
+conditions and avoid unstable field edges.
+
+Question: “I need to level my paddy field.” Use: - Land leveler or laser
+land leveler. Important: - Proper leveling can help improve water
+distribution.
+
+Question: “I want to plant rice seedlings quickly.” Use: - Rice
+transplanter. Important: - Prepare suitable seedling mats/trays and a
+properly prepared field.
+
+Question: “I want to directly sow rice.” Use: - Direct seeder/seed
+drill. Important: - Calibrate seed rate and prepare the field according
+to the direct-seeding method.
+
+Question: “The rice is ready to harvest.” Use: - Reaper or combine
+harvester. Important: - Confirm crop maturity and check machine
+settings.
+
+Question: “I need to separate rice grain from harvested plants.” Use: -
+Rice thresher. Important: - Never put hands into the feeding/threshing
+mechanism.
+
+Question: “I need to clean harvested grain.” Use: - Winnower or grain
+cleaner. Important: - Control dust and keep hands away from moving
+parts.
+
+Question: “The paddy is too wet after harvest.” Use: - Grain dryer,
+where available. Important: - Use the correct drying temperature and
+monitor grain moisture.
+
+Question: “I need to pump water into/out of the field.” Use: - Water
+pump. Important: - Follow electrical safety rules for electric pumps and
+keep fuel away from hot engines.
+
+Question: “I need to spray a crop protection product.” Use: - Knapsack
+sprayer, tractor-mounted sprayer, or approved agricultural drone.
+Important: - Correctly identify the problem and follow the product label
+and PPE requirements.
+
+Question: “I need to transport harvested paddy.” Use: - Tractor trailer.
+Important: - Do not exceed rated capacity and secure the load.
+
+END OF KNOWLEDGE BASE
+
+This document is intended as a general agricultural machinery knowledge
+base for an AI advisory system. Machine-specific operating procedures,
+chemical instructions, legal requirements, and safety requirements must
+always be checked against the current manufacturer manual, product
+label, and applicable local regulations.

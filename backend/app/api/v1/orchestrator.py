@@ -1,10 +1,18 @@
-from typing import Optional
-
-from fastapi import APIRouter, Depends, File, Form, UploadFile, HTTPException
+from datetime import datetime, timezone
+from typing import Any, List, Optional
+import httpx
+from fastapi import APIRouter, Depends, File, Form, Query, UploadFile, HTTPException
 from app.api.deps import require_farmer_or_admin
+from app.models.user import UserRole
+from app.core.config import settings
+from app.core.database import get_db
+from app.core.logging_config import logger
 from app.schemas.orchestrator.schemas import OrchestratorResponse
 from app.services.orchestrator_service import OrchestratorService
+from app.services.quota_service import QuotaService
+from app.core.database import db_state
 
+import asyncio
 
 router = APIRouter(
     prefix="/orchestrator",
@@ -14,26 +22,155 @@ router = APIRouter(
 orchestrator_service = OrchestratorService()
 
 
+@router.get("/status")
+async def get_orchestrator_status():
+    """
+    Check the connectivity status of all microservice agents concurrently.
+    """
+    statuses = {
+        "orchestrator": "online",
+        "gemini_llm": "configured" if settings.GEMINI_API_KEY else "unconfigured",
+        "query_agent": "offline",
+        "vision_agent": "offline",
+        "research_agent": "offline",
+    }
+
+    async def check_query():
+        for url in [settings.QUERY_AGENT_URL, "http://127.0.0.1:8001"]:
+            try:
+                async with httpx.AsyncClient(timeout=0.6) as client:
+                    res = await client.get(f"{url.rstrip('/')}/")
+                    if res.status_code == 200:
+                        return "online"
+            except Exception:
+                pass
+        return "offline"
+
+    async def check_vision():
+        for url in [settings.VISION_AGENT_URL, "http://127.0.0.1:8002"]:
+            try:
+                async with httpx.AsyncClient(timeout=0.6) as client:
+                    res = await client.get(f"{url.rstrip('/')}/agent/health")
+                    if res.status_code == 200:
+                        return "online"
+            except Exception:
+                pass
+        return "offline"
+
+    async def check_research():
+        for url in [settings.RESEARCH_AGENT_URL, "http://127.0.0.1:8004"]:
+            try:
+                async with httpx.AsyncClient(timeout=0.6) as client:
+                    res = await client.get(f"{url.rstrip('/')}/agent/health")
+                    if res.status_code == 200:
+                        return "online"
+            except Exception:
+                pass
+        return "offline"
+
+    q_stat, v_stat, r_stat = await asyncio.gather(
+        check_query(), check_vision(), check_research()
+    )
+    statuses["query_agent"] = q_stat
+    statuses["vision_agent"] = v_stat
+    statuses["research_agent"] = r_stat
+
+    return statuses
+
+
+
+@router.get("/history")
+async def get_orchestrator_history(
+    limit: int = Query(15, ge=1, le=50),
+    current_user: dict = Depends(require_farmer_or_admin),
+    db = Depends(get_db),
+):
+    """
+    Retrieve previous multi-agent advisory sessions for this farmer.
+    """
+    user_id_str = current_user["id"]
+    cursor = db.orchestrator_sessions.find({"user_id": user_id_str}).sort("created_at", -1).limit(limit)
+    sessions = []
+    async for s in cursor:
+        s["id"] = str(s["_id"])
+        del s["_id"]
+        sessions.append(s)
+    return sessions
+
+@router.get("/activity")
+async def get_activity_logs(
+    current_user: dict = Depends(require_farmer_or_admin),
+):
+    """
+    Returns recent Agent 4 orchestration activity logs.
+    Farmers only see their own sessions; admins see all.
+    """
+
+    if db_state.db is None:
+        return {
+            "success": False,
+            "activities": [],
+            "message": "Database is not available.",
+        }
+
+    log_filter: dict[str, Any] = {"action": "AGENT4_ORCHESTRATION"}
+    if current_user.get("role") != UserRole.ADMIN.value:
+        log_filter["user_id"] = current_user["id"]
+
+    logs = await (
+        db_state.db.audit_logs
+        .find(log_filter)
+        .sort("created_at", -1)
+        .limit(20)
+        .to_list(length=20)
+    )
+
+    activities = []
+
+    for log in logs:
+        activities.append(
+            {
+                "action": log.get("action"),
+                "status": log.get("status"),
+                "session_id": log.get("details", {}).get("session_id"),
+                "question": log.get("details", {}).get("question"),
+                "crop": log.get("details", {}).get("crop"),
+                "intent": log.get("details", {}).get("intent"),
+                "evidence_count": log.get("details", {}).get("evidence_count", 0),
+                "vision_used": log.get("details", {}).get("vision_used", False),
+                "agent_activity": log.get("details", {}).get("agent_activity", []),
+                "created_at": log.get("created_at"),
+            }
+        )
+
+    return {
+        "success": True,
+        "count": len(activities),
+        "activities": activities,
+    }
+
+
 @router.post(
     "/query",
     response_model=OrchestratorResponse,
 )
 async def orchestrate_query(
     question: str = Form(...),
+    language: Optional[str] = Form(None),
+    is_voice: Optional[bool] = Form(False),
+    input_mode: Optional[str] = Form("text"),
     file: Optional[UploadFile] = File(None),
     current_user: dict = Depends(require_farmer_or_admin),
+    db = Depends(get_db),
 ):
     """
-    Agent 4 main orchestration endpoint.
+    Agent 4 main orchestration endpoint with daily usage quota enforcement.
 
     Accepts:
     - Farmer's agricultural question
-    - Optional crop image
-
-    Agent 4 coordinates:
-    - Agent 2: Query/NLP
-    - Agent 1: Vision
-    - Agent 3: Research/RAG
+    - Optional preferred language (e.g. 'si', 'en')
+    - Optional is_voice flag (voice query)
+    - Optional crop leaf image
     """
 
     question = question.strip()
@@ -55,7 +192,6 @@ async def orchestrate_query(
     image_content_type = None
 
     if file is not None:
-
         if not file.content_type or not file.content_type.startswith("image/"):
             raise HTTPException(
                 status_code=400,
@@ -66,11 +202,51 @@ async def orchestrate_query(
         image_filename = file.filename
         image_content_type = file.content_type
 
+    # ---------------------------------------------------------
+    # Enforce Usage Quota
+    # ---------------------------------------------------------
+    voice_used = 1 if (is_voice or input_mode == "voice") else 0
+    text_used = 0 if voice_used > 0 else 1
+    image_used = 1 if image_bytes else 0
+
+    quota_status = await QuotaService.check_and_consume_quota(
+        db=db,
+        user=current_user,
+        text_delta=text_used,
+        image_delta=image_used,
+        voice_delta=voice_used,
+    )
+
     result = await orchestrator_service.process_request(
         question=question,
         image_bytes=image_bytes,
         image_filename=image_filename,
         image_content_type=image_content_type,
+        preferred_language=language,
+        user_id=current_user["id"],
     )
+
+    result["quota_status"] = quota_status
+
+    # Save session to MongoDB for historical tracking
+    try:
+        session_record = {
+            "user_id": current_user["id"],
+            "user_email": current_user.get("email"),
+            "session_id": result.get("session_id"),
+            "question": question,
+            "detected_language": result.get("detected_language"),
+            "crop": result.get("crop"),
+            "intent": result.get("intent"),
+            "advisory": result.get("advisory"),
+            "vision_result": result.get("vision_result"),
+            "evidence_count": len(result.get("evidence", [])),
+            "sources": result.get("sources", []),
+            "agent_activity": result.get("agent_activity", []),
+            "created_at": datetime.now(timezone.utc),
+        }
+        await db.orchestrator_sessions.insert_one(session_record)
+    except Exception as db_err:
+        logger.warning("Could not persist orchestrator session to MongoDB: %s", db_err)
 
     return result

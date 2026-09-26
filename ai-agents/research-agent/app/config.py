@@ -17,3 +17,12 @@ DEFAULT_TOP_K = 5
 MAX_TOP_K = 20
 CHUNK_SIZE_WORDS = 180
 CHUNK_OVERLAP_WORDS = 30
+
+# Query hardening: cap query length and repeated tokens so keyword stuffing
+# cannot dominate the embedding or exhaust the encoder.
+MAX_QUERY_CHARS = 1000
+MAX_TOKEN_REPEATS = 2
+
+# Shared secret expected in the X-Internal-Agent-Key header. When set, only
+# the backend orchestrator (which receives the same value) can call Agent 3.
+INTERNAL_AGENT_KEY = os.getenv("AGRIKETHA_INTERNAL_AGENT_KEY", "")
