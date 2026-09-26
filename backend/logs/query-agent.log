@@ -124,3 +124,32 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
 INFO:     127.0.0.1:54840 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:54844 - "GET / HTTP/1.1" 200 OK
+INFO:     Started server process [31040]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55201 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55209 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54951 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60413 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53494 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56691 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61647 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64648 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50675 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50680 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53633 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53637 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50913 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49677 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61682 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64833 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62744 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63997 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59453 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52193 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52196 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61115 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61119 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50409 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51163 - "GET / HTTP/1.1" 200 OK

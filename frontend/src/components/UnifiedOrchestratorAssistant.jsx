@@ -297,18 +297,20 @@ export const UnifiedOrchestratorAssistant = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header Banner with Agent Architecture */}
-      <Card className="border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-background to-teal-950/20 backdrop-blur-xl shadow-xl overflow-hidden print:hidden">
-        <CardHeader className="pb-4">
+      <Card className="agentic-hero relative border-white/10 text-white shadow-xl shadow-emerald-900/20 overflow-hidden rounded-3xl print:hidden">
+        <CardHeader className="relative z-10 pb-5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
-                <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-                {t("orchestratorTag")}
+            <div className="space-y-2">
+              <div className="relative overflow-hidden inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-emerald-100 text-xs font-semibold">
+                <span className="agent-shimmer absolute inset-0 pointer-events-none" />
+                <span className="agent-dot" />
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span className="relative">{t("orchestratorTag")}</span>
               </div>
-              <CardTitle className="text-2xl font-black text-foreground tracking-tight">
+              <CardTitle className="text-2xl sm:text-3xl font-black tracking-tight text-white">
                 {t("orchestratorHeading")}
               </CardTitle>
-              <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+              <CardDescription className="text-xs sm:text-sm text-emerald-100/80">
                 {t("orchestratorSub")}
               </CardDescription>
             </div>
@@ -317,10 +319,10 @@ export const UnifiedOrchestratorAssistant = () => {
             <div className="flex flex-wrap items-center gap-2">
               <Badge
                 variant="outline"
-                className={`text-[11px] gap-1 px-2.5 py-1 ${
+                className={`text-[11px] gap-1 px-2.5 py-1 backdrop-blur ${
                   agentStatuses.query_agent === "online"
-                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
-                    : "bg-amber-500/10 text-amber-400 border-amber-500/30"
+                    ? "bg-emerald-400/20 text-emerald-100 border-emerald-300/40"
+                    : "bg-amber-400/20 text-amber-100 border-amber-300/40"
                 }`}
               >
                 <Bot className="w-3 h-3" />
@@ -329,10 +331,10 @@ export const UnifiedOrchestratorAssistant = () => {
 
               <Badge
                 variant="outline"
-                className={`text-[11px] gap-1 px-2.5 py-1 ${
+                className={`text-[11px] gap-1 px-2.5 py-1 backdrop-blur ${
                   agentStatuses.vision_agent === "online"
-                    ? "bg-teal-500/10 text-teal-400 border-teal-500/30"
-                    : "bg-slate-500/10 text-slate-400 border-slate-500/30"
+                    ? "bg-teal-400/20 text-teal-100 border-teal-300/40"
+                    : "bg-white/10 text-slate-200 border-white/20"
                 }`}
               >
                 <Leaf className="w-3 h-3" />
@@ -341,10 +343,10 @@ export const UnifiedOrchestratorAssistant = () => {
 
               <Badge
                 variant="outline"
-                className={`text-[11px] gap-1 px-2.5 py-1 ${
+                className={`text-[11px] gap-1 px-2.5 py-1 backdrop-blur ${
                   agentStatuses.research_agent === "online"
-                    ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                    : "bg-slate-500/10 text-slate-400 border-slate-500/30"
+                    ? "bg-sky-400/20 text-sky-100 border-sky-300/40"
+                    : "bg-white/10 text-slate-200 border-white/20"
                 }`}
               >
                 <BookOpen className="w-3 h-3" />
@@ -594,8 +596,9 @@ export const UnifiedOrchestratorAssistant = () => {
           </Card>
 
           {/* Primary Grounded Advisory Card */}
-          <Card className="border-emerald-500/40 bg-card shadow-2xl overflow-hidden rounded-3xl">
-            <CardHeader className="border-b border-border bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent pb-4">
+          <Card className="relative border-emerald-500/30 bg-card/80 backdrop-blur-xl shadow-2xl shadow-emerald-900/10 overflow-hidden rounded-3xl">
+            <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-teal-400 to-amber-400" />
+            <CardHeader className="border-b border-border/60 bg-[radial-gradient(40rem_12rem_at_0%_0%,rgba(16,185,129,0.16),transparent_70%),radial-gradient(30rem_12rem_at_100%_0%,rgba(45,212,191,0.12),transparent_70%)] pb-5">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="space-y-1.5">
                   <div className="flex flex-wrap items-center gap-2">
@@ -613,13 +616,16 @@ export const UnifiedOrchestratorAssistant = () => {
                       </Badge>
                     )}
 
-                    <Badge variant="secondary" className="text-[11px] bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-medium">
-                      ✓ Verified with RAG Evidence
+                    <Badge variant="secondary" className="text-[11px] gap-1.5 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-medium">
+                      <span className="agent-dot" />
+                      Verified with RAG Evidence
                     </Badge>
                   </div>
 
-                  <CardTitle className="text-xl sm:text-2xl font-black text-foreground tracking-tight flex items-center gap-2 pt-1">
-                    <FileCheck className="w-6 h-6 text-emerald-600 shrink-0" />
+                  <CardTitle className="text-xl sm:text-2xl font-black text-foreground tracking-tight flex items-center gap-3 pt-1">
+                    <span className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/30 shrink-0">
+                      <FileCheck className="w-5 h-5" />
+                    </span>
                     {t("advisoryHeading")}
                   </CardTitle>
                   <CardDescription className="text-xs text-muted-foreground">
@@ -629,7 +635,7 @@ export const UnifiedOrchestratorAssistant = () => {
 
                 <div className="flex flex-wrap items-center gap-2">
                   {/* Language switcher pills on result card */}
-                  <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-muted/60 border border-border">
+                  <div className="inline-flex items-center gap-1 p-1 rounded-full bg-background/60 backdrop-blur border border-border/70 shadow-sm">
                     <span className="text-[10px] font-bold text-muted-foreground px-1.5 flex items-center gap-1">
                       <Languages className="w-3 h-3 text-emerald-600" />
                       {t("translateTo") || "Lang"}:

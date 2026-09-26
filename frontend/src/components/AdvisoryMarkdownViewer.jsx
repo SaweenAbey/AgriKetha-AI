@@ -132,9 +132,11 @@ export const AdvisoryMarkdownViewer = ({ content }) => {
             const style = getSectionStyle(text);
             return (
               <div
-                className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl border mt-6 mb-3 font-extrabold text-base sm:text-lg shadow-sm ${style.bg} ${style.border}`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-2xl border border-l-4 mt-7 mb-3 font-extrabold text-base sm:text-lg backdrop-blur-sm shadow-sm ${style.bg} ${style.border}`}
               >
-                {style.icon}
+                <span className="w-8 h-8 rounded-lg bg-background/70 flex items-center justify-center shadow-sm">
+                  {style.icon}
+                </span>
                 <span>{children}</span>
               </div>
             );
@@ -144,7 +146,7 @@ export const AdvisoryMarkdownViewer = ({ content }) => {
             const style = getSectionStyle(text);
             return (
               <div
-                className={`flex items-center gap-2.5 px-4 py-2 rounded-xl border mt-5 mb-2.5 font-bold text-sm sm:text-base shadow-sm ${style.bg} ${style.border}`}
+                className={`flex items-center gap-2.5 px-4 py-2 rounded-xl border border-l-4 mt-5 mb-2.5 font-bold text-sm sm:text-base backdrop-blur-sm shadow-sm ${style.bg} ${style.border}`}
               >
                 {style.icon}
                 <span>{children}</span>
@@ -174,8 +176,8 @@ export const AdvisoryMarkdownViewer = ({ content }) => {
           },
           li: ({ children }) => {
             return (
-              <li className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90 leading-relaxed group p-2 rounded-lg hover:bg-muted/40 transition-colors">
-                <span className="w-5 h-5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+              <li className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90 leading-relaxed group p-2.5 rounded-xl border border-transparent hover:border-emerald-500/20 hover:bg-emerald-500/5 hover:shadow-sm transition-all">
+                <span className="w-5 h-5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
                   <Check className="w-3 h-3 stroke-[2.5]" />
                 </span>
                 <div className="flex-1 space-y-0.5">{children}</div>
@@ -184,7 +186,7 @@ export const AdvisoryMarkdownViewer = ({ content }) => {
           },
           strong: ({ children }) => {
             return (
-              <strong className="font-bold text-foreground bg-emerald-500/10 dark:bg-emerald-500/20 px-1.5 py-0.5 rounded text-emerald-950 dark:text-emerald-200">
+              <strong className="font-bold text-emerald-950 dark:text-emerald-200 bg-gradient-to-r from-emerald-500/15 to-teal-500/10 dark:from-emerald-500/25 dark:to-teal-500/15 px-1.5 py-0.5 rounded-md">
                 {children}
               </strong>
             );

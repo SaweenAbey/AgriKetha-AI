@@ -427,11 +427,11 @@ export const CropDiagnosticsAssistant = () => {
   return (
     <div className="space-y-6">
       {/* Header with Engine Status Badge */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-teal-900/90 via-emerald-950/80 to-slate-900 text-white p-6 rounded-3xl border border-teal-500/30 shadow-xl relative overflow-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 agentic-hero text-white p-6 rounded-3xl ring-1 ring-white/10 shadow-xl shadow-emerald-900/20 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 space-y-1.5">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center text-teal-300">
+            <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-emerald-200">
               <Leaf className="w-5 h-5" />
             </div>
             <div>
@@ -448,9 +448,9 @@ export const CropDiagnosticsAssistant = () => {
         <div className="relative z-10 flex items-center gap-2.5">
           <Badge
             variant="outline"
-            className="px-3 py-1.5 text-xs font-semibold rounded-full bg-teal-500/10 border-teal-400/40 text-teal-200 flex items-center gap-1.5 shadow-sm"
+            className="px-3 py-1.5 text-xs font-semibold rounded-full bg-white/10 backdrop-blur border-white/20 text-emerald-100 flex items-center gap-1.5 shadow-sm"
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span className="agent-dot" />
             <Activity className="w-3.5 h-3.5" />
             {visionStatus.mode === "microservice" ? "PyTorch Model Active (:8002)" : "Integrated Vision Engine"}
           </Badge>
@@ -710,8 +710,8 @@ export const CropDiagnosticsAssistant = () => {
           {result ? (
             <div className="space-y-4 animate-in fade-in-50 duration-300">
               {/* Top Result Banner */}
-              <Card className="border-teal-500/40 shadow-xl bg-card overflow-hidden">
-                <div className="bg-gradient-to-r from-teal-600 to-emerald-600 text-white p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <Card className="border-teal-500/30 shadow-xl shadow-emerald-900/10 bg-card/80 backdrop-blur-xl rounded-3xl overflow-hidden">
+                <div className="agentic-hero relative text-white p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <Badge className="bg-white/20 text-white border-none text-[10px] uppercase tracking-wider">

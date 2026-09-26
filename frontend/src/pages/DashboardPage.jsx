@@ -54,9 +54,9 @@ export const DashboardPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50/50 via-background to-teal-50/30 dark:from-slate-950 dark:via-emerald-950/20 dark:to-slate-950 text-foreground pb-12">
+    <div className="agentic-bg min-h-screen bg-gradient-to-br from-emerald-50/50 via-background to-teal-50/30 dark:from-slate-950 dark:via-emerald-950/20 dark:to-slate-950 text-foreground pb-12">
       {/* Navigation Bar */}
-      <header className="sticky top-0 z-30 border-b border-border/80 bg-background/80 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b border-border/60 bg-background/60 backdrop-blur-xl supports-[backdrop-filter]:bg-background/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
@@ -135,15 +135,17 @@ export const DashboardPage = () => {
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
         {/* Welcome Banner */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-900 to-teal-900 text-white p-6 sm:p-8 shadow-xl">
-          <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="agentic-hero relative overflow-hidden rounded-3xl text-white p-6 sm:p-8 shadow-2xl shadow-emerald-900/20 ring-1 ring-white/10">
+          <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-64 h-64 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none" />
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="max-w-2xl space-y-3">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-medium">
+              <div className="relative overflow-hidden inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-emerald-100 text-xs font-medium">
+                <span className="agent-shimmer absolute inset-0 pointer-events-none" />
+                <span className="agent-dot" />
                 <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                {t("welcomeTag")}
+                <span className="relative">{t("welcomeTag")}</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-teal-200 bg-clip-text text-transparent">
                 {t("ayubowan")}, {user?.full_name || t("farmer")}!
               </h1>
               <p className="text-sm text-emerald-100/80 leading-relaxed">
@@ -184,10 +186,10 @@ export const DashboardPage = () => {
             {/* Agent 4: Unified Multi-Agent Orchestrator */}
             <Card 
               onClick={() => handleTabSwitch("orchestrator")}
-              className={`group cursor-pointer transition-all duration-300 relative overflow-hidden ${
+              className={`agent-card group cursor-pointer relative overflow-hidden rounded-2xl ${
                 activeTab === "orchestrator"
-                  ? "border-emerald-500 bg-emerald-500/10 shadow-lg ring-2 ring-emerald-500/20"
-                  : "border-border hover:border-emerald-500/50 hover:shadow-xl"
+                  ? "agent-card-active border-transparent shadow-lg shadow-emerald-500/20"
+                  : "border-border/70 hover:border-emerald-500/50"
               }`}
             >
               <div className="absolute top-2 right-2">
@@ -217,10 +219,10 @@ export const DashboardPage = () => {
             {/* Smart Farming AI Advisor (Agent 1/2) */}
             <Card 
               onClick={() => handleTabSwitch("agent1")}
-              className={`group cursor-pointer transition-all duration-300 relative overflow-hidden ${
+              className={`agent-card group cursor-pointer relative overflow-hidden rounded-2xl ${
                 activeTab === "agent1"
-                  ? "border-emerald-500 bg-emerald-500/10 shadow-lg ring-2 ring-emerald-500/20"
-                  : "border-border hover:border-emerald-500/50 hover:shadow-xl"
+                  ? "agent-card-active border-transparent shadow-lg shadow-emerald-500/20"
+                  : "border-border/70 hover:border-emerald-500/50"
               }`}
             >
               <div className="absolute top-2 right-2">
@@ -250,10 +252,10 @@ export const DashboardPage = () => {
             {/* Vision Agent: Disease Detector */}
             <Card 
               onClick={() => handleTabSwitch("vision")}
-              className={`group cursor-pointer transition-all duration-300 relative overflow-hidden ${
+              className={`agent-card group cursor-pointer relative overflow-hidden rounded-2xl ${
                 activeTab === "vision"
-                  ? "border-teal-500 bg-teal-500/10 shadow-lg ring-2 ring-teal-500/20"
-                  : "border-border hover:border-teal-500/50 hover:shadow-xl"
+                  ? "agent-card-active border-transparent shadow-lg shadow-teal-500/20"
+                  : "border-border/70 hover:border-teal-500/50"
               }`}
             >
               <div className="absolute top-2 right-2">
@@ -283,10 +285,10 @@ export const DashboardPage = () => {
             {/* Market Prices */}
             <Card 
               onClick={() => handleTabSwitch("market")}
-              className={`group cursor-pointer transition-all duration-300 relative overflow-hidden ${
+              className={`agent-card group cursor-pointer relative overflow-hidden rounded-2xl ${
                 activeTab === "market"
-                  ? "border-amber-500 bg-amber-500/10 shadow-lg ring-2 ring-amber-500/20"
-                  : "border-border hover:border-amber-500/50 hover:shadow-xl"
+                  ? "agent-card-active border-transparent shadow-lg shadow-amber-500/20"
+                  : "border-border/70 hover:border-amber-500/50"
               }`}
             >
               <CardHeader className="pb-3">
@@ -313,8 +315,8 @@ export const DashboardPage = () => {
         {/* Dedicated Agent Workspace Section */}
         <section ref={agentSectionRef} className="pt-2 space-y-4">
           {/* Workspace Tabs Header */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-3">
+            <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl bg-muted/60 backdrop-blur border border-border/60">
               <Button
                 variant={activeTab === "orchestrator" ? "default" : "outline"}
                 size="sm"
@@ -364,7 +366,8 @@ export const DashboardPage = () => {
               </Button>
             </div>
 
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="secondary" className="text-xs gap-2 rounded-full px-3 py-1">
+              <span className="agent-dot" />
               {t("activeModule")}:{" "}
               {activeTab === "orchestrator"
                 ? t("tabOrchestrator")

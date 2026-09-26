@@ -421,3 +421,96 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
 INFO:     127.0.0.1:54841 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:54845 - "GET /agent/health HTTP/1.1" 200 OK
+[Vision Agent] main.py is executing!
+[Vision Agent] All imports loaded!
+INFO:     Started server process [22256]
+INFO:     Waiting for application startup.
+[Vision Agent] Loading Vision Models...
+[Vision Model] Using device: cpu
+✅ Loaded best_disease_model.pth: 4 classes
+✅ Loaded best_nutrition_model.pth: 3 classes
+✅ Loaded best_pest_model.pth: 6 classes
+✅ Loaded best_rice_balanced_model.pth: 13 classes
+✅ Loaded best_tomato_model.pth: 10 classes
+✅ Vision Models Ready! Loaded models: disease, nutrition, pest, balanced, tomato
+✅ Rice specialist classes: 13
+🍅 Tomato model ready with 10 classes
+[Crop Classifier] Using device: cpu
+[Crop Classifier] Classes: ['rice', 'tomato']
+[Crop Classifier] Model loaded successfully: best_crop_classifier.pth
+[Crop Classifier] Feature references loaded successfully
+[Crop Classifier] OOD threshold: 0.56
+[Vision Agent] Vision Agent ready!
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55202 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55210 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54952 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60414 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49932 - "POST /analyze HTTP/1.1" 404 Not Found
+[Vision Agent] error | crop=unknown | prediction=None
+INFO:     127.0.0.1:49933 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56696 - "POST /analyze HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51617 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51618 - "GET /agent/health HTTP/1.1" 200 OK
+[Crop Classifier] OOD check | Rice=0.7050 | Tomato=0.1535 | Highest=0.7050
+[Crop Classifier] Image accepted as rice.
+[Crop Classifier] Prediction: rice | Confidence: 1.0000
+[Vision Agent] success | crop=rice | prediction=Rice Brown Spot (Bipolaris oryzae)
+INFO:     127.0.0.1:65070 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+[Crop Classifier] OOD check | Rice=0.1561 | Tomato=0.8757 | Highest=0.8757
+[Crop Classifier] Image accepted as tomato.
+[Crop Classifier] Prediction: tomato | Confidence: 1.0000
+[Vision Agent] success | crop=tomato | prediction=Tomato Target Spot
+INFO:     127.0.0.1:57881 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61648 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64649 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50676 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50681 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53634 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53638 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52841 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50910 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50914 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49679 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55325 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55326 - "GET /agent/health HTTP/1.1" 200 OK
+[Crop Classifier] OOD check | Rice=0.3971 | Tomato=0.4499 | Highest=0.4499
+[Crop Classifier] Image rejected as outside supported crop domain.
+[Vision Agent] error | crop=unknown | prediction=None
+INFO:     127.0.0.1:63428 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+[Crop Classifier] OOD check | Rice=0.4627 | Tomato=0.3059 | Highest=0.4627
+[Crop Classifier] Image rejected as outside supported crop domain.
+[Vision Agent] error | crop=unknown | prediction=None
+INFO:     127.0.0.1:63432 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+[Crop Classifier] OOD check | Rice=0.3995 | Tomato=0.3364 | Highest=0.3995
+[Crop Classifier] Image rejected as outside supported crop domain.
+[Vision Agent] error | crop=unknown | prediction=None
+INFO:     127.0.0.1:49832 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61683 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64834 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62758 - "POST /analyze HTTP/1.1" 404 Not Found
+[Crop Classifier] OOD check | Rice=0.1684 | Tomato=0.9237 | Highest=0.9237
+[Crop Classifier] Image accepted as tomato.
+[Crop Classifier] Prediction: tomato | Confidence: 1.0000
+[Vision Agent] success | crop=tomato | prediction=Tomato Spider mites Two-spotted spider mite
+INFO:     127.0.0.1:62759 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64001 - "POST /analyze HTTP/1.1" 404 Not Found
+[Crop Classifier] OOD check | Rice=0.1684 | Tomato=0.9237 | Highest=0.9237
+[Crop Classifier] Image accepted as tomato.
+[Crop Classifier] Prediction: tomato | Confidence: 1.0000
+[Vision Agent] success | crop=tomato | prediction=Tomato Spider mites Two-spotted spider mite
+INFO:     127.0.0.1:64002 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59457 - "POST /analyze HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55313 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55255 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55256 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55257 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59086 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58742 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52194 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52197 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61116 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61120 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50410 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51164 - "GET /agent/health HTTP/1.1" 200 OK

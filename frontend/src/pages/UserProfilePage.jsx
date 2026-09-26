@@ -136,9 +136,9 @@ export const UserProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50/50 via-background to-teal-50/30 dark:from-slate-950 dark:via-emerald-950/20 dark:to-slate-950 text-foreground pb-16">
+    <div className="agentic-bg min-h-screen bg-gradient-to-br from-emerald-50/50 via-background to-teal-50/30 dark:from-slate-950 dark:via-emerald-950/20 dark:to-slate-950 text-foreground pb-16">
       {/* Top Navbar */}
-      <header className="sticky top-0 z-30 border-b border-border/80 bg-background/80 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b border-border/60 bg-background/60 backdrop-blur-xl supports-[backdrop-filter]:bg-background/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
@@ -190,7 +190,7 @@ export const UserProfilePage = () => {
         )}
 
         {/* User Identity Header Card */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-900 to-teal-900 text-white p-6 sm:p-8 shadow-xl">
+        <div className="agentic-hero relative overflow-hidden rounded-3xl text-white p-6 sm:p-8 shadow-2xl shadow-emerald-900/20 ring-1 ring-white/10">
           <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
           
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -342,7 +342,8 @@ export const UserProfilePage = () => {
           {/* Conditional Display: Pro Details vs Free Plan */}
           {isUnlimited ? (
             /* PRO PLAN ACTIVE DETAILS */
-            <Card className="relative overflow-hidden border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/5 via-card to-emerald-500/5 rounded-3xl shadow-xl">
+            <Card className="relative overflow-hidden border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-card/80 to-emerald-500/10 backdrop-blur-xl rounded-3xl shadow-2xl shadow-amber-500/10">
+              <div className="h-1 w-full bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-400" />
               <div className="p-6 sm:p-8 space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/70">
                   <div className="space-y-1.5">
@@ -380,7 +381,7 @@ export const UserProfilePage = () => {
 
                 {/* Pro Features Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-1.5">
+                  <div className="p-4 rounded-2xl bg-background/60 backdrop-blur border border-border/60 space-y-1.5 transition-all hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-lg hover:shadow-emerald-500/10">
                     <div className="flex items-center gap-2 text-xs font-bold text-foreground">
                       <Zap className="w-4 h-4 text-amber-500" />
                       <span>{language === "si" ? "අසීමිත AI විමසුම් (Unified Hub)" : "Unlimited Multi-Agent Queries"}</span>
@@ -393,7 +394,7 @@ export const UserProfilePage = () => {
                     </Badge>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-1.5">
+                  <div className="p-4 rounded-2xl bg-background/60 backdrop-blur border border-border/60 space-y-1.5 transition-all hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-lg hover:shadow-emerald-500/10">
                     <div className="flex items-center gap-2 text-xs font-bold text-foreground">
                       <Sparkles className="w-4 h-4 text-teal-500" />
                       <span>{language === "si" ? "පත්‍ර රෝග සහ Grad-CAM විශ්ලේෂණ" : "PyTorch & Grad-CAM Scans"}</span>
@@ -406,7 +407,7 @@ export const UserProfilePage = () => {
                     </Badge>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-1.5">
+                  <div className="p-4 rounded-2xl bg-background/60 backdrop-blur border border-border/60 space-y-1.5 transition-all hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-lg hover:shadow-emerald-500/10">
                     <div className="flex items-center gap-2 text-xs font-bold text-foreground">
                       <ShieldCheck className="w-4 h-4 text-emerald-500" />
                       <span>{language === "si" ? "නිල කෘෂිකර්ම දෙපාර්තමේන්තු උපදෙස්" : "DOA Grounded Guidance"}</span>
