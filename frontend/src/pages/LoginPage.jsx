@@ -1,29 +1,28 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
-  ArrowRight, 
-  Loader2, 
-  AlertCircle, 
-  Sprout, 
-  ShieldCheck, 
-  UserCheck 
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  Loader2,
+  Sprout,
+  ShieldCheck,
+  UserCheck
 } from "lucide-react";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { login, loading, error, setError } = useAuth();
+  const { login, loading } = useAuth();
   const { t } = useLanguage();
 
   const [formData, setFormData] = useState({
@@ -33,7 +32,6 @@ export const LoginPage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [localError, setLocalError] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -41,22 +39,21 @@ export const LoginPage = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-    if (localError) setLocalError("");
-    if (error) setError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLocalError("");
 
     if (!formData.email || !formData.password) {
-      setLocalError("Please enter both email and password.");
+      toast.error("Please enter both email and password.");
       return;
     }
 
     const result = await login(formData.email, formData.password);
     if (result.success) {
       navigate("/dashboard");
+    } else {
+      toast.error(result.error || "Invalid email or password. Please try again.");
     }
   };
 
@@ -75,8 +72,6 @@ export const LoginPage = () => {
         rememberMe: true,
       });
     }
-    setLocalError("");
-    if (error) setError(null);
   };
 
   return (
@@ -85,14 +80,6 @@ export const LoginPage = () => {
       subtitle={t("loginSub")}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Error notification */}
-        {(localError || error) && (
-          <Alert variant="destructive" className="animate-fade-in">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{localError || error}</AlertDescription>
-          </Alert>
-        )}
-
         {/* Quick Demo Selector */}
         <div className="p-3 bg-emerald-50/70 dark:bg-emerald-950/30 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
           <div className="flex items-center justify-between mb-2">
@@ -149,7 +136,7 @@ export const LoginPage = () => {
               href="#forgot-password"
               onClick={(e) => {
                 e.preventDefault();
-                alert("Please contact your district agricultural officer or admin to reset your password.");
+                toast("Please contact your district agricultural officer or admin to reset your password.", { icon: "ℹ️" });
               }}
               className="text-xs font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 hover:underline"
             >

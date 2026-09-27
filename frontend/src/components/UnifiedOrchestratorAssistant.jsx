@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 import {
   Sparkles,
   Bot,
@@ -9,7 +10,6 @@ import {
   MicOff,
   Image as ImageIcon,
   CheckCircle2,
-  AlertCircle,
   Clock,
   Volume2,
   VolumeX,
@@ -35,7 +35,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { orchestratorService } from "@/services/api";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuota } from "@/context/QuotaContext";
@@ -77,8 +76,6 @@ export const UnifiedOrchestratorAssistant = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
-  const [isQuotaError, setIsQuotaError] = useState(false);
   const [lastInputMode, setLastInputMode] = useState("text");
   const [history, setHistory] = useState([]);
   const [copied, setCopied] = useState(false);
@@ -165,12 +162,11 @@ export const UnifiedOrchestratorAssistant = () => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        setError(language === "si" ? "කරුණාකර නිවැරදි ඡායාරූප ගොනුවක් තෝරන්න (JPG, PNG, WEBP)." : "Please select a valid image file (JPG, PNG, WEBP).");
+        toast.error(language === "si" ? "කරුණාකර නිවැරදි ඡායාරූප ගොනුවක් තෝරන්න (JPG, PNG, WEBP)." : "Please select a valid image file (JPG, PNG, WEBP).");
         return;
       }
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
-      setError(null);
     }
   };
 
@@ -187,8 +183,6 @@ export const UnifiedOrchestratorAssistant = () => {
       recognitionRef.current.stop();
       setIsListening(false);
     } else {
-      setError(null);
-      setIsQuotaError(false);
       try {
         recognitionRef.current.lang = language === "si" ? "si-LK" : "en-US";
         recognitionRef.current.start();
@@ -241,13 +235,11 @@ export const UnifiedOrchestratorAssistant = () => {
 
   const executeOrchestration = async (targetLangOverride) => {
     if (!question.trim()) {
-      setError(language === "si" ? "කරුණාකර ඔබගේ වගා ගැටලුව ලියන්න හෝ හඬින් පවසන්න." : "Please enter or speak your farming question.");
+      toast.error(language === "si" ? "කරුණාකර ඔබගේ වගා ගැටලුව ලියන්න හෝ හඬින් පවසන්න." : "Please enter or speak your farming question.");
       return;
     }
 
     setLoading(true);
-    setError(null);
-    setIsQuotaError(false);
     if (synthRef.current) synthRef.current.cancel();
     setIsSpeaking(false);
 
@@ -273,17 +265,22 @@ export const UnifiedOrchestratorAssistant = () => {
     } catch (err) {
       console.error("Orchestrator request failed:", err);
       const is429 = err.response?.status === 429;
-      setIsQuotaError(is429);
       const serverDetail = err.response?.data?.detail;
       const msg = typeof serverDetail === "object" ? serverDetail.message : serverDetail;
-      setError(
+      const finalMsg =
         msg ||
-          (is429
-            ? t("quotaExceededMsg")
-            : language === "si"
-            ? "බහු-නියෝජිත විශ්ලේෂණය සම්පූර්ණ කළ නොහැකි විය. කරුණාකර අන්තර්ජාල සබඳතාව පරීක්ෂා කරන්න."
-            : "Could not complete the multi-agent analysis. Please verify your internet connection and backend services.")
-      );
+        (is429
+          ? t("quotaExceededMsg")
+          : language === "si"
+          ? "බහු-නියෝජිත විශ්ලේෂණය සම්පූර්ණ කළ නොහැකි විය. කරුණාකර අන්තර්ජාල සබඳතාව පරීක්ෂා කරන්න."
+          : "Could not complete the multi-agent analysis. Please verify your internet connection and backend services.");
+
+      if (is429) {
+        toast.error(`${t("quotaExceededTitle")}: ${finalMsg}`, { duration: 6000 });
+        setShowUpgradeModal(true);
+      } else {
+        toast.error(finalMsg);
+      }
     } finally {
       setLoading(false);
     }
@@ -504,28 +501,6 @@ export const UnifiedOrchestratorAssistant = () => {
                 </div>
               )}
             </div>
-
-            {/* Error Message */}
-            {error && (
-              <Alert variant="destructive" className="rounded-2xl">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <div className="flex-1 space-y-2">
-                  <AlertTitle className="font-bold">{isQuotaError ? t("quotaExceededTitle") : "Notice"}</AlertTitle>
-                  <AlertDescription className="text-xs leading-relaxed">{error}</AlertDescription>
-                  {isQuotaError && (
-                    <Button
-                      type="button"
-                      size="sm"
-                      onClick={() => setShowUpgradeModal(true)}
-                      className="mt-1 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs gap-1.5 shadow-md"
-                    >
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>{t("upgradeToPro")} (Unlimited)</span>
-                    </Button>
-                  )}
-                </div>
-              </Alert>
-            )}
 
             {/* Submit Button */}
             <div className="pt-2">

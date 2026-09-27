@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { authService } from "@/services/api";
 
 const AuthContext = createContext(null);
@@ -65,6 +66,21 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("agriketha_user");
   };
 
+  const confirmLogout = () => {
+    const confirmed = window.confirm("Are you sure you want to sign out?");
+    if (!confirmed) {
+      return false;
+    }
+
+    console.info("[Auth] User signed out", {
+      userId: user?.id ?? null,
+      timestamp: new Date().toISOString(),
+    });
+    logout();
+    toast.success("You have been signed out successfully.");
+    return true;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -77,6 +93,7 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
+        confirmLogout,
         setUser
       }}
     >

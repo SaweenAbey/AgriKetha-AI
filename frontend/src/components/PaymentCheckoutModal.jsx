@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import {
   Crown,
   ShieldCheck,
@@ -13,7 +14,6 @@ import {
   ArrowRight,
   Info,
   Check,
-  AlertCircle,
   Copy,
   Receipt
 } from "lucide-react";
@@ -63,14 +63,12 @@ export const PaymentCheckoutModal = ({ isOpen, onClose, onPaymentSuccess }) => {
   const [otp, setOtp] = useState("1234");
   const [orderData, setOrderData] = useState(null);
   const [receipt, setReceipt] = useState(null);
-  const [errorMsg, setErrorMsg] = useState("");
   const [copiedCard, setCopiedCard] = useState(null);
 
   // Reset when modal opens
   useEffect(() => {
     if (isOpen) {
       setStep("select");
-      setErrorMsg("");
       setReceipt(null);
     }
   }, [isOpen]);
@@ -96,7 +94,6 @@ export const PaymentCheckoutModal = ({ isOpen, onClose, onPaymentSuccess }) => {
   };
 
   const handleLaunchPayHereOfficialModal = async () => {
-    setErrorMsg("");
     setStep("processing");
 
     try {
@@ -147,7 +144,7 @@ export const PaymentCheckoutModal = ({ isOpen, onClose, onPaymentSuccess }) => {
 
         window.payhere.onError = function onError(error) {
           console.error("PayHere Error:", error);
-          setErrorMsg(typeof error === "string" ? error : "PayHere popup encountered an issue. Using instant simulator.");
+          toast.error(typeof error === "string" ? error : "PayHere popup encountered an issue. Using instant simulator.");
           setStep("select");
         };
 
@@ -158,13 +155,12 @@ export const PaymentCheckoutModal = ({ isOpen, onClose, onPaymentSuccess }) => {
       }
     } catch (err) {
       console.error("PayHere launch error:", err);
-      setErrorMsg(err.response?.data?.detail || "Could not launch PayHere SDK.");
+      toast.error(err.response?.data?.detail || "Could not launch PayHere SDK.");
       setStep("select");
     }
   };
 
   const handleInitiatePayment = async () => {
-    setErrorMsg("");
     setStep("processing");
 
     try {
@@ -178,19 +174,18 @@ export const PaymentCheckoutModal = ({ isOpen, onClose, onPaymentSuccess }) => {
       }, 1200);
     } catch (err) {
       console.error("Order creation error:", err);
-      setErrorMsg(err.response?.data?.detail || "Could not initiate payment order.");
+      toast.error(err.response?.data?.detail || "Could not initiate payment order.");
       setStep("select");
     }
   };
 
   const handleVerifyOtpAndComplete = async () => {
     if (otp.trim() !== "1234") {
-      setErrorMsg(language === "si" ? "වැරදි OTP අංකයකි. කරුණාකර '1234' ඇතුළත් කරන්න." : "Invalid OTP. Please enter test OTP: 1234");
+      toast.error(language === "si" ? "වැරදි OTP අංකයකි. කරුණාකර '1234' ඇතුළත් කරන්න." : "Invalid OTP. Please enter test OTP: 1234");
       return;
     }
 
     setStep("processing");
-    setErrorMsg("");
 
     try {
       // 2. Call backend verification endpoint
@@ -212,7 +207,7 @@ export const PaymentCheckoutModal = ({ isOpen, onClose, onPaymentSuccess }) => {
       }
     } catch (err) {
       console.error("Payment verification error:", err);
-      setErrorMsg(err.response?.data?.detail || "Payment authorization failed.");
+      toast.error(err.response?.data?.detail || "Payment authorization failed.");
       setStep("3ds_otp");
     }
   };
@@ -253,14 +248,6 @@ export const PaymentCheckoutModal = ({ isOpen, onClose, onPaymentSuccess }) => {
             <X className="w-4 h-4" />
           </button>
         </div>
-
-        {/* Error Alert */}
-        {errorMsg && (
-          <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
-            <span className="flex-1">{errorMsg}</span>
-          </div>
-        )}
 
         {/* STEP 1: SELECT PLAN & ENTER PAYMENT */}
         {step === "select" && (
