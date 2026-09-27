@@ -34,7 +34,7 @@ import { CropDiagnosticsAssistant } from "@/components/CropDiagnosticsAssistant"
 import { MarketPriceAdvisor } from "@/components/MarketPriceAdvisor";
 
 export const DashboardPage = () => {
-  const { user, logout } = useAuth();
+  const { user, confirmLogout } = useAuth();
   const { isUnlimited } = useQuota();
   const { language, toggleLanguage, t } = useLanguage();
   const navigate = useNavigate();
@@ -42,8 +42,9 @@ export const DashboardPage = () => {
   const agentSectionRef = useRef(null);
 
   const handleLogout = () => {
-    logout();
-    navigate("/login");
+    if (confirmLogout()) {
+      navigate("/login");
+    }
   };
 
   const handleTabSwitch = (tab) => {
