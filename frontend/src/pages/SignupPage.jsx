@@ -1,32 +1,30 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  Lock, 
-  MapPin, 
-  Sprout, 
-  ShieldCheck, 
-  Eye, 
-  EyeOff, 
-  ArrowRight, 
-  Loader2, 
-  AlertCircle, 
-  CheckCircle2 
+import {
+  User,
+  Mail,
+  Phone,
+  Lock,
+  MapPin,
+  Sprout,
+  ShieldCheck,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  Loader2,
 } from "lucide-react";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { SRI_LANKA_DISTRICTS } from "@/constants/sriLankaData";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 
 export const SignupPage = () => {
   const navigate = useNavigate();
-  const { register, login, loading, error, setError } = useAuth();
+  const { register, login, loading } = useAuth();
   const { language, t } = useLanguage();
 
   const [formData, setFormData] = useState({
@@ -41,8 +39,6 @@ export const SignupPage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [localError, setLocalError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,8 +46,6 @@ export const SignupPage = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-    if (localError) setLocalError("");
-    if (error) setError(null);
   };
 
   // Basic password strength calculation
@@ -70,31 +64,29 @@ export const SignupPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLocalError("");
-    setSuccessMessage("");
 
     if (!formData.full_name.trim()) {
-      setLocalError(language === "si" ? "කරුණාකර ඔබගේ සම්පූර්ණ නම ඇතුළත් කරන්න." : "Please provide your full name.");
+      toast.error(language === "si" ? "කරුණාකර ඔබගේ සම්පූර්ණ නම ඇතුළත් කරන්න." : "Please provide your full name.");
       return;
     }
 
     if (!formData.email.trim()) {
-      setLocalError(language === "si" ? "කරුණාකර වලංගු විද්‍යුත් තැපෑලක් ඇතුළත් කරන්න." : "Please provide a valid email address.");
+      toast.error(language === "si" ? "කරුණාකර වලංගු විද්‍යුත් තැපෑලක් ඇතුළත් කරන්න." : "Please provide a valid email address.");
       return;
     }
 
     if (formData.password.length < 6) {
-      setLocalError(language === "si" ? "මුරපදයට අවම වශයෙන් අකුරු 6ක් අවශ්‍යයි." : "Password must be at least 6 characters long.");
+      toast.error(language === "si" ? "මුරපදයට අවම වශයෙන් අකුරු 6ක් අවශ්‍යයි." : "Password must be at least 6 characters long.");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setLocalError(language === "si" ? "මුරපද එකිනෙකට නොගැළපේ." : "Passwords do not match.");
+      toast.error(language === "si" ? "මුරපද එකිනෙකට නොගැළපේ." : "Passwords do not match.");
       return;
     }
 
     if (!formData.agreeTerms) {
-      setLocalError(language === "si" ? "සේවා කොන්දේසි වලට එකඟ විය යුතුය." : "You must accept the terms of service to proceed.");
+      toast.error(language === "si" ? "සේවා කොන්දේසි වලට එකඟ විය යුතුය." : "You must accept the terms of service to proceed.");
       return;
     }
 
@@ -109,7 +101,7 @@ export const SignupPage = () => {
 
     const res = await register(payload);
     if (res.success) {
-      setSuccessMessage(language === "si" ? "ගිණුම සාර්ථකව සාදන ලදී! ඔබව ප්‍රවේශ කරමින් පවතී..." : "Account created successfully! Signing you in...");
+      toast.success(language === "si" ? "ගිණුම සාර්ථකව සාදන ලදී! ඔබව ප්‍රවේශ කරමින් පවතී..." : "Account created successfully! Signing you in...");
       // Auto login
       const loginRes = await login(formData.email, formData.password);
       if (loginRes.success) {
@@ -117,6 +109,8 @@ export const SignupPage = () => {
       } else {
         setTimeout(() => navigate("/login"), 1500);
       }
+    } else {
+      toast.error(res.error || (language === "si" ? "ලියාපදිංචි වීම අසාර්ථක විය." : "Registration failed. Please check your details."));
     }
   };
 
@@ -126,22 +120,6 @@ export const SignupPage = () => {
       subtitle={t("registerSub")}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Error notification */}
-        {(localError || error) && (
-          <Alert variant="destructive" className="animate-fade-in">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{localError || error}</AlertDescription>
-          </Alert>
-        )}
-
-        {/* Success notification */}
-        {successMessage && (
-          <Alert variant="success" className="animate-fade-in">
-            <CheckCircle2 className="h-4 w-4" />
-            <AlertDescription>{successMessage}</AlertDescription>
-          </Alert>
-        )}
-
         {/* Role Selector Cards */}
         <div className="space-y-1.5">
           <Label required>{language === "si" ? "ගිණුම් වර්ගය" : "Account Type"}</Label>

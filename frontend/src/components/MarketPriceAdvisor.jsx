@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import {
   TrendingUp,
   TrendingDown,
@@ -90,7 +91,9 @@ export const MarketPriceAdvisor = () => {
     try {
       setReport(await marketService.getPrices());
     } catch (err) {
-      setError(err.response?.data?.detail || t("marketError"));
+      const message = err.response?.data?.detail || t("marketError");
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }

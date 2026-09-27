@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -28,6 +29,7 @@ function App() {
     <LanguageProvider>
       <AuthProvider>
         <QuotaProvider>
+          <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<RootRedirect />} />

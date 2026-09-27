@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 import {
   Leaf,
   UploadCloud,
@@ -6,7 +7,6 @@ import {
   Sparkles,
   CheckCircle2,
   AlertTriangle,
-  AlertCircle,
   Activity,
   Layers,
   Volume2,
@@ -25,13 +25,11 @@ import {
   FileImage,
   Crosshair,
   Radio,
-  Sliders,
-  X
+  Sliders
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { visionService } from "@/services/api";
 import { useQuota } from "@/context/QuotaContext";
 import { QuotaWidget } from "@/components/QuotaWidget";
@@ -226,7 +224,6 @@ export const CropDiagnosticsAssistant = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
-  const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState("sideBySide"); // 'sideBySide', 'gradcam', 'original'
   const [copied, setCopied] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -270,14 +267,12 @@ export const CropDiagnosticsAssistant = () => {
       setPreviewUrl(url);
       setSelectedImage(file.name);
       setResult(null);
-      setError(null);
     }
   };
 
   // Handle Preset Leaf Selection
   const handlePresetSelect = async (preset) => {
     setLoading(true);
-    setError(null);
     try {
       const blob = await generatePresetBlob(preset.sampleType, preset.name);
       const file = new File([blob], `${preset.sampleType}.jpg`, { type: "image/jpeg" });
@@ -292,7 +287,7 @@ export const CropDiagnosticsAssistant = () => {
       await performAnalysis(file, preset.crop);
     } catch (err) {
       console.error("Preset load error:", err);
-      setError("Failed to load sample leaf template.");
+      toast.error("Failed to load sample leaf template.");
     } finally {
       setLoading(false);
     }
@@ -302,12 +297,11 @@ export const CropDiagnosticsAssistant = () => {
   const performAnalysis = async (fileToUse = null, cropToUse = null) => {
     const file = fileToUse || imageFile;
     if (!file) {
-      setError("Please select or capture a crop leaf image first.");
+      toast.error("Please select or capture a crop leaf image first.");
       return;
     }
 
     setLoading(true);
-    setError(null);
 
     try {
       const formData = new FormData();
@@ -332,12 +326,7 @@ export const CropDiagnosticsAssistant = () => {
     // - Unsupported / unrelated image
     if (res?.status === "error") {
       setResult(null);
-
-      setError({
-        message: res.message || "The image could not be analyzed.",
-        isQuotaExceeded: false,
-      });
-
+      toast.error(res.message || "The image could not be analyzed.");
       return;
     }
 
@@ -354,10 +343,14 @@ export const CropDiagnosticsAssistant = () => {
       console.error("Vision Analysis Error:", err);
       const isQuota429 = err.response?.status === 429;
       const detailMsg = err.response?.data?.detail?.message || err.response?.data?.detail || "Vision analysis failed. Please try a clearer leaf photo.";
-      setError({
-        message: typeof detailMsg === "object" ? JSON.stringify(detailMsg) : detailMsg,
-        isQuotaExceeded: isQuota429
-      });
+      const message = typeof detailMsg === "object" ? JSON.stringify(detailMsg) : detailMsg;
+
+      if (isQuota429) {
+        toast.error(`${t?.quota_exceeded || "Daily Limit Exceeded"}: ${message}`, { duration: 6000 });
+        openUpgradeModal();
+      } else {
+        toast.error(message);
+      }
     } finally {
       setLoading(false);
     }
@@ -674,38 +667,6 @@ export const CropDiagnosticsAssistant = () => {
 
         {/* Right Column: Diagnostic Results & Explainability (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          {error && (
-            <Alert variant="destructive" className="py-3.5 rounded-2xl relative border-rose-500/30 bg-rose-500/10">
-              <AlertCircle className="w-4 h-4 text-rose-500 mt-0.5" />
-              <div className="flex-1">
-                <AlertTitle className="text-xs font-semibold text-rose-600 dark:text-rose-400">
-                  {error.isQuotaExceeded ? (t?.quota_exceeded || "Daily Limit Exceeded") : "Diagnostic Error"}
-                </AlertTitle>
-                <AlertDescription className="text-xs text-rose-700 dark:text-rose-300 mt-0.5">
-                  {typeof error === "string" ? error : error.message}
-                </AlertDescription>
-                {error.isQuotaExceeded && (
-                  <div className="mt-2.5 flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      onClick={openUpgradeModal}
-                      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold h-7 px-3 text-xs rounded-lg shadow-sm"
-                    >
-                      <Sparkles className="w-3 h-3 mr-1 text-slate-950" />
-                      {t?.upgrade_pro || "Upgrade to Unlimited Pro"}
-                    </Button>
-                  </div>
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={() => setError(null)}
-                className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </Alert>
-          )}
 
           {result ? (
             <div className="space-y-4 animate-in fade-in-50 duration-300">

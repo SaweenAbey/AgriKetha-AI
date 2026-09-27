@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { 
-  Bot, 
-  Mic, 
-  MicOff, 
-  Send, 
-  Sparkles, 
-  Volume2, 
-  VolumeX, 
-  Clock, 
-  RotateCcw, 
-  CheckCircle2, 
-  AlertCircle, 
-  Leaf, 
-  HelpCircle, 
+import toast from "react-hot-toast";
+import {
+  Bot,
+  Mic,
+  MicOff,
+  Send,
+  Sparkles,
+  Volume2,
+  VolumeX,
+  Clock,
+  RotateCcw,
+  CheckCircle2,
+  Leaf,
+  HelpCircle,
   ArrowRight,
   Zap,
   Activity,
@@ -26,7 +26,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { agentService } from "@/services/api";
 import { useQuota } from "@/context/QuotaContext";
 import { QuotaWidget } from "@/components/QuotaWidget";
@@ -77,8 +76,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
-  const [error, setError] = useState(null);
-  
+
   // Voice recognition states
   const [isListening, setIsListening] = useState(false);
   const [interimTranscript, setInterimTranscript] = useState("");
@@ -113,7 +111,6 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
         recognition.onstart = () => {
           setIsListening(true);
-          setError(null);
           setVoiceNetworkBlocked(false);
         };
 
@@ -146,7 +143,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
           if (event.error === "network") {
             setVoiceNetworkBlocked(true);
           } else if (event.error === "not-allowed" || event.error === "permission-denied") {
-            setError("Microphone access was denied. Please allow microphone permissions in your browser.");
+            toast.error("Microphone access was denied. Please allow microphone permissions in your browser.");
           }
         };
 
@@ -221,7 +218,6 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
   const openVoiceAssistant = async () => {
     setShowVoiceModal(true);
-    setError(null);
     setInterimTranscript("");
 
     // Attempt to prompt/verify microphone permissions
@@ -256,7 +252,6 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
   const triggerVoicePreset = (voiceText) => {
     setShowVoiceModal(false);
-    setError(null);
     setQuestion(voiceText);
     executeQuery(voiceText, "voice", true);
   };
@@ -273,7 +268,6 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
 
   const executeQuery = async (queryText, inputMode = "text", autoTriggered = false) => {
     setLoading(true);
-    setError(null);
     if (synthRef.current) {
       synthRef.current.cancel();
       setIsSpeaking(false);
@@ -308,10 +302,14 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
       console.error("Agent 1 Query Error:", err);
       const isQuota429 = err.response?.status === 429;
       const detailMsg = err.response?.data?.detail?.message || err.response?.data?.detail || "Failed to process query through Agent 1. Please try again.";
-      setError({
-        message: typeof detailMsg === "object" ? JSON.stringify(detailMsg) : detailMsg,
-        isQuotaExceeded: isQuota429
-      });
+      const message = typeof detailMsg === "object" ? JSON.stringify(detailMsg) : detailMsg;
+
+      if (isQuota429) {
+        toast.error(`${t?.quota_exceeded || "Daily Limit Exceeded"}: ${message}`, { duration: 6000 });
+        openUpgradeModal();
+      } else {
+        toast.error(message);
+      }
     } finally {
       setLoading(false);
     }
@@ -345,7 +343,6 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
   };
 
   const selectSuggestion = (text) => {
-    setError(null);
     setQuestion(text);
     executeQuery(text, "text", false);
   };
@@ -428,48 +425,12 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {error && (
-            <Alert variant="destructive" className="py-3 relative border-rose-500/30 bg-rose-500/10">
-              <AlertCircle className="w-4 h-4 text-rose-500 mt-0.5" />
-              <div className="flex-1">
-                <AlertTitle className="text-xs font-semibold text-rose-600 dark:text-rose-400">
-                  {error.isQuotaExceeded ? (t?.quota_exceeded || "Daily Limit Exceeded") : "Query Notice"}
-                </AlertTitle>
-                <AlertDescription className="text-xs text-rose-700 dark:text-rose-300 mt-0.5">
-                  {typeof error === "string" ? error : error.message}
-                </AlertDescription>
-                {error.isQuotaExceeded && (
-                  <div className="mt-2.5 flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      onClick={openUpgradeModal}
-                      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold h-7 px-3 text-xs rounded-lg shadow-sm"
-                    >
-                      <Sparkles className="w-3 h-3 mr-1 text-slate-950" />
-                      {t?.upgrade_pro || "Upgrade to Unlimited Pro"}
-                    </Button>
-                  </div>
-                )}
-              </div>
-              <button 
-                type="button" 
-                onClick={() => setError(null)}
-                className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </Alert>
-          )}
-
           {/* Text & Voice Input Area */}
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="relative">
               <textarea
                 value={question}
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                  if (error) setError(null);
-                }}
+                onChange={(e) => setQuestion(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();

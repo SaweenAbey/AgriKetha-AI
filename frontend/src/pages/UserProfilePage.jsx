@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
   User,
@@ -44,7 +45,7 @@ const SRI_LANKA_DISTRICTS = [
 ];
 
 export const UserProfilePage = () => {
-  const { user, setUser, logout } = useAuth();
+  const { user, setUser, confirmLogout } = useAuth();
   const { quota, isUnlimited, upgradePlan, fetchQuota } = useQuota();
   const { language, toggleLanguage, t } = useLanguage();
   const navigate = useNavigate();
@@ -56,14 +57,12 @@ export const UserProfilePage = () => {
     district: user?.district || "Kurunegala",
   });
   const [savingProfile, setSavingProfile] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Billing history state
   const [invoices, setInvoices] = useState([]);
   const [loadingInvoices, setLoadingInvoices] = useState(true);
   const [showCheckout, setShowCheckout] = useState(false);
   const [downgrading, setDowngrading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
   const [selectedInvoice, setSelectedInvoice] = useState(null);
 
   useEffect(() => {
@@ -104,17 +103,15 @@ export const UserProfilePage = () => {
   const handleProfileSave = async (e) => {
     e.preventDefault();
     setSavingProfile(true);
-    setSaveSuccess(false);
     try {
       const updated = await userService.updateProfile(formData);
       setUser(updated);
       localStorage.setItem("agriketha_user", JSON.stringify(updated));
-      setSaveSuccess(true);
       setIsEditing(false);
-      setTimeout(() => setSaveSuccess(false), 3000);
+      toast.success(language === "si" ? "පැතිකඩ සාර්ථකව යාවත්කාලීන විය." : "Profile updated successfully.");
     } catch (err) {
       console.error("Profile update failed:", err);
-      alert("Failed to update profile. Please try again.");
+      toast.error("Failed to update profile. Please try again.");
     } finally {
       setSavingProfile(false);
     }
@@ -125,13 +122,13 @@ export const UserProfilePage = () => {
       return;
     }
     setDowngrading(true);
-    setStatusMessage("");
     const res = await upgradePlan("free");
     setDowngrading(false);
     if (res.success) {
-      setStatusMessage(language === "si" ? "නොමිලේ සැලැස්මට මාරු විය." : "Switched to Free Plan.");
+      toast.success(language === "si" ? "නොමිලේ සැලැස්මට මාරු විය." : "Switched to Free Plan.");
       fetchQuota();
-      setTimeout(() => setStatusMessage(""), 3000);
+    } else {
+      toast.error(language === "si" ? "සැලැස්ම මාරු කිරීම අසාර්ථක විය." : "Failed to switch plan.");
     }
   };
 
@@ -167,8 +164,9 @@ export const UserProfilePage = () => {
               variant="outline"
               size="sm"
               onClick={() => {
-                logout();
-                navigate("/login");
+                if (confirmLogout()) {
+                  navigate("/login");
+                }
               }}
               className="gap-1.5 text-xs text-muted-foreground hover:text-destructive hover:border-destructive rounded-xl"
             >
@@ -181,14 +179,6 @@ export const UserProfilePage = () => {
 
       {/* Main Content Area */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 space-y-8">
-        {/* Status notification banner */}
-        {statusMessage && (
-          <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-sm font-semibold flex items-center gap-2 animate-in fade-in">
-            <CheckCircle2 className="w-5 h-5" />
-            <span>{statusMessage}</span>
-          </div>
-        )}
-
         {/* User Identity Header Card */}
         <div className="agentic-hero relative overflow-hidden rounded-3xl text-white p-6 sm:p-8 shadow-2xl shadow-emerald-900/20 ring-1 ring-white/10">
           <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
@@ -593,7 +583,7 @@ export const UserProfilePage = () => {
           setShowCheckout(false);
           fetchQuota();
           fetchInvoices();
-          setStatusMessage(language === "si" ? "Pro ගිණුම සාර්ථකව සක්‍රිය විය!" : "Pro Plan activated successfully!");
+          toast.success(language === "si" ? "Pro ගිණුම සාර්ථකව සක්‍රිය විය!" : "Pro Plan activated successfully!");
         }}
       />
 

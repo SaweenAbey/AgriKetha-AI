@@ -8190,3 +8190,149 @@ pymongo.errors.NetworkTimeout: ac-jucsbd3-shard-00-02.dqyxqug.mongodb.net:27017:
 2026-09-27 21:11:48 | INFO     | agriketha.backend:stop_all_agents:187 - Stopping auto-started agent [research-agent] (PID: 27592)...
 2026-09-27 21:11:48 | INFO     | agriketha.backend:close_mongo_connection:81 - Closing MongoDB connection pool...
 2026-09-27 21:11:48 | INFO     | agriketha.backend:close_mongo_connection:83 - MongoDB connection pool closed.
+2026-09-27 21:51:42 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-27 21:51:42 | INFO     | agriketha.backend:lifespan:21 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-27 21:51:42 | INFO     | agriketha.backend:connect_to_mongo:51 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-27 21:51:44 | INFO     | agriketha.backend:connect_to_mongo:69 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-27 21:51:46 | INFO     | agriketha.backend:init_db_indexes:111 - MongoDB indexes verified & created successfully.
+2026-09-27 21:51:46 | INFO     | agriketha.backend:start_all_agents:177 - Auto-initializing all AgriKetha AI Agent microservices...
+2026-09-27 21:51:46 | INFO     | agriketha.backend:start_agent_process:118 - Agent [query-agent] is already running on port 8001.
+2026-09-27 21:51:46 | INFO     | agriketha.backend:start_agent_process:118 - Agent [vision-agent] is already running on port 8002.
+2026-09-27 21:51:47 | INFO     | agriketha.backend:start_agent_process:161 - Auto-started agent [research-agent] on port 8004 (PID: 26724) using D:\AgriKetha-AI\ai-agents\research-agent\venv\Scripts\python.exe
+2026-09-27 21:52:25 | WARNING  | agriketha.backend:decode_token:75 - Token expired
+2026-09-27 21:52:25 | WARNING  | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/users/quota | Status: 401 | 15.73ms
+2026-09-27 21:52:25 | WARNING  | agriketha.backend:decode_token:75 - Token expired
+2026-09-27 21:52:25 | WARNING  | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/users/quota | Status: 401 | 1.28ms
+2026-09-27 21:52:26 | WARNING  | agriketha.backend:decode_token:75 - Token expired
+2026-09-27 21:52:26 | WARNING  | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 401 | 561.41ms
+2026-09-27 21:52:26 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:26 | WARNING  | agriketha.backend:decode_token:75 - Token expired
+2026-09-27 21:52:26 | WARNING  | agriketha.backend:dispatch:34 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 401 | 7.36ms
+2026-09-27 21:52:26 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:26 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:26 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 590.12ms
+2026-09-27 21:52:26 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | POST /api/v1/auth/refresh | Status: 200 | 811.53ms
+2026-09-27 21:52:26 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | POST /api/v1/auth/refresh | Status: 200 | 789.28ms
+2026-09-27 21:52:26 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:26 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:26 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:26 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 767.71ms
+2026-09-27 21:52:27 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | POST /api/v1/auth/refresh | Status: 200 | 946.69ms
+2026-09-27 21:52:27 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | POST /api/v1/auth/refresh | Status: 200 | 960.77ms
+2026-09-27 21:52:27 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 573.51ms
+2026-09-27 21:52:27 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 398.67ms
+2026-09-27 21:52:28 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1621.07ms
+2026-09-27 21:52:29 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 630.18ms
+2026-09-27 21:52:34 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:34 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:34 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:34 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 765.92ms
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 2354.23ms
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1586.34ms
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 818.19ms
+2026-09-27 21:52:36 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 2910.68ms
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:36 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 553.37ms
+2026-09-27 21:52:37 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1557.87ms
+2026-09-27 21:52:37 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1563.45ms
+2026-09-27 21:52:37 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 1702.76ms
+2026-09-27 21:52:37 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 288.59ms
+2026-09-27 21:52:37 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 401.41ms
+2026-09-27 21:52:39 | INFO     | agriketha.backend:login:151 - User logged in successfully: kasun12@gmail.com (Role: farmer)
+2026-09-27 21:52:39 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 581.64ms
+2026-09-27 21:52:40 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:40 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:40 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:40 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 635.23ms
+2026-09-27 21:52:40 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:40 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:40 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:40 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 570.50ms
+2026-09-27 21:52:41 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 1382.26ms
+2026-09-27 21:52:41 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1348.41ms
+2026-09-27 21:52:41 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 506.16ms
+2026-09-27 21:52:48 | INFO     | agriketha.backend:login:151 - User logged in successfully: kasun12@gmail.com (Role: farmer)
+2026-09-27 21:52:48 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 503.07ms
+2026-09-27 21:52:48 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:48 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:48 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:48 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 717.40ms
+2026-09-27 21:52:49 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:49 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:49 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:49 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 581.93ms
+2026-09-27 21:52:49 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 1476.47ms
+2026-09-27 21:52:49 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1452.33ms
+2026-09-27 21:52:49 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 324.66ms
+2026-09-27 21:52:55 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 325.57ms
+2026-09-27 21:52:55 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/farmer/queries | Status: 200 | 310.33ms
+2026-09-27 21:52:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:56 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 505.52ms
+2026-09-27 21:52:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:52:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:52:56 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 565.31ms
+2026-09-27 21:52:57 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1330.73ms
+2026-09-27 21:52:57 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 352.30ms
+2026-09-27 21:53:04 | INFO     | agriketha.backend:lifespan:33 - Shutting down AgriKetha-AI Backend...
+2026-09-27 21:53:04 | INFO     | agriketha.backend:close_mongo_connection:81 - Closing MongoDB connection pool...
+2026-09-27 21:53:04 | INFO     | agriketha.backend:close_mongo_connection:83 - MongoDB connection pool closed.
+2026-09-27 21:53:31 | INFO     | agriketha.backend:setup_logging:65 - Logging initialized successfully. Level: INFO
+2026-09-27 21:53:31 | INFO     | agriketha.backend:lifespan:21 - Initializing AgriKetha-AI Backend in development mode...
+2026-09-27 21:53:31 | INFO     | agriketha.backend:connect_to_mongo:51 - Connecting to MongoDB Atlas at: cluster0.dqyxqug.mongodb.net/?appName=Cluster0
+2026-09-27 21:53:33 | INFO     | agriketha.backend:connect_to_mongo:69 - Successfully connected to MongoDB Database: 'agriketha_ai_db'
+2026-09-27 21:53:35 | INFO     | agriketha.backend:init_db_indexes:111 - MongoDB indexes verified & created successfully.
+2026-09-27 21:53:35 | INFO     | agriketha.backend:start_all_agents:177 - Auto-initializing all AgriKetha AI Agent microservices...
+2026-09-27 21:53:35 | INFO     | agriketha.backend:start_agent_process:118 - Agent [query-agent] is already running on port 8001.
+2026-09-27 21:53:35 | INFO     | agriketha.backend:start_agent_process:118 - Agent [vision-agent] is already running on port 8002.
+2026-09-27 21:53:36 | INFO     | agriketha.backend:start_agent_process:161 - Auto-started agent [research-agent] on port 8004 (PID: 38136) using D:\AgriKetha-AI\ai-agents\research-agent\venv\Scripts\python.exe
+2026-09-27 21:59:54 | INFO     | agriketha.backend:login:151 - User logged in successfully: farmer@agriketha.lk (Role: farmer)
+2026-09-27 21:59:54 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 597.97ms
+2026-09-27 21:59:55 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:59:55 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:59:55 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:59:55 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1003.49ms
+2026-09-27 21:59:56 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1935.11ms
+2026-09-27 21:59:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 21:59:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:59:56 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 21:59:56 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 900.47ms
+2026-09-27 21:59:56 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 2146.65ms
+2026-09-27 21:59:57 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 1044.79ms
+2026-09-27 21:59:57 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/payments/history | Status: 200 | 1037.92ms
+2026-09-27 21:59:58 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/payments/history | Status: 200 | 266.35ms
+2026-09-27 22:00:31 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 22:00:31 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 22:00:31 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 22:00:31 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1046.63ms
+2026-09-27 22:00:32 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 22:00:32 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 22:00:32 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 22:00:32 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1077.75ms
+2026-09-27 22:00:32 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 2294.41ms
+2026-09-27 22:00:32 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 1346.42ms
+2026-09-27 22:00:32 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 284.58ms
+2026-09-27 22:00:32 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 394.45ms
+2026-09-27 22:00:42 | INFO     | agriketha.backend:login:151 - User logged in successfully: kasun12@gmail.com (Role: farmer)
+2026-09-27 22:00:42 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | POST /api/v1/auth/login | Status: 200 | 583.67ms
+2026-09-27 22:00:44 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 22:00:44 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 22:00:44 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 22:00:44 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1115.28ms
+2026-09-27 22:00:45 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8001/ "HTTP/1.1 200 OK"
+2026-09-27 22:00:45 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8002/agent/health "HTTP/1.1 200 OK"
+2026-09-27 22:00:45 | INFO     | httpx:_send_single_request:1740 - HTTP Request: GET http://127.0.0.1:8004/agent/health "HTTP/1.1 200 OK"
+2026-09-27 22:00:45 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/status | Status: 200 | 1135.59ms
+2026-09-27 22:00:45 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/users/quota | Status: 200 | 2438.87ms
+2026-09-27 22:00:45 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 2406.19ms
+2026-09-27 22:00:45 | INFO     | agriketha.backend:dispatch:36 - 127.0.0.1 | GET /api/v1/orchestrator/history | Status: 200 | 276.72ms
