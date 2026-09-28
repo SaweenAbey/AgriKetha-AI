@@ -212,3 +212,39 @@ INFO:     127.0.0.1:62437 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:54329 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:57025 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:49287 - "GET / HTTP/1.1" 200 OK
+INFO:     Started server process [26692]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     Started server process [35356]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:64239 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64246 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53830 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     Started server process [35156]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:51238 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52373 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52378 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52383 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58234 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58238 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53839 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     Started server process [34432]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53145 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56872 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50526 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     Started server process [35372]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:56858 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55771 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55786 - "POST /analyze HTTP/1.1" 200 OK
