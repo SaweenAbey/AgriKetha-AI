@@ -19,7 +19,6 @@ venv/
 ai-agents/vision-agent-backup/
 
 # VS Code / IDE settings
-.vscode/
 .idea/
 
 <<<<<<< HEAD
@@ -27,11 +26,8 @@ ai-agents/vision-agent-backup/
 .env###
 #.envvenv/ 
 venv/
-.env 
 =======
 # Environment variables / secrets
-.env
-.env.*
 
 # OS files
 .DS_Store
@@ -40,3 +36,5 @@ Thumbs.db
 # Frontend dependencies
 frontend/node_modules/
 >>>>>>> vision-agent
+config.bat
+node_modules
