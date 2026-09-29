@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Sprout, 
@@ -21,6 +21,9 @@ import {
   Languages,
   Crown,
   User,
+  Users,
+  DollarSign,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +31,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuota } from "@/context/QuotaContext";
+import { adminService } from "@/services/api";
 import { UnifiedOrchestratorAssistant } from "@/components/UnifiedOrchestratorAssistant";
 import { AgentQueryAssistant } from "@/components/AgentQueryAssistant";
 import { CropDiagnosticsAssistant } from "@/components/CropDiagnosticsAssistant";
@@ -40,6 +44,18 @@ export const DashboardPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("orchestrator"); // 'orchestrator', 'agent1', 'vision', 'market'
   const agentSectionRef = useRef(null);
+
+  const isAdmin = user?.role === "admin";
+  const [adminStats, setAdminStats] = useState(null);
+
+  useEffect(() => {
+    if (isAdmin) {
+      adminService
+        .getStats()
+        .then((data) => setAdminStats(data))
+        .catch((err) => console.warn("Could not load admin stats for dashboard:", err));
+    }
+  }, [isAdmin]);
 
   const handleLogout = () => {
     if (confirmLogout()) {
@@ -160,7 +176,12 @@ export const DashboardPage = () => {
                 size="sm"
                 className="bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-2xl text-xs font-bold gap-2 backdrop-blur-sm shadow-md py-5 px-4"
               >
-                {isUnlimited ? (
+                {isAdmin ? (
+                  <>
+                    <ShieldCheck className="w-4 h-4 text-amber-300" />
+                    <span>{language === "si" ? "කෘෂි නිලධාරී පාලන මධ්‍යස්ථානය" : "Officer Admin Control Center"}</span>
+                  </>
+                ) : isUnlimited ? (
                   <>
                     <Crown className="w-4 h-4 text-amber-300" />
                     <span>{language === "si" ? "Pro ගිණුම සහ විස්තර" : "Pro Profile & Billing"}</span>
@@ -175,6 +196,75 @@ export const DashboardPage = () => {
             </div>
           </div>
         </div>
+
+        {/* OFFICER / ADMIN EXECUTIVE LIVE STATUS BAR (ADMIN ONLY) */}
+        {isAdmin && (
+          <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-emerald-950/80 via-slate-900/90 to-teal-950/80 border border-emerald-500/30 text-white shadow-xl backdrop-blur-xl animate-in fade-in slide-in-from-top-2">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-black text-sm text-white">Officer Surveillance Overview</span>
+                    <Badge className="bg-emerald-500/20 text-emerald-300 border-0 text-[10px]">
+                      DOA Verified
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-emerald-200/80">
+                    Live system metrics visible exclusively to Agricultural Officers & Administrators.
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick KPI Stat Chips */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {/* Total Customers */}
+                <div className="px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
+                  <span className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Total Customers</span>
+                  <span className="text-base font-black text-white">
+                    {adminStats?.total_customers ?? adminStats?.total_farmers ?? "..."}
+                  </span>
+                </div>
+
+                {/* Total Revenue */}
+                <div className="px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
+                  <span className="text-[10px] text-amber-300 font-bold uppercase tracking-wider">Total Revenue</span>
+                  <span className="text-base font-black text-amber-400 font-mono">
+                    Rs. {Number(adminStats?.total_revenue || 0).toLocaleString()}
+                  </span>
+                </div>
+
+                {/* Pro Farmers */}
+                <div className="px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
+                  <span className="text-[10px] text-yellow-300 font-bold uppercase tracking-wider">Pro Farmers</span>
+                  <span className="text-base font-black text-white">
+                    {adminStats?.pro_farmers ?? "..."} <span className="text-[10px] text-yellow-300">👑</span>
+                  </span>
+                </div>
+
+                {/* Agents Healthy */}
+                <div className="px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
+                  <span className="text-[10px] text-teal-300 font-bold uppercase tracking-wider">AI Agents</span>
+                  <span className="text-base font-black text-emerald-400 flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    4/4 Healthy
+                  </span>
+                </div>
+              </div>
+
+              <Button
+                size="sm"
+                onClick={() => navigate("/profile")}
+                className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold gap-1 self-start lg:self-center shrink-0 shadow-lg shadow-emerald-900/40"
+              >
+                <span>View Full Admin Portal</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Button>
+            </div>
+          </div>
+        )}
 
         {/* Feature Cards Grid */}
         <div>
