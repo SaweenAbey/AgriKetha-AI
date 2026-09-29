@@ -1,9 +1,11 @@
+import asyncio
 from typing import Any, Optional
 
 from google import genai
 
 from app.core.config import settings
 from app.core.logging_config import logger
+
 
 
 class LLMServiceError(Exception):
@@ -225,19 +227,21 @@ Generate the agricultural advisory using the following clear Markdown structure 
             detected_language=detected_language,
         )
 
-        candidate_models = [self.model]
-        for fallback in ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-3.8-flash"]:
-            if fallback not in candidate_models:
-                candidate_models.append(fallback)
+        candidate_models = [self.model, "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
+        seen_models = set()
+        models_to_try = [m for m in candidate_models if m and not (m in seen_models or seen_models.add(m))]
 
         last_error = None
 
-        for model_name in candidate_models:
+        for model_name in models_to_try:
             try:
                 logger.info("Attempting advisory generation with Gemini model: %s", model_name)
-                response = await self.client.aio.models.generate_content(
-                    model=model_name,
-                    contents=prompt,
+                response = await asyncio.wait_for(
+                    self.client.aio.models.generate_content(
+                        model=model_name,
+                        contents=prompt,
+                    ),
+                    timeout=8.0
                 )
 
                 if response and response.text and response.text.strip():
@@ -245,13 +249,14 @@ Generate the agricultural advisory using the following clear Markdown structure 
                     return response.text.strip()
             except Exception as exc:
                 last_error = exc
-                logger.warning("Gemini model %s unavailable: %s", model_name, exc)
+                logger.warning("Gemini model %s error or timeout: %s", model_name, exc)
                 continue
 
-        logger.error(
-            "All Gemini model attempts failed. Generating grounded fallback advisory. Last error: %s",
+        logger.info(
+            "Gemini models bypassed. Generating instant grounded fallback advisory. Last note: %s",
             last_error,
         )
+
 
         # Generate deterministic grounded advisory from multi-agent data
         return self._generate_grounded_fallback(

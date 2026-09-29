@@ -68,12 +68,18 @@ export const authService = {
 
 export const agentService = {
   queryAgent1: async ({ question, input_mode = "text", auto_triggered = false, language = "en" }) => {
-    const response = await api.post("/farmer/query-agent", {
-      question,
-      input_mode,
-      auto_triggered,
-      language,
-    });
+    const response = await api.post(
+      "/farmer/query-agent",
+      {
+        question,
+        input_mode,
+        auto_triggered,
+        language,
+      },
+      {
+        timeout: 60000,
+      }
+    );
     return response.data;
   },
   getQueryHistory: async (limit = 20) => {

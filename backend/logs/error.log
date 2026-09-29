@@ -4867,3 +4867,11 @@ Traceback (most recent call last):
 google.genai.errors.ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
 2026-09-28 22:08:10 | ERROR    | agriketha.backend:process_request:370 - LLM advisory generation failed | session_id=fd793619-5828-453a-b59e-d55ce7229e9f | error=Gemini advisory generation failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
 2026-09-28 22:12:46 | ERROR    | agriketha.backend:generate_advisory:251 - All Gemini model attempts failed. Generating grounded fallback advisory. Last error: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-29 10:01:20 | ERROR    | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/market/prices | Status: 503 | 2793.32ms
+2026-09-29 10:01:22 | ERROR    | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/market/prices | Status: 503 | 2091.47ms
+2026-09-29 10:01:24 | ERROR    | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/market/prices | Status: 503 | 2164.79ms
+2026-09-29 10:01:33 | ERROR    | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/market/prices | Status: 503 | 3618.29ms
+2026-09-29 10:01:34 | ERROR    | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/market/prices | Status: 503 | 1660.24ms
+2026-09-29 11:10:21 | ERROR    | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/market/prices | Status: 503 | 3114.56ms
+2026-09-29 11:10:22 | ERROR    | agriketha.backend:dispatch:32 - 127.0.0.1 | GET /api/v1/market/prices | Status: 503 | 1333.87ms
+2026-09-29 11:15:03 | ERROR    | agriketha.backend:get_current_user:50 - Error finding user by id test_farmer_id: 'test_farmer_id' is not a valid ObjectId, it must be a 12-byte input or a 24-character hex string
