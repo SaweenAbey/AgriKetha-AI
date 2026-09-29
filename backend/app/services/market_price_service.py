@@ -86,7 +86,7 @@ def parse_price_report(pdf_bytes: bytes) -> list[dict[str, Any]]:
     Parse the commodity price table out of a CBSL daily price report PDF.
 
     Numbers are assigned to columns by their horizontal position relative to the
-    "Yesterday"/"Today" header labels, so empty cells don't shift values.
+    "Yesterday"/"Today" or "Last Friday"/"Today" header labels, so empty cells don't shift values.
     """
     reader = PdfReader(io.BytesIO(pdf_bytes))
     page = next(
@@ -94,18 +94,34 @@ def parse_price_report(pdf_bytes: bytes) -> list[dict[str, Any]]:
         None,
     )
     if page is None:
+        # Try finding page with food commodities
+        page = next(
+            (p for p in reader.pages if "Selected Food Commodities" in (p.extract_text() or "") or "VEGETABLES" in (p.extract_text() or "")),
+            None,
+        )
+    if page is None:
         raise MarketPriceError("Price table page not found in report")
 
     lines = page.extract_text(extraction_mode="layout").splitlines()
-    header = next((l for l in lines if l.count("Yesterday") == 5), None)
+    
+    # Flexible header detection across all CBSL formats (Yesterday / Last Friday / Previous Day / Today)
+    header = next(
+        (l for l in lines if ("Today" in l and ("Yesterday" in l or "Last Friday" in l or "Previous" in l))),
+        None,
+    )
+    if header is None:
+        header = next((l for l in lines if l.count("Today") >= 3), None)
     if header is None:
         raise MarketPriceError("Price table header not found in report")
-    centers = [m.start() + len(m.group()) / 2 for m in re.finditer(r"Yesterday|Today", header)]
+
+    centers = [m.start() + len(m.group()) / 2 for m in re.finditer(r"Yesterday|Last Friday|Previous Day|Previous|Today", header)]
+    if len(centers) < 2:
+        raise MarketPriceError("Could not resolve market price columns from report header")
 
     items: list[dict[str, Any]] = []
     section = None
     for line in lines:
-        compact = line.replace(" ", "")
+        compact = line.replace(" ", "").upper()
         if compact in SECTIONS:
             section = compact
             continue
@@ -121,16 +137,17 @@ def parse_price_report(pdf_bytes: bytes) -> list[dict[str, Any]]:
 
         prices = []
         for i, (price_type, market) in enumerate(SECTION_COLUMNS.get(section, DEFAULT_COLUMNS)):
-            yesterday, today = values[2 * i], values[2 * i + 1]
-            if yesterday is None and today is None:
-                continue
-            prices.append({
-                "market": market,
-                "type": price_type,
-                "yesterday": yesterday,
-                "today": today,
-                "change_pct": _change_pct(yesterday, today),
-            })
+            if 2 * i + 1 < len(values):
+                yesterday, today = values[2 * i], values[2 * i + 1]
+                if yesterday is None and today is None:
+                    continue
+                prices.append({
+                    "market": market,
+                    "type": price_type,
+                    "yesterday": yesterday,
+                    "today": today,
+                    "change_pct": _change_pct(yesterday, today),
+                })
 
         if prices:
             items.append({
@@ -143,6 +160,7 @@ def parse_price_report(pdf_bytes: bytes) -> list[dict[str, Any]]:
     if not items:
         raise MarketPriceError("No commodity rows parsed from report")
     return items
+
 
 
 class MarketPriceService:

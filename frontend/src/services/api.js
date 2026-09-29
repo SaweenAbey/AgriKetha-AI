@@ -68,12 +68,18 @@ export const authService = {
 
 export const agentService = {
   queryAgent1: async ({ question, input_mode = "text", auto_triggered = false, language = "en" }) => {
-    const response = await api.post("/farmer/query-agent", {
-      question,
-      input_mode,
-      auto_triggered,
-      language,
-    });
+    const response = await api.post(
+      "/farmer/query-agent",
+      {
+        question,
+        input_mode,
+        auto_triggered,
+        language,
+      },
+      {
+        timeout: 60000,
+      }
+    );
     return response.data;
   },
   getQueryHistory: async (limit = 20) => {
@@ -177,7 +183,39 @@ export const paymentService = {
   },
 };
 
+export const adminService = {
+  getStats: async () => {
+    const response = await api.get("/admin/stats");
+    return response.data;
+  },
+  getUsers: async (params = {}) => {
+    const response = await api.get("/admin/users", { params });
+    return response.data;
+  },
+  getOrders: async (limit = 50) => {
+    const response = await api.get(`/admin/orders?limit=${limit}`);
+    return response.data;
+  },
+  getAuditLogs: async (params = {}) => {
+    const response = await api.get("/admin/audit-logs", { params });
+    return response.data;
+  },
+  updateUserStatus: async (userId, isActive) => {
+    const response = await api.patch(`/admin/users/${userId}/status?is_active=${isActive}`);
+    return response.data;
+  },
+  updateUserRole: async (userId, role) => {
+    const response = await api.patch(`/admin/users/${userId}/role?role=${role}`);
+    return response.data;
+  },
+  deleteUser: async (userId) => {
+    const response = await api.delete(`/admin/users/${userId}`);
+    return response.data;
+  },
+};
+
 export default api;
+
 
 
 

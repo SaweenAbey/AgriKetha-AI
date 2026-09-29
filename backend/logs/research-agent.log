@@ -454,3 +454,65 @@ INFO:     Application startup complete.
 ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0.1', 8004): only one usage of each socket address (protocol/network address/port) is normally permitted
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     Started server process [34072]
+INFO:     Waiting for application startup.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 6474.15it/s]
+INFO:     Application startup complete.
+ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0INFO:     127.0.0.1:63122 - "GET /agent/retrieve HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:60047 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60050 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58113 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49675 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49679 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49682 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61409 - "POST /agent/retrieve HTTP/1.1" 200 OK
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     Started server process [28148]
+INFO:     Waiting for application startup.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1120.81it/s]
+INFO:     Application startup complete.
+ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0INFO:     127.0.0.1:51236 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51240 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54162 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62920 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52665 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50495 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55077 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54965 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62865 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59160 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53522 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64259 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51288 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50174 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57682 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60481 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57730 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52181 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60157 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59745 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64690 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64693 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64697 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62929 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57991 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59139 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59146 - "POST /agent/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50652 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58123 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60056 - "POST /agent/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53501 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53504 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52756 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65016 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56381 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56385 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56389 - "POST /agent/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53243 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49257 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59957 - "POST /agent/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58445 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52369 - "GET /agent/health HTTP/1.1" 200 OK

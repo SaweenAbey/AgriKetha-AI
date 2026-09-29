@@ -21,7 +21,8 @@ import {
   Check,
   X,
   Radio,
-  ExternalLink
+  ExternalLink,
+  BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +30,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { agentService } from "@/services/api";
 import { useQuota } from "@/context/QuotaContext";
 import { QuotaWidget } from "@/components/QuotaWidget";
+import { AdvisoryMarkdownViewer } from "@/components/AdvisoryMarkdownViewer";
+
 
 const QUICK_SUGGESTIONS = [
   {
@@ -85,7 +88,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
   const [language, setLanguage] = useState("si-LK");
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [voiceNetworkBlocked, setVoiceNetworkBlocked] = useState(false);
-  
+
   // Text to Speech states
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -123,7 +126,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
               setQuestion(transcript);
               setInterimTranscript("");
               setShowVoiceModal(false);
-              
+
               // Auto submit if option is enabled
               if (autoTriggerOnVoice && transcript.trim().length > 0) {
                 handleAutoSubmit(transcript.trim());
@@ -183,7 +186,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
     if (recognitionRef.current) {
       try {
         recognitionRef.current.abort();
-      } catch (e) {}
+      } catch (e) { }
       setTimeout(() => {
         try {
           if (recognitionRef.current) {
@@ -328,7 +331,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 0.95;
     utterance.pitch = 1.0;
-    
+
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
 
@@ -390,11 +393,10 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
             <button
               type="button"
               onClick={() => setAutoTriggerOnVoice(!autoTriggerOnVoice)}
-              className={`text-xs px-3 py-1.5 rounded-full border backdrop-blur transition-all flex items-center gap-1.5 ${
-                autoTriggerOnVoice
+              className={`text-xs px-3 py-1.5 rounded-full border backdrop-blur transition-all flex items-center gap-1.5 ${autoTriggerOnVoice
                   ? "bg-emerald-400/20 border-emerald-300/40 text-emerald-100"
                   : "bg-white/5 border-white/15 text-slate-300"
-              }`}
+                }`}
               title="Automatically sends query to Agent 1 when you finish speaking"
             >
               <Zap className={`w-3 h-3 ${autoTriggerOnVoice ? "text-amber-300" : "text-slate-500"}`} />
@@ -514,7 +516,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
                   <p className="text-[11px] text-emerald-200/70">Speak clearly into your microphone</p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={stopVoiceListening}
                 className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
               >
@@ -528,33 +530,30 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
                 <button
                   type="button"
                   onClick={() => changeVoiceLanguage("si-LK")}
-                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
-                    language === "si-LK"
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${language === "si-LK"
                       ? "bg-emerald-600 text-white shadow-sm"
                       : "text-slate-300 hover:text-white hover:bg-slate-800"
-                  }`}
+                    }`}
                 >
                   🇱🇰 සිංහල (Sinhala)
                 </button>
                 <button
                   type="button"
                   onClick={() => changeVoiceLanguage("en-US")}
-                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
-                    language === "en-US"
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${language === "en-US"
                       ? "bg-emerald-600 text-white shadow-sm"
                       : "text-slate-300 hover:text-white hover:bg-slate-800"
-                  }`}
+                    }`}
                 >
                   🇬🇧 English
                 </button>
                 <button
                   type="button"
                   onClick={() => changeVoiceLanguage("ta-LK")}
-                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${
-                    language === "ta-LK"
+                  className={`flex-1 text-xs py-1.5 px-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1 ${language === "ta-LK"
                       ? "bg-emerald-600 text-white shadow-sm"
                       : "text-slate-300 hover:text-white hover:bg-slate-800"
-                  }`}
+                    }`}
                 >
                   🇱🇰 தமிழ் (Tamil)
                 </button>
@@ -581,8 +580,8 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
                       ? language === "si-LK"
                         ? "🎙️ සවන් දෙමින්... කරුණාකර ඔබගේ ගැටළුව සිංහලෙන් පවසන්න."
                         : language === "ta-LK"
-                        ? "🎙️ கேட்கிறது... உங்கள் கேள்வியை தமிழில் பேசுங்கள்."
-                        : "🎙️ Listening... Speak your crop symptoms or question now."
+                          ? "🎙️ கேட்கிறது... உங்கள் கேள்வியை தமிழில் பேசுங்கள்."
+                          : "🎙️ Listening... Speak your crop symptoms or question now."
                       : "Microphone active. Ready for your voice."}
                   </p>
                 )}
@@ -657,7 +656,7 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
               </span>
               <h3 className="font-bold text-foreground text-base">Agent 1 NLP Analysis & Diagnostic Result</h3>
             </div>
-            
+
             <div className="flex items-center gap-2">
               {advisory && (
                 <Button
@@ -740,18 +739,67 @@ export const AgentQueryAssistant = ({ onCropDetected }) => {
               </div>
             </div>
 
-            {/* Advisory Actionable Advice */}
+            {/* Advisory Actionable Advice with LLM & RAG */}
             {advisory && (
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-50/80 to-teal-50/50 dark:from-slate-900 dark:to-emerald-950/30 border border-emerald-500/20 space-y-2">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-emerald-600" />
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
-                    Agent 1 Advisory Guidance
-                  </h4>
+              <div className="p-5 sm:p-6 rounded-2xl bg-card border border-emerald-500/30 space-y-4 shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-border/70">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-emerald-600" />
+                    <h4 className="text-sm font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+                      Grounded Agricultural Advisory Solution
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Badge className="bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 text-[10px] font-bold">
+                      🧠 LLM & DOA RAG Powered
+                    </Badge>
+                  </div>
                 </div>
-                <p className="text-sm text-foreground/90 leading-relaxed font-normal">
-                  {advisory}
-                </p>
+
+                {/* Formatted Markdown Advisory Viewer */}
+                <AdvisoryMarkdownViewer content={advisory} />
+              </div>
+            )}
+
+            {/* DOA RAG Citations & Grounded Knowledge Section */}
+            {result?.agent_response?.citations && result.agent_response.citations.length > 0 && (
+              <div className="p-4 rounded-2xl bg-muted/40 border border-border/80 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <BookOpen className="w-4 h-4 text-emerald-600" />
+                    <span className="text-xs font-bold text-foreground">
+                      Verified DOA Research Citations & Evidence (RAG Engine)
+                    </span>
+                  </div>
+                  <Badge variant="secondary" className="text-[10px] font-mono">
+                    {result.agent_response.citations.length} Verified Sources
+                  </Badge>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                  {result.agent_response.citations.map((cit, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3 rounded-xl bg-background/80 border border-border/60 text-xs space-y-1 hover:border-emerald-500/40 transition-colors"
+                    >
+                      <div className="flex items-center justify-between font-semibold text-foreground">
+                        <span className="truncate pr-2">{cit.source}</span>
+                        {cit.similarity_score && (
+                          <Badge className="bg-emerald-500/10 text-emerald-600 text-[9px] font-bold border-0">
+                            {Math.round(cit.similarity_score * 100)}% Match
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground line-clamp-2">
+                        {cit.snippet}
+                      </p>
+                      <div className="text-[10px] text-muted-foreground flex items-center justify-between pt-1 border-t border-border/40">
+                        <span>Page {cit.page || 1}</span>
+                        <span className="text-emerald-600 font-medium">Department of Agriculture</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 

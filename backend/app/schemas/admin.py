@@ -21,11 +21,27 @@ class AuditLogOut(BaseModel):
     created_at: datetime
 
 
+class AgentHealthInfo(BaseModel):
+    id: str
+    name: str
+    name_si: Optional[str] = None
+    status: str = "Healthy"
+    uptime_pct: float = 99.9
+    latency_ms: int = 120
+    description: str
+
+
 class SystemStatsOut(BaseModel):
     total_users: int
+    total_customers: int
     total_farmers: int
     total_admins: int
     active_users: int
+    pro_farmers: int
+    free_farmers: int
+    total_revenue: float
     total_farms_registered: int
     total_queries_recorded: int
     total_audit_events: int
+    agents_health: List[AgentHealthInfo] = []
+
