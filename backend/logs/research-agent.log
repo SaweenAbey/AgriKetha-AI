@@ -516,3 +516,59 @@ INFO:     127.0.0.1:49257 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:59957 - "POST /agent/retrieve HTTP/1.1" 200 OK
 INFO:     127.0.0.1:58445 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:52369 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62376 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58351 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60791 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50468 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51121 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51124 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64277 - "POST /agent/retrieve HTTP/1.1" 200 OK
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     Started server process [25772]
+INFO:     Waiting for application startup.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 2038.80it/s]
+INFO:     Application startup complete.
+ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0INFO:     127.0.0.1:49679 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49685 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52476 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60273 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56232 - "POST /agent/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64048 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53599 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64818 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55558 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55575 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55579 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63289 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61908 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52111 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52114 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58797 - "POST /agent/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57145 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57149 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55622 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55625 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54646 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49365 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65353 - "POST /agent/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55113 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54507 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56608 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56611 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51188 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51193 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58375 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58379 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52957 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55857 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57779 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58668 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51978 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51989 - "POST /agent/retrieve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50714 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58848 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53663 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58750 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50650 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61593 - "GET /agent/health HTTP/1.1" 200 OK
