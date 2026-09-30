@@ -945,3 +945,101 @@ INFO:     127.0.0.1:61215 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61216 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:58444 - "GET /agent/health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:52368 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62375 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58350 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58354 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56705 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60790 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50467 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50469 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50470 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51120 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51123 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64275 - "POST /analyze HTTP/1.1" 404 Not Found
+[Crop Classifier] OOD check | Rice=0.5095 | Tomato=0.6019 | Highest=0.6019
+[Crop Classifier] Image accepted as tomato.
+[Crop Classifier] Prediction: rice | Confidence: 0.5575
+[Vision Agent] success | crop=rice | prediction=Rice Blast (Magnaporthe oryzae)
+INFO:     127.0.0.1:64276 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+[Vision Agent] main.py is executing!
+[Vision Agent] All imports loaded!
+INFO:     Started server process [25972]
+INFO:     Waiting for application startup.
+[Vision Agent] Loading Vision Models...
+[Vision Model] Using device: cpu
+✅ Loaded best_disease_model.pth: 4 classes
+✅ Loaded best_nutrition_model.pth: 3 classes
+✅ Loaded best_pest_model.pth: 6 classes
+✅ Loaded best_rice_balanced_model.pth: 13 classes
+✅ Loaded best_tomato_model.pth: 10 classes
+✅ Vision Models Ready! Loaded models: disease, nutrition, pest, balanced, tomato
+✅ Rice specialist classes: 13
+🍅 Tomato model ready with 10 classes
+[Crop Classifier] Using device: cpu
+[Crop Classifier] Classes: ['rice', 'tomato']
+[Crop Classifier] Model loaded successfully: best_crop_classifier.pth
+[Crop Classifier] Feature references loaded successfully
+[Crop Classifier] OOD threshold: 0.56
+[Vision Agent] Vision Agent ready!
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49678 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49684 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52475 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60272 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56238 - "POST /analyze HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55812 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55813 - "GET /agent/health HTTP/1.1" 200 OK
+[Crop Classifier] OOD check | Rice=0.1513 | Tomato=0.8376 | Highest=0.8376
+[Crop Classifier] Image accepted as tomato.
+[Crop Classifier] Prediction: tomato | Confidence: 0.9999
+[Vision Agent] success | crop=tomato | prediction=Tomato healthy
+INFO:     127.0.0.1:65233 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64047 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53598 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64817 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55557 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55574 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55578 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63288 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61907 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52110 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52113 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58795 - "POST /analyze HTTP/1.1" 404 Not Found
+[Crop Classifier] OOD check | Rice=0.2198 | Tomato=0.8471 | Highest=0.8471
+[Crop Classifier] Image accepted as tomato.
+[Crop Classifier] Prediction: tomato | Confidence: 0.9999
+[Vision Agent] success | crop=tomato | prediction=Tomato Leaf Mold
+INFO:     127.0.0.1:58796 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57144 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57148 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55621 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55624 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54645 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49364 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65351 - "POST /analyze HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55112 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54506 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56607 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56610 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51187 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51192 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58374 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58378 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52956 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55856 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57778 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58667 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51977 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51987 - "POST /analyze HTTP/1.1" 404 Not Found
+[Crop Classifier] OOD check | Rice=0.2198 | Tomato=0.8471 | Highest=0.8471
+[Crop Classifier] Image accepted as tomato.
+[Crop Classifier] Prediction: tomato | Confidence: 0.9999
+[Vision Agent] success | crop=tomato | prediction=Tomato Leaf Mold
+INFO:     127.0.0.1:51988 - "POST /agent/image/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50713 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58847 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53662 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58749 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50649 - "GET /agent/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61592 - "GET /agent/health HTTP/1.1" 200 OK
